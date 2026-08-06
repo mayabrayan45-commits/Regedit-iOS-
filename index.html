@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Regedit VIP Android</title>
+    <title>Panel Regedit Multi-OS</title>
     <style>
         :root {
             --bg-color: #0d1117;
             --card-bg: #161b22;
-            --accent-color: #00e5ff; /* Tono neón para Android */
+            --accent-color: #00e5ff; /* Color por defecto (Android) */
             --text-color: #ffffff;
             --text-dim: #8b949e;
             --border-color: #30363d;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -33,7 +33,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         header h1 {
@@ -42,7 +42,7 @@
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            transition: color 0.3s;
         }
 
         header p {
@@ -51,37 +51,42 @@
             margin-top: 5px;
         }
 
-        /* Navegación por pestañas */
-        .tabs {
+        /* Selector de Sistema Operativo */
+        .os-selector {
             display: flex;
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .tab-btn {
+        .os-btn {
             flex: 1;
-            padding: 10px 0;
-            border: none;
-            background: transparent;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
             color: var(--text-dim);
-            font-weight: 600;
-            font-size: 13px;
-            border-radius: 8px;
+            font-weight: bold;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 14px;
             transition: 0.3s;
         }
 
-        .tab-btn.active {
-            background: var(--accent-color);
+        .os-btn.active[data-os="android"] {
+            background: #00e5ff;
             color: #000;
+            border-color: #00e5ff;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
         }
 
-        /* Contenido de las secciones */
-        .tab-content {
-            display: none;
+        .os-btn.active[data-os="ios"] {
+            background: #00ff88;
+            color: #000;
+            border-color: #00ff88;
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Tarjeta de Contenido */
+        .card {
             background: var(--card-bg);
             padding: 20px;
             border-radius: 16px;
@@ -89,39 +94,12 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Controles y Deslizadores */
-        .control-group {
-            margin-bottom: 18px;
-        }
-
-        .control-group label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .control-group span {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent-color);
-        }
-
-        /* Interruptores (Switches) */
+        /* Filas de Interruptores (Switches) */
         .switch-group {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 14px 0;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -129,11 +107,34 @@
             border-bottom: none;
         }
 
+        .switch-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .switch-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 2px;
+            color: #ff4d4d; /* Inactivo */
+            transition: color 0.3s;
+        }
+
+        .status-badge.active {
+            color: var(--accent-color); /* Activo */
+        }
+
+        /* Toggle Switch UI */
         .switch {
             position: relative;
             display: inline-block;
-            width: 46px;
-            height: 26px;
+            width: 50px;
+            height: 28px;
         }
 
         .switch input {
@@ -154,8 +155,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 22px;
+            width: 22px;
             left: 3px;
             bottom: 3px;
             background-color: white;
@@ -168,14 +169,38 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(20px);
+            transform: translateX(22px);
         }
 
-        /* Botones */
+        /* Deslizador de Porcentaje */
+        .control-group {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .control-group span.value {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent-color);
+        }
+
+        /* Botones Acción */
         .btn-main {
             width: 100%;
             padding: 14px;
-            margin-top: 15px;
+            margin-top: 18px;
             border: none;
             background: var(--accent-color);
             color: #000;
@@ -184,7 +209,7 @@
             font-size: 15px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+            transition: 0.3s;
         }
 
         .btn-game {
@@ -211,99 +236,111 @@
 
     <div class="container">
         <header>
-            <h1>Panel Regedit VIP</h1>
-            <p>Optimizador Táctil para Android</p>
+            <h1 id="panel-title">REGEDIT VIP ANDROID</h1>
+            <p>Optimizador de Sensibilidad & Respuesta Táctil</p>
         </header>
 
-        <!-- Pestañas -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab('sensi')">Sensi</button>
-            <button class="tab-btn" onclick="openTab('vip')">Ajustes VIP</button>
-            <button class="tab-btn" onclick="openTab('info')">Info</button>
+        <!-- Selector de Sistema Operativo -->
+        <div class="os-selector">
+            <button class="os-btn active" data-os="android" onclick="selectOS('android')">🤖 Android</button>
+            <button class="os-btn" data-os="ios" onclick="selectOS('ios')">🍎 iOS</button>
         </div>
 
-        <!-- Sección 1: Sensibilidad General -->
-        <div id="sensi" class="tab-content active">
-            <div class="control-group">
-                <label>General <span><span id="v1">96</span>%</span></label>
-                <input type="range" min="0" max="100" value="96" oninput="document.getElementById('v1').innerText = this.value">
-            </div>
-
-            <div class="control-group">
-                <label>Mira Roja <span><span id="v2">98</span>%</span></label>
-                <input type="range" min="0" max="100" value="98" oninput="document.getElementById('v2').innerText = this.value">
-            </div>
-
-            <div class="control-group">
-                <label>Mira 2X <span><span id="v3">90</span>%</span></label>
-                <input type="range" min="0" max="100" value="90" oninput="document.getElementById('v3').innerText = this.value">
-            </div>
-
-            <div class="control-group">
-                <label>Mira 4X <span><span id="v4">95</span>%</span></label>
-                <input type="range" min="0" max="100" value="95" oninput="document.getElementById('v4').innerText = this.value">
-            </div>
-        </div>
-
-        <!-- Sección 2: Ajustes VIP (FPS, Estabilizador y Seguimiento) -->
-        <div id="vip" class="tab-content">
+        <div class="card">
+            <!-- Option 1: 120 FPS -->
             <div class="switch-group">
-                <span>Modo 120 FPS Max</span>
+                <div class="switch-label">
+                    <span class="switch-title">Modo 120 FPS Max</span>
+                    <span id="st-fps" class="status-badge active">● ACTIVADO</span>
+                </div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" id="chk-fps" checked onchange="toggleStatus('chk-fps', 'st-fps')">
                     <span class="slider"></span>
                 </label>
             </div>
 
-            <div class="control-group" style="margin-top: 15px;">
-                <label>Estabilizador de Mira <span><span id="stab-val">99</span>%</span></label>
-                <input type="range" min="0" max="100" value="99" oninput="document.getElementById('stab-val').innerText = this.value">
-            </div>
-
-            <div class="control-group">
-                <label>Seguimiento a la Cabeza <span><span id="head-val">58</span>%</span></label>
-                <input type="range" min="0" max="100" value="58" oninput="document.getElementById('head-val').innerText = this.value">
-            </div>
-
+            <!-- Option 2: No Recoil -->
             <div class="switch-group">
-                <span>Reducir Delays táctiles</span>
+                <div class="switch-label">
+                    <span class="switch-title">Sistema No Recoil</span>
+                    <span id="st-recoil" class="status-badge active">● ACTIVADO</span>
+                </div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" id="chk-recoil" checked onchange="toggleStatus('chk-recoil', 'st-recoil')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Option 3: Seguimiento a la Cabeza -->
+            <div class="control-group">
+                <label>
+                    Seguimiento a la Cabeza 
+                    <span class="value"><span id="head-val">89</span>%</span>
+                </label>
+                <input type="range" min="0" max="100" value="89" oninput="document.getElementById('head-val').innerText = this.value">
+            </div>
+
+            <!-- Option 4: Touch Delay -->
+            <div class="switch-group">
+                <div class="switch-label">
+                    <span class="switch-title">Optimizar Respuesta Táctil</span>
+                    <span id="st-touch" class="status-badge active">● ACTIVADO</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="chk-touch" checked onchange="toggleStatus('chk-touch', 'st-touch')">
                     <span class="slider"></span>
                 </label>
             </div>
         </div>
 
-        <!-- Sección 3: Info -->
-        <div id="info" class="tab-content">
-            <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-                Configuración optimizada para respuesta de pantalla táctil en dispositivos Android.
-            </p>
-            <p style="font-size: 13px; color: var(--text-dim);">
-                <strong>Estado:</strong> <span style="color: var(--accent-color);">Activo (120 FPS)</span><br>
-                <strong>Sistema:</strong> Android OS<br>
-                <strong>Versión:</strong> 3.2 VIP
-            </p>
-        </div>
-
-        <button class="btn-main" onclick="guardarConfig()">Aplicar Configuración</button>
+        <button class="btn-main" id="btn-apply" onclick="guardarConfig()">Aplicar Ajustes</button>
         <button class="btn-game" onclick="abrirFreeFire()">🎮 Abrir Free Fire</button>
     </div>
 
     <script>
-        function openTab(tabName) {
-            let contents = document.querySelectorAll('.tab-content');
-            let buttons = document.querySelectorAll('.tab-btn');
+        let currentOS = 'android';
 
-            contents.forEach(content => content.classList.remove('active'));
+        function selectOS(os) {
+            currentOS = os;
+            const buttons = document.querySelectorAll('.os-btn');
+            const title = document.getElementById('panel-title');
+            const root = document.documentElement;
+
             buttons.forEach(btn => btn.classList.remove('active'));
 
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (os === 'android') {
+                document.querySelector('[data-os="android"]').classList.add('active');
+                title.innerText = "REGEDIT VIP ANDROID";
+                root.style.setProperty('--accent-color', '#00e5ff');
+            } else {
+                document.querySelector('[data-os="ios"]').classList.add('active');
+                title.innerText = "REGEDIT VIP IOS";
+                root.style.setProperty('--accent-color', '#00ff88');
+            }
+        }
+
+        function toggleStatus(chkId, statusId) {
+            const chk = document.getElementById(chkId);
+            const status = document.getElementById(statusId);
+
+            if (chk.checked) {
+                status.innerText = "● ACTIVADO";
+                status.classList.add('active');
+            } else {
+                status.innerText = "○ DESACTIVADO";
+                status.classList.remove('active');
+            }
         }
 
         function guardarConfig() {
-            alert("¡Ajustes aplicados correctamente!\n- 120 FPS Activo\n- Estabilizador: 99%\n- Seguimiento Cabeza: 58%");
+            const headVal = document.getElementById('head-val').innerText;
+            const fpsActive = document.getElementById('chk-fps').checked ? "Activado" : "Desactivado";
+            const recoilActive = document.getElementById('chk-recoil').checked ? "Activado" : "Desactivado";
+
+            alert(`Configuración cargada en [${currentOS.toUpperCase()}]:\n\n` +
+                  `• 120 FPS: ${fpsActive}\n` +
+                  `• No Recoil: ${recoilActive}\n` +
+                  `• Seguimiento a la Cabeza: ${headVal}%`);
         }
 
         function abrirFreeFire() {
