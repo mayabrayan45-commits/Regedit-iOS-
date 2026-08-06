@@ -512,7 +512,7 @@
             </button>
         </div>
 
-        <!-- ================= PANEL ANDROID (OPCIONES EXPANDIDAS Y ROJO) ================= -->
+        <!-- ================= PANEL ANDROID (OPCIONES DESACTIVADAS POR DEFECTO Y GUARDADO) ================= -->
         <div class="os-panel active" id="panel-android">
             
             <!-- Option 1: 120 FPS -->
@@ -523,7 +523,7 @@
                         <div class="card-subtext">VULKAN FRAME RATE BOOST</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="and-fps">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
@@ -539,7 +539,7 @@
                     <div class="stat-badge" id="val-head-and">57%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" min="1" max="100" value="57" oninput="document.getElementById('val-head-and').innerText = this.value + '%'">
+                    <input type="range" class="hud-slider" id="and-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-and', this.value, '%', 'and-head-slider')">
                 </div>
             </div>
 
@@ -551,13 +551,13 @@
                         <div class="card-subtext">AUTO TARGETING VECTOR</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="and-aimbot">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
             </div>
 
-            <!-- NUEVA OPTION 4 (Android): Acelerador DPI Táctil -->
+            <!-- Option 4: Acelerador DPI Táctil -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
@@ -567,11 +567,11 @@
                     <div class="stat-badge" id="val-dpi">800 DPI</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" min="360" max="1200" step="20" value="800" oninput="document.getElementById('val-dpi').innerText = this.value + ' DPI'">
+                    <input type="range" class="hud-slider" id="and-dpi-slider" min="360" max="1200" step="20" value="800" oninput="updateSlider('val-dpi', this.value, ' DPI', 'and-dpi-slider')">
                 </div>
             </div>
 
-            <!-- NUEVA OPTION 5 (Android): Auto Limpiador de RAM -->
+            <!-- Option 5: Auto Limpiador de RAM -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
@@ -579,13 +579,13 @@
                         <div class="card-subtext">LIBERA PROCESOS PARA EVITAR TIRONES</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="and-ram">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
             </div>
 
-            <!-- NUEVA OPTION 6 (Android): Estabilizador de Ping -->
+            <!-- Option 6: Estabilizador de Ping -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
@@ -593,7 +593,7 @@
                         <div class="card-subtext">DNS VIP DE BAJA LATENCIA</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="and-ping">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
@@ -613,7 +613,7 @@
                         <div class="card-subtext">METAL GRAPHICS UNLOCK</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="ios-fps">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
@@ -629,7 +629,7 @@
                     <div class="stat-badge" id="val-head-ios">57%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" min="1" max="100" value="57" oninput="document.getElementById('val-head-ios').innerText = this.value + '%'">
+                    <input type="range" class="hud-slider" id="ios-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-ios', this.value, '%', 'ios-head-slider')">
                 </div>
             </div>
 
@@ -641,7 +641,7 @@
                         <div class="card-subtext">TOUCH ENGINE ASSIST</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="ios-aimbot">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
@@ -655,7 +655,7 @@
                         <div class="card-subtext">ZERO BULLET SPREAD</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="ios-recoil">
                         <span class="switch-slider"></span>
                     </label>
                 </div>
@@ -730,7 +730,6 @@
 
         // Selector de Sistema Operativo
         function selectOS(os) {
-            // Restricción para abrir iOS únicamente en iPhone
             if (os === 'ios') {
                 const isIPhone = /iPhone/i.test(navigator.userAgent) || 
                                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -750,6 +749,53 @@
             document.getElementById('panel-ios').classList.toggle('active', os === 'ios');
         }
 
+        // Funciones de actualización y persistencia (LocalStorage)
+        function updateSlider(badgeId, val, unit, storageKey) {
+            document.getElementById(badgeId).innerText = val + unit;
+            localStorage.setItem(storageKey, val);
+        }
+
+        // Cargar y guardar estados en el almacenamiento local
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        // Guardar checkbox al cambiar
+        checkboxes.forEach(chk => {
+            chk.addEventListener('change', () => {
+                localStorage.setItem(chk.id, chk.checked);
+            });
+        });
+
+        // Cargar estado guardado al iniciar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            // Cargar Checkboxes
+            checkboxes.forEach(chk => {
+                const savedState = localStorage.getItem(chk.id);
+                if (savedState !== null) {
+                    chk.checked = savedState === 'true';
+                } else {
+                    chk.checked = false; // Por defecto desactivado
+                }
+            });
+
+            // Cargar Sliders
+            const sliders = [
+                { id: 'and-head-slider', badge: 'val-head-and', unit: '%' },
+                { id: 'and-dpi-slider', badge: 'val-dpi', unit: ' DPI' },
+                { id: 'ios-head-slider', badge: 'val-head-ios', unit: '%' }
+            ];
+
+            sliders.forEach(s => {
+                const savedVal = localStorage.getItem(s.id);
+                if (savedVal !== null) {
+                    const el = document.getElementById(s.id);
+                    if (el) {
+                        el.value = savedVal;
+                        document.getElementById(s.badge).innerText = savedVal + s.unit;
+                    }
+                }
+            });
+        });
+
         // Ejecución simulada de inyección
         function triggerInjection(systemName) {
             const modal = document.getElementById('terminal-modal');
@@ -764,11 +810,11 @@
 
             const logs = [
                 "> Conectando con el Kernel del dispositivo...",
-                "> Asignando parámetros de FPS (120 Hz)...",
-                "> Sincronizando Seguimiento a la Cabeza al 57%...",
-                "> Módulo Aimbot activo y verificado.",
-                isAndroid ? "> Acelerador DPI Táctil y Buffer de RAM optimizados..." : "> Calibrando estabilización Recoil Zero...",
-                isAndroid ? "> DNS de Baja Latencia para Ping Estabilizado enlazado." : "> Touch Engine Assist vinculado.",
+                "> Asignando parámetros de FPS...",
+                "> Sincronizando Seguimiento a la Cabeza...",
+                "> Verificando estado de módulos de puntería...",
+                isAndroid ? "> Optimizando DPI Táctil y Memoria RAM..." : "> Calibrando estabilización Recoil Zero...",
+                isAndroid ? "> Configurando servidor DNS de baja latencia..." : "> Touch Engine Assist vinculado.",
                 "> ¡INYECCIÓN COMPLETADA CON ÉXITO!"
             ];
 
