@@ -6,10 +6,10 @@ from colorama import init, Fore, Style
 init() # Para colores en consola
 
 print(Fore.CYAN + """
-╔════════════╗
+╔═══════════════════════╗
 ║ FF PRO TOOLKIT v1.0 ║
 ║ Solo para salas/educativo ║
-╚════════════╝
+╚═══════════════╝
 """ + Style.RESET_ALL)
 
 print(Fore.YELLOW + "[F1] " + Fore.WHITE + "Control de Retroceso ON/OFF")
@@ -21,40 +21,41 @@ recoil_active = False
 rapid_active = False
 sens_active = False
 
-def control_recoil():
+def toggle_recoil():
     global recoil_active
     recoil_active = not recoil_active
     status = "ACTIVADO" if recoil_active else "DESACTIVADO"
     print(Fore.GREEN + f"[+] Control Retroceso: {status}" + Style.RESET_ALL)
 
-def rapid_fire():
+def toggle_rapid():
     global rapid_active
     rapid_active = not rapid_active
     status = "ACTIVADO" if rapid_active else "DESACTIVADO"
     print(Fore.GREEN + f"[+] Disparo Rápido: {status}" + Style.RESET_ALL)
 
-def pro_sens():
+def toggle_sens():
     global sens_active
     sens_active = not sens_active
     status = "ACTIVADO" if sens_active else "DESACTIVADO"
     print(Fore.GREEN + f"[+] Sensibilidad Pro: {status}" + Style.RESET_ALL)
 
-keyboard.add_hotkey('f1', control_recoil)
-keyboard.add_hotkey('f2', rapid_fire)
-keyboard.add_hotkey('f3', pro_sens)
+keyboard.add_hotkey('f1', toggle_recoil)
+keyboard.add_hotkey('f2', toggle_rapid)
+keyboard.add_hotkey('f3', toggle_sens)
+
+print(Fore.CYAN + "\nEsperando teclas..." + Style.RESET_ALL)
 
 while True:
-    if recoil_active and keyboard.is_pressed('mouse left'):
-        pyautogui.moveRel(0, 2) # Baja la mira poco a poco
+    if recoil_active and keyboard.is_pressed('left mouse'):
+        pyautogui.moveRel(0, 2) # Baja la mira
         time.sleep(0.008)
 
-    if rapid_active and keyboard.is_pressed('mouse left'):
+    if rapid_active and keyboard.is_pressed('left mouse'):
         pyautogui.click()
-        time.sleep(0.03) # Ajusta para más rápido
-
-    if sens_active:
-        # Aquí podrías mover la mira a la cabeza automáticamente
-        pass
+        time.sleep(0.03)
 
     if keyboard.is_pressed('f9'):
-        print(Fore.RED + "Saliendo del programa..." + Style.RE
+        print(Fore.RED + "Saliendo del programa..." + Style.RESET_ALL)
+        break
+
+    time.sleep(0.001)
