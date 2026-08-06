@@ -3,77 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>REGEDIT VIP 3.0</title>
+    <title>REGEDIT VIP 3.0 - MULTI-ARCH ENGINE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-deep: #020408;
-            --panel-bg: rgba(8, 14, 26, 0.88);
-            --cyan-glow: #00f0ff;
-            --cyan-dim: rgba(0, 240, 255, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #4a5a75;
-            --border-tech: rgba(0, 240, 255, 0.25);
+            /* Tema Android: Hex-Cyan & Electric Blue */
+            --primary: #00f0ff;
+            --primary-rgb: 0, 240, 255;
+            --accent: #0077ff;
+            --bg-base: #030712;
+            --panel-bg: rgba(6, 11, 25, 0.9);
+            --border-glow: rgba(0, 240, 255, 0.4);
+            --text-main: #e2e8f0;
+            --text-muted: #475569;
+            --success: #00ff88;
             --danger: #ff0055;
-            --success: #00ff66;
-            --warning: #ffaa00;
         }
 
         [data-os="ios"] {
-            --cyan-glow: #00ff88;
-            --cyan-dim: rgba(0, 255, 136, 0.15);
-            --border-tech: rgba(0, 255, 136, 0.25);
+            /* Tema iOS: Neon Violet & Bionic Pink */
+            --primary: #d946ef;
+            --primary-rgb: 217, 70, 239;
+            --accent: #8b5cf6;
+            --panel-bg: rgba(20, 10, 30, 0.9);
+            --border-glow: rgba(217, 70, 239, 0.4);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg-base);
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
-                linear-gradient(180deg, rgba(2, 4, 8, 0.9) 0%, rgba(2, 4, 8, 0.98) 100%),
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.02) 3px, rgba(0, 240, 255, 0.02) 3px);
+                radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%),
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 2px);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px 10px;
-            overflow-x: hidden;
+            transition: all 0.4s ease;
         }
 
+        /* Contenedor Modelo Hexagonal Octagonal Cut */
         .hud-wrapper {
             width: 100%;
             max-width: 440px;
             background: var(--panel-bg);
-            border: 1px solid var(--border-tech);
-            border-radius: 16px;
-            padding: 20px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px var(--cyan-dim);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 22px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 35px rgba(var(--primary-rgb), 0.25), inset 0 0 15px rgba(var(--primary-rgb), 0.1);
             position: relative;
+            clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
+            transition: all 0.4s ease;
         }
 
+        /* Top Banner Accent Line */
         .hud-wrapper::before {
             content: "";
             position: absolute;
-            top: -1px;
-            left: 20%;
-            right: 20%;
-            height: 2px;
-            background: var(--cyan-glow);
-            box-shadow: 0 0 10px var(--cyan-glow);
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 3px;
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary);
         }
 
         /* Header Engine */
@@ -81,40 +87,55 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px dashed var(--border-tech);
+            border-bottom: 1px solid var(--border-glow);
             padding-bottom: 12px;
             margin-bottom: 16px;
         }
 
         .title-block h1 {
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 900;
             letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--cyan-glow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary);
         }
 
         .title-block p {
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-muted);
-        }
-
-        .os-badge {
-            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
-            padding: 4px 8px;
-            border: 1px solid var(--cyan-glow);
-            background: var(--cyan-dim);
-            color: var(--cyan-glow);
-            border-radius: 4px;
-            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-muted);
+            letter-spacing: 1px;
         }
 
-        /* Hardware Telemetry (RAM + TEMP) */
+        /* Selector de OS Táctil */
+        .os-selector {
+            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3px;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .os-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .os-btn.active {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Telemetría Hardware Adaptativa */
         .telemetry-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -123,60 +144,51 @@
         }
 
         .telemetry-card {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-tech);
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 3px solid var(--primary);
+            padding: 10px;
+            border-radius: 6px;
         }
 
         .telemetry-header {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-family: 'Share Tech Mono', monospace;
             color: var(--text-muted);
+            margin-bottom: 4px;
         }
 
         .telemetry-value {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--cyan-glow);
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--primary);
+            text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5);
         }
 
-        .progress-track-sm {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
+        .telemetry-sub {
+            font-size: 9px;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
-        .progress-fill-sm {
-            height: 100%;
-            background: var(--cyan-glow);
-            width: 50%;
-            transition: width 0.5s ease, background 0.5s ease;
-        }
-
-        /* Live Waveform Canvas */
+        /* Gráfico de Frecuencia de Kernel */
         .chart-box {
             background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-tech);
-            border-radius: 10px;
+            border: 1px solid var(--border-glow);
             padding: 10px;
+            border-radius: 8px;
             margin-bottom: 16px;
-            position: relative;
-            overflow: hidden;
         }
 
         .chart-header {
             display: flex;
             justify-content: space-between;
             font-size: 10px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             color: var(--text-muted);
             margin-bottom: 6px;
         }
@@ -187,45 +199,38 @@
             display: block;
         }
 
-        /* Modules */
+        /* Lista de Módulos */
         .modules-grid {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .mod-card {
-            background: rgba(4, 9, 18, 0.7);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 10px 14px;
+            padding: 12px 14px;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
         }
 
         .mod-card.active {
-            border-color: var(--cyan-glow);
-            background: var(--cyan-dim);
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
-        }
-
-        .mod-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.1);
+            box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.15);
         }
 
         .mod-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .mod-status {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 10px;
             color: var(--danger);
         }
@@ -234,11 +239,11 @@
             color: var(--success);
         }
 
-        /* Custom Tech Switch */
+        /* Switch Neón */
         .tech-switch {
             position: relative;
-            width: 46px;
-            height: 22px;
+            width: 44px;
+            height: 20px;
         }
 
         .tech-switch input { opacity: 0; width: 0; height: 0; }
@@ -246,37 +251,37 @@
         .tech-slider {
             position: absolute;
             inset: 0;
-            background: #0d1522;
+            background: #0f172a;
             border: 1px solid var(--text-muted);
-            border-radius: 4px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
         }
 
         .tech-slider:before {
             content: "";
             position: absolute;
-            height: 14px;
-            width: 14px;
+            height: 12px;
+            width: 12px;
             left: 3px;
             bottom: 3px;
             background: var(--text-muted);
-            border-radius: 2px;
-            transition: 0.2s;
+            border-radius: 50%;
+            transition: 0.3s;
         }
 
         input:checked + .tech-slider {
-            border-color: var(--cyan-glow);
-            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.2);
         }
 
         input:checked + .tech-slider:before {
             transform: translateX(22px);
-            background: var(--cyan-glow);
-            box-shadow: 0 0 8px var(--cyan-glow);
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
         }
 
-        /* Action Buttons */
+        /* Botones de Acción */
         .actions-block {
             display: flex;
             flex-direction: column;
@@ -287,46 +292,39 @@
             width: 100%;
             padding: 14px;
             background: transparent;
-            border: 1px solid var(--cyan-glow);
-            color: var(--cyan-glow);
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-tech::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: var(--cyan-glow);
-            opacity: 0.1;
+            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
         }
 
         .btn-tech:active {
             transform: scale(0.98);
+            background: var(--primary);
+            color: #000;
         }
 
         .btn-launch {
             border-color: #ff3300;
             color: #ff3300;
+            box-shadow: 0 0 15px rgba(255, 51, 0, 0.2);
         }
 
-        .btn-launch::before {
+        .btn-launch:active {
             background: #ff3300;
+            color: #fff;
         }
 
-        /* Console Overlay */
+        /* Terminal Overlay */
         .terminal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.95);
+            background: rgba(3, 7, 18, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
@@ -347,34 +345,30 @@
             width: 100%;
             max-width: 380px;
             background: #000;
-            border: 1px solid var(--cyan-glow);
-            border-radius: 10px;
+            border: 1px solid var(--primary);
             padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            font-family: 'Share Tech Mono', monospace;
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
         }
 
         .terminal-title {
-            color: var(--cyan-glow);
-            font-size: 12px;
+            color: var(--primary);
+            font-size: 11px;
             margin-bottom: 10px;
             text-align: center;
-            font-weight: 700;
         }
 
         .progress-track {
-            height: 6px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
             margin-bottom: 12px;
         }
 
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: var(--cyan-glow);
-            box-shadow: 0 0 10px var(--cyan-glow);
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
             transition: width 0.1s linear;
         }
 
@@ -395,57 +389,55 @@
 <body data-os="android">
 
     <div class="hud-wrapper">
-        <!-- Engine Header -->
+        <!-- Header -->
         <div class="engine-header">
             <div class="title-block">
-                <h1>⚡ REGEDIT VIP 3.0</h1>
-                <p>KERNEL RESPONSE OPTIMIZER</p>
+                <h1>REGEDIT VIP 3.0</h1>
+                <p id="sub-engine-title">ANDROID VULKAN CORE v3.0</p>
             </div>
-            <button class="os-badge" id="os-toggle" onclick="toggleOS()">
-                OS: ANDROID
-            </button>
+            
+            <div class="os-selector">
+                <button class="os-btn active" id="btn-android" onclick="setOS('android')">ANDROID</button>
+                <button class="os-btn" id="btn-ios" onclick="setOS('ios')">iPHONE</button>
+            </div>
         </div>
 
-        <!-- Hardware Telemetry Bar (RAM + TEMP) -->
+        <!-- Telemetría Específica por OS -->
         <div class="telemetry-grid">
             <div class="telemetry-card">
                 <div class="telemetry-header">
-                    <span>USO DE RAM</span>
-                    <span id="ram-pct">42%</span>
+                    <span id="lbl-ram-title">MEMORIA SYSTEM</span>
+                    <span id="lbl-ram-pct">42%</span>
                 </div>
-                <div class="telemetry-value" id="ram-val">3.4 / 8 GB</div>
-                <div class="progress-track-sm">
-                    <div class="progress-fill-sm" id="ram-fill" style="width: 42%;"></div>
-                </div>
+                <div class="telemetry-value" id="val-ram">3.4 / 8 GB</div>
+                <div class="telemetry-sub" id="sub-ram">ZRAM SWAP: ACTIVE</div>
             </div>
 
             <div class="telemetry-card">
                 <div class="telemetry-header">
-                    <span>TEMPERATURA</span>
-                    <span id="temp-status">NORMAL</span>
+                    <span id="lbl-temp-title">SOC THERMAL</span>
+                    <span id="lbl-temp-st" style="color:var(--success)">COOL</span>
                 </div>
-                <div class="telemetry-value" id="temp-val">34.2 °C</div>
-                <div class="progress-track-sm">
-                    <div class="progress-fill-sm" id="temp-fill" style="width: 38%; background: var(--success);"></div>
-                </div>
+                <div class="telemetry-value" id="val-temp">34.2 °C</div>
+                <div class="telemetry-sub" id="sub-temp">GOVERNOR: PERFORMANCE</div>
             </div>
         </div>
 
-        <!-- Live Waveform Chart -->
+        <!-- Gráfico Kernel / Telemetría Táctil -->
         <div class="chart-box">
             <div class="chart-header">
-                <span>TELEMETRÍA TÁCTIL (MS)</span>
-                <span id="hz-display" style="color:var(--cyan-glow);">240 Hz ACTIVE</span>
+                <span id="lbl-chart-title">DISPATCHER RATE</span>
+                <span id="lbl-hz" style="color:var(--primary);">240 Hz SYNC</span>
             </div>
             <canvas id="wave-canvas"></canvas>
         </div>
 
-        <!-- Control Modules -->
+        <!-- Módulos Ajustados -->
         <div class="modules-grid">
             <div class="mod-card" id="card-1">
-                <div class="mod-info">
-                    <span class="mod-title">120 FPS Max Frame-Rate</span>
-                    <span class="mod-status" id="st-1">○ DESACTIVADO</span>
+                <div>
+                    <div class="mod-title">120 FPS Max Frame-Rate</div>
+                    <div class="mod-status" id="st-1">○ DESACTIVADO</div>
                 </div>
                 <label class="tech-switch">
                     <input type="checkbox" id="chk-1" onchange="toggleCard('chk-1', 'card-1', 'st-1')">
@@ -454,9 +446,9 @@
             </div>
 
             <div class="mod-card" id="card-2">
-                <div class="mod-info">
-                    <span class="mod-title">Estabilizador de Recoil</span>
-                    <span class="mod-status" id="st-2">○ DESACTIVADO</span>
+                <div>
+                    <div class="mod-title">Estabilizador Recoil</div>
+                    <div class="mod-status" id="st-2">○ DESACTIVADO</div>
                 </div>
                 <label class="tech-switch">
                     <input type="checkbox" id="chk-2" onchange="toggleCard('chk-2', 'card-2', 'st-2')">
@@ -465,9 +457,9 @@
             </div>
 
             <div class="mod-card" id="card-3">
-                <div class="mod-info">
-                    <span class="mod-title">Aimbot Assist (Búfer Dinámico)</span>
-                    <span class="mod-status" id="st-3">○ DESACTIVADO</span>
+                <div>
+                    <div class="mod-title">Aimbot Assist</div>
+                    <div class="mod-status" id="st-3">○ DESACTIVADO</div>
                 </div>
                 <label class="tech-switch">
                     <input type="checkbox" id="chk-3" onchange="toggleCard('chk-3', 'card-3', 'st-3')">
@@ -476,9 +468,9 @@
             </div>
 
             <div class="mod-card" id="card-4">
-                <div class="mod-info">
-                    <span class="mod-title">Seguimiento a la Cabeza (57%)</span>
-                    <span class="mod-status" id="st-4">○ DESACTIVADO</span>
+                <div>
+                    <div class="mod-title">Seguimiento a la Cabeza (57%)</div>
+                    <div class="mod-status" id="st-4">○ DESACTIVADO</div>
                 </div>
                 <label class="tech-switch">
                     <input type="checkbox" id="chk-4" onchange="toggleCard('chk-4', 'card-4', 'st-4')">
@@ -487,17 +479,17 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Botones de Control -->
         <div class="actions-block">
             <button class="btn-tech" onclick="executeInjection()">INYECTAR REGEDIT VIP 3.0</button>
             <button class="btn-tech btn-launch" onclick="launchGame()">EJECUTAR FREE FIRE</button>
         </div>
     </div>
 
-    <!-- Injection Console Overlay -->
+    <!-- Terminal Overlay -->
     <div class="terminal-overlay" id="terminal-modal">
         <div class="terminal-box">
-            <div class="terminal-title">> COMPILANDO E INYECTANDO VIP 3.0...</div>
+            <div class="terminal-title" id="term-title">> INYECTANDO PARCHES...</div>
             <div class="progress-track">
                 <div class="progress-fill" id="progress-bar"></div>
             </div>
@@ -508,34 +500,55 @@
     <script>
         let currentOS = 'android';
 
-        // Telemetry Monitor (RAM & Temp)
-        setInterval(() => {
-            // RAM Simulation
-            const ramUsed = (3.1 + Math.random() * 0.8).toFixed(1);
-            const ramPct = Math.round((ramUsed / 8) * 100);
-            document.getElementById('ram-val').innerText = `${ramUsed} / 8 GB`;
-            document.getElementById('ram-pct').innerText = `${ramPct}%`;
-            document.getElementById('ram-fill').style.width = `${ramPct}%`;
+        // Cambio de Modo (Android vs iPhone) con Telemetría Diferenciada
+        function setOS(os) {
+            currentOS = os;
+            document.body.setAttribute('data-os', os);
 
-            // Temp Simulation
-            const temp = (33.5 + Math.random() * 3.0).toFixed(1);
-            document.getElementById('temp-val').innerText = `${temp} °C`;
-            const tempFill = document.getElementById('temp-fill');
-            const tempStatus = document.getElementById('temp-status');
+            document.getElementById('btn-android').classList.toggle('active', os === 'android');
+            document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
 
-            if (temp > 36) {
-                tempFill.style.background = 'var(--warning)';
-                tempStatus.innerText = 'TIBIO';
-                tempStatus.style.color = 'var(--warning)';
+            if (os === 'android') {
+                document.getElementById('sub-engine-title').innerText = "ANDROID VULKAN CORE v3.0";
+                document.getElementById('lbl-ram-title').innerText = "RAM (LPDDR5)";
+                document.getElementById('sub-ram').innerText = "ZRAM SWAP: ACTIVE";
+                document.getElementById('lbl-temp-title').innerText = "SOC THERMAL";
+                document.getElementById('sub-temp').innerText = "GOVERNOR: PERFORMANCE";
+                document.getElementById('lbl-hz').innerText = "240 Hz SYNC";
             } else {
-                tempFill.style.background = 'var(--success)';
-                tempStatus.innerText = 'NORMAL';
-                tempStatus.style.color = 'var(--success)';
+                document.getElementById('sub-engine-title').innerText = "iOS METAL ENGINE v3.0";
+                document.getElementById('lbl-ram-title').innerText = "UNIFIED MEMORY";
+                document.getElementById('sub-ram').innerText = "NEURAL BUFFER: OPTIMIZED";
+                document.getElementById('lbl-temp-title').innerText = "BIONIC TEMP";
+                document.getElementById('sub-temp').innerText = "THERMAL THROTTLE: OFF";
+                document.getElementById('lbl-hz').innerText = "120 Hz PROMOTION";
             }
-            tempFill.style.width = `${(temp / 50) * 100}%`;
-        }, 2000);
+        }
 
-        // Animated Waveform Canvas
+        // Bucle de Telemetría Dinámica Específica
+        setInterval(() => {
+            if (currentOS === 'android') {
+                // Métricas Android (LPDDR5 RAM y Temperatura SoC)
+                const ram = (3.2 + Math.random() * 0.9).toFixed(1);
+                const ramPct = Math.round((ram / 8) * 100);
+                const temp = (34.0 + Math.random() * 2.5).toFixed(1);
+
+                document.getElementById('val-ram').innerText = `${ram} / 8 GB`;
+                document.getElementById('lbl-ram-pct').innerText = `${ramPct}%`;
+                document.getElementById('val-temp').innerText = `${temp} °C`;
+            } else {
+                // Métricas iPhone (Unified Memory RAM y Sensor Biónico)
+                const ram = (2.1 + Math.random() * 0.4).toFixed(1);
+                const ramPct = Math.round((ram / 6) * 100);
+                const temp = (31.5 + Math.random() * 1.8).toFixed(1);
+
+                document.getElementById('val-ram').innerText = `${ram} / 6 GB`;
+                document.getElementById('lbl-ram-pct').innerText = `${ramPct}%`;
+                document.getElementById('val-temp').innerText = `${temp} °C`;
+            }
+        }, 1800);
+
+        // Gráfico Animado de Kernel
         const canvas = document.getElementById('wave-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = canvas.offsetWidth;
@@ -546,10 +559,13 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--cyan-glow').trim();
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--primary').trim();
+
+            const frequency = currentOS === 'android' ? 0.06 : 0.03;
+            const amplitude = currentOS === 'android' ? 12 : 8;
 
             for (let x = 0; x < canvas.width; x++) {
-                const y = Math.sin((x + step) * 0.05) * 10 + canvas.height / 2;
+                const y = Math.sin((x + step) * frequency) * amplitude + canvas.height / 2;
                 if (x === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
@@ -558,13 +574,6 @@
             requestAnimationFrame(drawWave);
         }
         drawWave();
-
-        function toggleOS() {
-            currentOS = currentOS === 'android' ? 'ios' : 'android';
-            document.body.setAttribute('data-os', currentOS);
-            document.getElementById('os-toggle').innerText = `OS: ${currentOS.toUpperCase()}`;
-            document.getElementById('hz-display').innerText = currentOS === 'android' ? '240 Hz ACTIVE' : '120 Hz METAL';
-        }
 
         function toggleCard(chkId, cardId, statusId) {
             const chk = document.getElementById(chkId);
@@ -589,12 +598,13 @@
             bar.style.width = '0%';
             logs.innerHTML = '';
 
+            const isAndroid = currentOS === 'android';
             const steps = [
-                "> Inicializando Kernel Regedit VIP 3.0...",
-                "> Fijando limite de refresco a 120 FPS...",
-                "> Calibrando curva de Aimbot & Recoil...",
-                "> Inyectando Head-Tracking fijado en 57%...",
-                "> ¡Regedit VIP 3.0 activado con éxito!"
+                `> Verificando entorno ${isAndroid ? 'Vulkan Driver' : 'Metal API'}...`,
+                `> Inyectando parche 120 FPS en kernel...`,
+                `> Estabilizando tablas de Recoil...`,
+                `> Calibrando Aimbot Assist & Head-Tracking (57%)...`,
+                `> ¡VIP 3.0 activado en ${isAndroid ? 'Android Core' : 'iOS Bionic'}!`
             ];
 
             let progress = 0;
