@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NEURAL-SYNC VIP // QUANTUM HUD RED</title>
+    <title>REGEDIT VIP 3.0 - Edition Limited</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -112,12 +112,27 @@
             padding-bottom: 12px;
         }
 
+        .hud-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
         .hud-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 900;
             letter-spacing: 2px;
             color: var(--primary);
             text-shadow: 0 0 10px var(--glow);
+        }
+
+        .hud-subtitle {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            color: #ffd700;
+            text-transform: lowercase;
+            opacity: 0.85;
+            margin-top: 2px;
         }
 
         .hud-status {
@@ -495,7 +510,10 @@
     <div class="cyber-chassis">
         <!-- Header -->
         <div class="hud-header">
-            <div class="hud-title">REGEDIT VIP // RED EDITION</div>
+            <div class="hud-title-container">
+                <div class="hud-title">REGEDIT VIP 3.0</div>
+                <div class="hud-subtitle">edition limited</div>
+            </div>
             <div class="hud-status">
                 <div class="status-dot"></div>
                 SYSTEM SYNC
@@ -512,7 +530,7 @@
             </button>
         </div>
 
-        <!-- ================= PANEL ANDROID (OPCIONES DESACTIVADAS POR DEFECTO Y GUARDADO) ================= -->
+        <!-- ================= PANEL ANDROID ================= -->
         <div class="os-panel active" id="panel-android">
             
             <!-- Option 1: 120 FPS -->
@@ -557,17 +575,17 @@
                 </div>
             </div>
 
-            <!-- Option 4: Acelerador DPI Táctil -->
+            <!-- Option 4: Sensibilidad -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">ACELERADOR DPI TÁCTIL</div>
-                        <div class="card-subtext">RESPUESTA DE PANTALLA ULTRA 360°</div>
+                        <div class="card-label">SENSIBILIDAD</div>
+                        <div class="card-subtext">RESPUESTA Y PRECISIÓN TÁCTIL 360°</div>
                     </div>
-                    <div class="stat-badge" id="val-dpi">800 DPI</div>
+                    <div class="stat-badge" id="val-sens">100%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" id="and-dpi-slider" min="360" max="1200" step="20" value="800" oninput="updateSlider('val-dpi', this.value, ' DPI', 'and-dpi-slider')">
+                    <input type="range" class="hud-slider" id="and-sens-slider" min="1" max="200" value="100" oninput="updateSlider('val-sens', this.value, '%', 'and-sens-slider')">
                 </div>
             </div>
 
@@ -780,7 +798,7 @@
             // Cargar Sliders
             const sliders = [
                 { id: 'and-head-slider', badge: 'val-head-and', unit: '%' },
-                { id: 'and-dpi-slider', badge: 'val-dpi', unit: ' DPI' },
+                { id: 'and-sens-slider', badge: 'val-sens', unit: '%' },
                 { id: 'ios-head-slider', badge: 'val-head-ios', unit: '%' }
             ];
 
@@ -813,7 +831,7 @@
                 "> Asignando parámetros de FPS...",
                 "> Sincronizando Seguimiento a la Cabeza...",
                 "> Verificando estado de módulos de puntería...",
-                isAndroid ? "> Optimizando DPI Táctil y Memoria RAM..." : "> Calibrando estabilización Recoil Zero...",
+                isAndroid ? "> Optimizando Sensibilidad Táctil y Memoria RAM..." : "> Calibrando estabilización Recoil Zero...",
                 isAndroid ? "> Configurando servidor DNS de baja latencia..." : "> Touch Engine Assist vinculado.",
                 "> ¡INYECCIÓN COMPLETADA CON ÉXITO!"
             ];
@@ -840,7 +858,7 @@
             const logBox = document.getElementById('term-log');
             const title = document.getElementById('term-title');
 
-            title.innerText = "> LANZANDO JUEGO CON REGEDIT VIP...";
+            title.innerText = "> LANZANDO JUEGO CON REGEDIT VIP 3.0...";
             logBox.innerHTML = '';
             modal.classList.add('active');
 
