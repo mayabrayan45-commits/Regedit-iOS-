@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Regedit VIP iOS</title>
+    <title>Regedit VIP Android</title>
     <style>
         :root {
-            --bg-color: #0b0e14;
+            --bg-color: #0d1117;
             --card-bg: #161b22;
-            --accent-color: #00ff88;
+            --accent-color: #00e5ff; /* Tono neón para Android */
             --text-color: #ffffff;
             --text-dim: #8b949e;
             --border-color: #30363d;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -42,7 +42,7 @@
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
         }
 
         header p {
@@ -93,7 +93,7 @@
             display: block;
         }
 
-        /* Controles de Sensibilidad */
+        /* Controles y Deslizadores */
         .control-group {
             margin-bottom: 18px;
         }
@@ -171,7 +171,7 @@
             transform: translateX(20px);
         }
 
-        /* Botones Principales */
+        /* Botones */
         .btn-main {
             width: 100%;
             padding: 14px;
@@ -184,7 +184,7 @@
             font-size: 15px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
         }
 
         .btn-game {
@@ -212,43 +212,43 @@
     <div class="container">
         <header>
             <h1>Panel Regedit VIP</h1>
-            <p>Configuración Táctil para iOS</p>
+            <p>Optimizador Táctil para Android</p>
         </header>
 
-        <!-- Pestañas de Selección -->
+        <!-- Pestañas -->
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab('sensi')">Sensi</button>
             <button class="tab-btn" onclick="openTab('vip')">Ajustes VIP</button>
             <button class="tab-btn" onclick="openTab('info')">Info</button>
         </div>
 
-        <!-- Seccion 1: Sensibilidad -->
+        <!-- Sección 1: Sensibilidad General -->
         <div id="sensi" class="tab-content active">
             <div class="control-group">
-                <label>General <span><span id="v1">95</span>%</span></label>
-                <input type="range" min="0" max="100" value="95" oninput="document.getElementById('v1').innerText = this.value">
+                <label>General <span><span id="v1">96</span>%</span></label>
+                <input type="range" min="0" max="100" value="96" oninput="document.getElementById('v1').innerText = this.value">
             </div>
 
             <div class="control-group">
-                <label>Mira Roja <span><span id="v2">100</span>%</span></label>
-                <input type="range" min="0" max="100" value="100" oninput="document.getElementById('v2').innerText = this.value">
+                <label>Mira Roja <span><span id="v2">98</span>%</span></label>
+                <input type="range" min="0" max="100" value="98" oninput="document.getElementById('v2').innerText = this.value">
             </div>
 
             <div class="control-group">
-                <label>Mira 2X <span><span id="v3">88</span>%</span></label>
-                <input type="range" min="0" max="100" value="88" oninput="document.getElementById('v3').innerText = this.value">
+                <label>Mira 2X <span><span id="v3">90</span>%</span></label>
+                <input type="range" min="0" max="100" value="90" oninput="document.getElementById('v3').innerText = this.value">
             </div>
 
             <div class="control-group">
-                <label>Mira 4X <span><span id="v4">92</span>%</span></label>
-                <input type="range" min="0" max="100" value="92" oninput="document.getElementById('v4').innerText = this.value">
+                <label>Mira 4X <span><span id="v4">95</span>%</span></label>
+                <input type="range" min="0" max="100" value="95" oninput="document.getElementById('v4').innerText = this.value">
             </div>
         </div>
 
-        <!-- Seccion 2: Ajustes VIP -->
+        <!-- Sección 2: Ajustes VIP (FPS, Estabilizador y Seguimiento) -->
         <div id="vip" class="tab-content">
             <div class="switch-group">
-                <span>Desbloquear 120 FPS</span>
+                <span>Modo 120 FPS Max</span>
                 <label class="switch">
                     <input type="checkbox" checked>
                     <span class="slider"></span>
@@ -256,20 +256,17 @@
             </div>
 
             <div class="control-group" style="margin-top: 15px;">
-                <label>Estabilizador de Puntería <span><span id="stab-val">98</span>%</span></label>
-                <input type="range" min="0" max="100" value="98" oninput="document.getElementById('stab-val').innerText = this.value">
+                <label>Estabilizador de Mira <span><span id="stab-val">99</span>%</span></label>
+                <input type="range" min="0" max="100" value="99" oninput="document.getElementById('stab-val').innerText = this.value">
+            </div>
+
+            <div class="control-group">
+                <label>Seguimiento a la Cabeza <span><span id="head-val">58</span>%</span></label>
+                <input type="range" min="0" max="100" value="58" oninput="document.getElementById('head-val').innerText = this.value">
             </div>
 
             <div class="switch-group">
-                <span>Optimizar Respuesta Táctil</span>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="switch-group">
-                <span>Reducir Touch Delay</span>
+                <span>Reducir Delays táctiles</span>
                 <label class="switch">
                     <input type="checkbox" checked>
                     <span class="slider"></span>
@@ -277,14 +274,15 @@
             </div>
         </div>
 
-        <!-- Seccion 3: Información -->
+        <!-- Sección 3: Info -->
         <div id="info" class="tab-content">
             <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-                Panel optimizado con 120 FPS y Estabilizador al 98% para máxima fluidez en dispositivos iOS.
+                Configuración optimizada para respuesta de pantalla táctil en dispositivos Android.
             </p>
             <p style="font-size: 13px; color: var(--text-dim);">
                 <strong>Estado:</strong> <span style="color: var(--accent-color);">Activo (120 FPS)</span><br>
-                <strong>Versión:</strong> 3.0 VIP
+                <strong>Sistema:</strong> Android OS<br>
+                <strong>Versión:</strong> 3.2 VIP
             </p>
         </div>
 
@@ -305,21 +303,12 @@
         }
 
         function guardarConfig() {
-            alert("¡Configuración de 120 FPS y Estabilizador al 98% aplicados con éxito!");
+            alert("¡Ajustes aplicados correctamente!\n- 120 FPS Activo\n- Estabilizador: 99%\n- Seguimiento Cabeza: 58%");
         }
 
         function abrirFreeFire() {
-            // Intenta abrir la app de Free Fire directamente en iOS
             window.location.href = "freefire://";
-            setTimeout(() => {
-                // Mensaje por si no detecta la app instalada de forma local exacta
-                console.log("Intentando abrir Free Fire...");
-            }, 500);
         }
     </script>
 </body>
 </html>
-
-        
-
-    
