@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NEURAL-SYNC VIP // QUANTUM HUD</title>
+    <title>NEURAL-SYNC VIP // QUANTUM HUD RED</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* TEMA ANDROID: NEON CYBER CIAN */
-            --primary: #00f0ff;
-            --secondary: #7000ff;
-            --glow: rgba(0, 240, 255, 0.4);
-            --bg-grid: rgba(0, 240, 255, 0.05);
-            --card-bg: rgba(10, 20, 35, 0.65);
-            --border-glow: rgba(0, 240, 255, 0.3);
-            --text-accent: #00f0ff;
+            /* TEMA ANDROID: ROJO NEÓN COMBINADO */
+            --primary: #ff003c;
+            --secondary: #990022;
+            --glow: rgba(255, 0, 60, 0.45);
+            --bg-grid: rgba(255, 0, 60, 0.05);
+            --card-bg: rgba(30, 8, 14, 0.75);
+            --border-glow: rgba(255, 0, 60, 0.35);
+            --text-accent: #ff3366;
         }
 
         [data-os="ios"] {
             /* TEMA iPHONE: MAGENTA QUANTUM & VIOLETA */
-            --primary: #ff0055;
-            --secondary: #ffe600;
-            --glow: rgba(255, 0, 85, 0.4);
-            --bg-grid: rgba(255, 0, 85, 0.05);
-            --card-bg: rgba(25, 10, 25, 0.65);
-            --border-glow: rgba(255, 0, 85, 0.3);
-            --text-accent: #ff0055;
+            --primary: #e024ed;
+            --secondary: #6b21a8;
+            --glow: rgba(224, 36, 237, 0.45);
+            --bg-grid: rgba(224, 36, 237, 0.05);
+            --card-bg: rgba(25, 10, 25, 0.75);
+            --border-glow: rgba(224, 36, 237, 0.35);
+            --text-accent: #e024ed;
         }
 
         * {
@@ -41,7 +41,7 @@
         }
 
         body {
-            background: #030508;
+            background: #060204;
             color: #f1f5f9;
             min-height: 100vh;
             display: flex;
@@ -66,12 +66,12 @@
             z-index: 10;
             width: 100%;
             max-width: 440px;
-            background: rgba(8, 12, 20, 0.75);
+            background: rgba(12, 5, 8, 0.85);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-radius: 28px;
             padding: 24px 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,0,60,0.05);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             overflow: hidden;
         }
@@ -148,7 +148,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             padding: 6px;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -195,14 +195,14 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Tarjetas Neomórficas Holográficas */
+        /* Tarjetas Holográficas */
         .hud-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
             border-radius: 16px;
             padding: 14px 16px;
             margin-bottom: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
         }
@@ -238,7 +238,7 @@
         .card-subtext {
             font-family: 'Share Tech Mono', monospace;
             font-size: 9px;
-            color: #64748b;
+            color: #8899a6;
             margin-top: 2px;
         }
 
@@ -247,7 +247,7 @@
             font-family: 'Share Tech Mono', monospace;
             font-size: 12px;
             color: var(--text-accent);
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             padding: 4px 10px;
             border-radius: 8px;
             border: 1px solid var(--border-glow);
@@ -325,7 +325,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
             border-radius: 16px;
-            color: #000;
+            color: #fff;
             font-weight: 900;
             font-size: 12px;
             letter-spacing: 2px;
@@ -345,7 +345,7 @@
             transform: translateY(1px);
         }
 
-        /* ================= BOTÓN ABRIR JUEGO (MIRA TÁCTICA) ================= */
+        /* Botón Abrir Juego (Mira Táctica) */
         .launch-wrapper {
             margin-top: 20px;
             padding-top: 16px;
@@ -375,21 +375,21 @@
 
         .btn-launch-game:hover {
             background: var(--primary);
-            color: #000;
+            color: #fff;
             box-shadow: 0 0 35px var(--primary);
         }
 
         .btn-launch-game:hover .crosshair-ring {
-            border-color: #000;
+            border-color: #fff;
             border-style: solid;
         }
 
         .btn-launch-game:hover .crosshair-dot {
-            background: #000;
+            background: #fff;
         }
 
         .btn-launch-game:hover .crosshair-line {
-            background: #000;
+            background: #fff;
         }
 
         /* Icono Mira Holográfica Animada */
@@ -457,7 +457,7 @@
         .terminal-hud {
             width: 88%;
             max-width: 380px;
-            background: rgba(10, 15, 25, 0.9);
+            background: rgba(15, 5, 10, 0.95);
             border: 1px solid var(--primary);
             border-radius: 20px;
             padding: 20px;
@@ -476,7 +476,7 @@
         }
 
         .term-log {
-            height: 110px;
+            height: 120px;
             overflow-y: auto;
             font-size: 10px;
             color: #94a3b8;
@@ -495,7 +495,7 @@
     <div class="cyber-chassis">
         <!-- Header -->
         <div class="hud-header">
-            <div class="hud-title">REGEDIT VIP // 4.0</div>
+            <div class="hud-title">REGEDIT VIP // RED EDITION</div>
             <div class="hud-status">
                 <div class="status-dot"></div>
                 SYSTEM SYNC
@@ -512,7 +512,7 @@
             </button>
         </div>
 
-        <!-- ================= PANEL ANDROID ================= -->
+        <!-- ================= PANEL ANDROID (OPCIONES EXPANDIDAS Y ROJO) ================= -->
         <div class="os-panel active" id="panel-android">
             
             <!-- Option 1: 120 FPS -->
@@ -529,7 +529,7 @@
                 </div>
             </div>
 
-            <!-- Option 2: Seguimiento a la cabeza 57 % -->
+            <!-- Option 2: Seguimiento a la cabeza 57% -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
@@ -549,6 +549,48 @@
                     <div>
                         <div class="card-label">AIMBOT PRO</div>
                         <div class="card-subtext">AUTO TARGETING VECTOR</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" checked>
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- NUEVA OPTION 4 (Android): Acelerador DPI Táctil -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">ACELERADOR DPI TÁCTIL</div>
+                        <div class="card-subtext">RESPUESTA DE PANTALLA ULTRA 360°</div>
+                    </div>
+                    <div class="stat-badge" id="val-dpi">800 DPI</div>
+                </div>
+                <div class="hud-slider-container">
+                    <input type="range" class="hud-slider" min="360" max="1200" step="20" value="800" oninput="document.getElementById('val-dpi').innerText = this.value + ' DPI'">
+                </div>
+            </div>
+
+            <!-- NUEVA OPTION 5 (Android): Auto Limpiador de RAM -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">AUTO-RAM CLEANER</div>
+                        <div class="card-subtext">LIBERA PROCESOS PARA EVITAR TIRONES</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" checked>
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- NUEVA OPTION 6 (Android): Estabilizador de Ping -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">ESTABILIZADOR DE PING (ANTI-LAG)</div>
+                        <div class="card-subtext">DNS VIP DE BAJA LATENCIA</div>
                     </div>
                     <label class="quantum-switch">
                         <input type="checkbox" checked>
@@ -662,7 +704,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             const isIOS = document.body.getAttribute('data-os') === 'ios';
-            ctx.strokeStyle = isIOS ? 'rgba(255, 0, 85, 0.08)' : 'rgba(0, 240, 255, 0.08)';
+            ctx.strokeStyle = isIOS ? 'rgba(224, 36, 237, 0.08)' : 'rgba(255, 0, 60, 0.08)';
             ctx.lineWidth = 1;
 
             const gridSize = 40;
@@ -718,12 +760,15 @@
             logBox.innerHTML = '';
             modal.classList.add('active');
 
+            const isAndroid = systemName.includes('Android');
+
             const logs = [
                 "> Conectando con el Kernel del dispositivo...",
                 "> Asignando parámetros de FPS (120 Hz)...",
                 "> Sincronizando Seguimiento a la Cabeza al 57%...",
                 "> Módulo Aimbot activo y verificado.",
-                systemName.includes('iOS') ? "> Calibrando estabilización Recoil Zero..." : "> Optimización de buffer Vulkan lista.",
+                isAndroid ? "> Acelerador DPI Táctil y Buffer de RAM optimizados..." : "> Calibrando estabilización Recoil Zero...",
+                isAndroid ? "> DNS de Baja Latencia para Ping Estabilizado enlazado." : "> Touch Engine Assist vinculado.",
                 "> ¡INYECCIÓN COMPLETADA CON ÉXITO!"
             ];
 
@@ -740,7 +785,7 @@
                     clearInterval(interval);
                     setTimeout(() => modal.classList.remove('active'), 1200);
                 }
-            }, 450);
+            }, 400);
         }
 
         // Acción del Botón Abrir Juego
@@ -773,7 +818,6 @@
                     clearInterval(interval);
                     setTimeout(() => {
                         modal.classList.remove('active');
-                        // Intenta abrir la aplicación (ej: Free Fire) mediante Deeplink si está configurado
                         window.location.href = "freefire://"; 
                     }, 1000);
                 }
