@@ -3,329 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>REGEDIT VIP 3.0 - MULTI-ARCH ENGINE</title>
+    <title>REGEDIT VIP 3.0 - ULTRA REALISTIC TACTICAL HUD</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,700&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Tema Android: Hex-Cyan & Electric Blue */
-            --primary: #00f0ff;
-            --primary-rgb: 0, 240, 255;
-            --accent: #0077ff;
-            --bg-base: #030712;
-            --panel-bg: rgba(6, 11, 25, 0.9);
-            --border-glow: rgba(0, 240, 255, 0.4);
-            --text-main: #e2e8f0;
-            --text-muted: #475569;
-            --success: #00ff88;
-            --danger: #ff0055;
+            /* Tema Android: Electric Cobalt & Military Glass */
+            --primary: #00d9ff;
+            --primary-glow: rgba(0, 217, 255, 0.6);
+            --accent: #0055ff;
+            --bg-metallic: #090d16;
+            --panel-border: #1a2a40;
+            --led-color: #00ffaa;
+            --glass-reflect: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
+            --shadow-realistic: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 217, 255, 0.15);
         }
 
         [data-os="ios"] {
-            /* Tema iOS: Neon Violet & Bionic Pink */
-            --primary: #d946ef;
-            --primary-rgb: 217, 70, 239;
-            --accent: #8b5cf6;
-            --panel-bg: rgba(20, 10, 30, 0.9);
-            --border-glow: rgba(217, 70, 239, 0.4);
+            /* Tema iOS: Bionic Plasma & Dark Crystal */
+            --primary: #e024ed;
+            --primary-glow: rgba(224, 36, 237, 0.6);
+            --accent: #7e22ce;
+            --panel-border: #3b154c;
+            --led-color: #ff007f;
+            --shadow-realistic: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(224, 36, 237, 0.15);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Chakra Petch', sans-serif;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-base);
+            background-color: var(--bg-metallic);
+            /* Textura Carbon Fiber + Gradiente Radia Táctico */
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%),
-                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 2px);
-            color: var(--text-main);
+                radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.8) 0%, #030508 100%),
+                radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 100% 100%, 8px 8px;
+            color: #e2e8f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px 10px;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Contenedor Modelo Hexagonal Octagonal Cut */
-        .hud-wrapper {
+        /* Chasis Principal de Aleación Mil-Spec */
+        .tactical-frame {
             width: 100%;
             max-width: 440px;
-            background: var(--panel-bg);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            padding: 22px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 35px rgba(var(--primary-rgb), 0.25), inset 0 0 15px rgba(var(--primary-rgb), 0.1);
+            background: linear-gradient(180deg, #121824 0%, #0a0e17 100%);
+            border: 2px solid var(--panel-border);
+            border-radius: 24px;
+            padding: 24px 20px;
             position: relative;
-            clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
-            transition: all 0.4s ease;
+            box-shadow: var(--shadow-realistic), inset 0 1px 1px rgba(255,255,255,0.2);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Top Banner Accent Line */
-        .hud-wrapper::before {
+        /* Capa de Cristal Biselado Reflectante */
+        .tactical-frame::after {
             content: "";
             position: absolute;
-            top: 0;
-            left: 25%;
-            right: 25%;
-            height: 3px;
-            background: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
+            inset: 0;
+            background: var(--glass-reflect);
+            pointer-events: none;
+            border-radius: 22px;
         }
 
-        /* Header Engine */
-        .engine-header {
+        /* Remaches metálicos hiperrealistas */
+        .screw {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #64748b 0%, #1e293b 100%);
+            border-radius: 50%;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.2);
+        }
+        .screw.tl { top: 10px; left: 10px; }
+        .screw.tr { top: 10px; right: 10px; }
+        .screw.bl { bottom: 10px; left: 10px; }
+        .screw.br { bottom: 10px; right: 10px; }
+
+        /* Header de Consola */
+        .header-panel {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-glow);
-            padding-bottom: 12px;
+            padding-bottom: 14px;
             margin-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            position: relative;
         }
 
-        .title-block h1 {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 2px;
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             color: #fff;
-            text-shadow: 0 0 10px var(--primary);
+            text-transform: uppercase;
+            text-shadow: 0 0 12px var(--primary-glow);
         }
 
-        .title-block p {
+        .header-title p {
             font-size: 10px;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            color: #64748b;
             letter-spacing: 1px;
         }
 
-        /* Selector de OS Táctil */
-        .os-selector {
+        /* Selector OS con Aspecto Físico */
+        .os-switch-hardware {
             display: flex;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 3px;
-            border: 1px solid var(--border-glow);
-            border-radius: 8px;
+            background: #05080e;
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
             gap: 4px;
         }
 
-        .os-btn {
+        .os-tab {
             padding: 6px 12px;
             border: none;
             background: transparent;
-            color: var(--text-muted);
-            font-size: 10px;
+            color: #64748b;
+            font-size: 11px;
             font-weight: 700;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .os-btn.active {
-            background: var(--primary);
+        .os-tab.active {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
             color: #000;
-            box-shadow: 0 0 10px var(--primary);
+            font-weight: 800;
+            box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* Telemetría Hardware Adaptativa */
-        .telemetry-grid {
+        /* Sección Telemetría: Instrumentos 3D */
+        .telemetry-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 16px;
         }
 
-        .telemetry-card {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-left: 3px solid var(--primary);
-            padding: 10px;
-            border-radius: 6px;
+        .gauge-card {
+            background: #070a11;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+            position: relative;
         }
 
-        .telemetry-header {
+        .gauge-label {
+            font-size: 9px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #64748b;
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .telemetry-value {
-            font-size: 15px;
-            font-weight: 700;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--primary);
-            text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5);
-        }
-
-        .telemetry-sub {
-            font-size: 9px;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Gráfico de Frecuencia de Kernel */
-        .chart-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-glow);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-muted);
             margin-bottom: 6px;
         }
 
-        canvas#wave-canvas {
+        .gauge-value {
+            font-size: 17px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .gauge-bar-track {
+            height: 6px;
+            background: #121824;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .gauge-bar-fill {
+            height: 100%;
+            width: 40%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+            transition: width 0.5s ease;
+        }
+
+        /* Monitor Osciloscopio */
+        .monitor-box {
+            background: #04060a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 16px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+        }
+
+        .monitor-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        canvas#oscilloscope {
             width: 100%;
-            height: 40px;
+            height: 44px;
             display: block;
         }
 
-        /* Lista de Módulos */
-        .modules-grid {
+        /* Módulos de Control Militar */
+        .modules-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
-        .mod-card {
-            background: rgba(0, 0, 0, 0.4);
+        .module-item {
+            background: linear-gradient(90deg, #090e17 0%, #0d1320 100%);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #334155;
+            border-radius: 10px;
             padding: 12px 14px;
-            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
         }
 
-        .mod-card.active {
-            border-color: var(--primary);
-            background: rgba(var(--primary-rgb), 0.1);
-            box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.15);
+        .module-item.active {
+            border-left-color: var(--primary);
+            background: linear-gradient(90deg, rgba(var(--primary), 0.05) 0%, #0d1320 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .mod-title {
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .mod-status {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
-            color: var(--danger);
-        }
-
-        .mod-card.active .mod-status {
-            color: var(--success);
-        }
-
-        /* Switch Neón */
-        .tech-switch {
-            position: relative;
-            width: 44px;
-            height: 20px;
-        }
-
-        .tech-switch input { opacity: 0; width: 0; height: 0; }
-
-        .tech-slider {
-            position: absolute;
-            inset: 0;
-            background: #0f172a;
-            border: 1px solid var(--text-muted);
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .tech-slider:before {
-            content: "";
-            position: absolute;
-            height: 12px;
-            width: 12px;
-            left: 3px;
-            bottom: 3px;
-            background: var(--text-muted);
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        input:checked + .tech-slider {
-            border-color: var(--primary);
-            background: rgba(var(--primary-rgb), 0.2);
-        }
-
-        input:checked + .tech-slider:before {
-            transform: translateX(22px);
-            background: var(--primary);
-            box-shadow: 0 0 8px var(--primary);
-        }
-
-        /* Botones de Acción */
-        .actions-block {
+        .module-text {
             display: flex;
             flex-direction: column;
-            gap: 10px;
         }
 
-        .btn-tech {
+        .module-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .module-state {
+            font-size: 9px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .module-item.active .module-state {
+            color: var(--led-color);
+        }
+
+        /* Switch Táctico Industrial */
+        .toggle-tactical {
+            position: relative;
+            width: 46px;
+            height: 22px;
+        }
+
+        .toggle-tactical input { opacity: 0; width: 0; height: 0; }
+
+        .slider-tactical {
+            position: absolute;
+            inset: 0;
+            background: #05080e;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .slider-tactical::before {
+            content: "";
+            position: absolute;
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background: #475569;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:checked + .slider-tactical {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        input:checked + .slider-tactical::before {
+            transform: translateX(24px);
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Botones Realistas con Profundidad 3D */
+        .action-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-realist {
             width: 100%;
-            padding: 14px;
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-size: 12px;
-            font-weight: 900;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            color: #000;
+            font-size: 13px;
+            font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
+            box-shadow: 0 6px 20px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.15s ease;
+            position: relative;
         }
 
-        .btn-tech:active {
-            transform: scale(0.98);
-            background: var(--primary);
-            color: #000;
+        .btn-realist:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        .btn-launch {
-            border-color: #ff3300;
-            color: #ff3300;
-            box-shadow: 0 0 15px rgba(255, 51, 0, 0.2);
-        }
-
-        .btn-launch:active {
-            background: #ff3300;
+        .btn-fire {
+            background: linear-gradient(180deg, #ff3300 0%, #990000 100%);
             color: #fff;
+            box-shadow: 0 6px 20px rgba(255, 51, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.4);
         }
 
-        /* Terminal Overlay */
-        .terminal-overlay {
+        .btn-fire:active {
+            box-shadow: 0 2px 10px rgba(255, 51, 0, 0.4);
+        }
+
+        /* Overlay Terminal Táctica */
+        .terminal-modal {
             position: fixed;
             inset: 0;
-            background: rgba(3, 7, 18, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(3, 5, 8, 0.92);
+            backdrop-filter: blur(12px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -336,35 +373,39 @@
             transition: opacity 0.3s ease;
         }
 
-        .terminal-overlay.active {
+        .terminal-modal.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .terminal-box {
+        .terminal-chassis {
             width: 100%;
             max-width: 380px;
-            background: #000;
-            border: 1px solid var(--primary);
-            padding: 16px;
-            font-family: 'Share Tech Mono', monospace;
-            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+            background: #05080e;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 0 40px var(--primary-glow);
         }
 
-        .terminal-title {
+        .terminal-header {
             color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-align: center;
         }
 
-        .progress-track {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-bottom: 12px;
+        .progress-bar-container {
+            height: 6px;
+            background: #0f172a;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .progress-fill {
+        .progress-bar-fill {
             height: 100%;
             width: 0%;
             background: var(--primary);
@@ -372,262 +413,282 @@
             transition: width 0.1s linear;
         }
 
-        .logs-stream {
+        .console-logs {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
-            color: var(--text-muted);
-            height: 90px;
+            height: 100px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
-        .log-line { color: #8a99ad; }
-        .log-line.ok { color: var(--success); }
+        .log-entry { color: #64748b; }
+        .log-entry.success { color: var(--led-color); }
     </style>
 </head>
 <body data-os="android">
 
-    <div class="hud-wrapper">
-        <!-- Header -->
-        <div class="engine-header">
-            <div class="title-block">
+    <div class="tactical-frame">
+        <!-- Remaches Métalicos -->
+        <div class="screw tl"></div>
+        <div class="screw tr"></div>
+        <div class="screw bl"></div>
+        <div class="screw br"></div>
+
+        <!-- Encabezado Consola -->
+        <div class="header-panel">
+            <div class="header-title">
                 <h1>REGEDIT VIP 3.0</h1>
-                <p id="sub-engine-title">ANDROID VULKAN CORE v3.0</p>
+                <p id="lbl-architecture">SYSTEM: VULKAN KERNEL 3.0</p>
             </div>
-            
-            <div class="os-selector">
-                <button class="os-btn active" id="btn-android" onclick="setOS('android')">ANDROID</button>
-                <button class="os-btn" id="btn-ios" onclick="setOS('ios')">iPHONE</button>
-            </div>
-        </div>
-
-        <!-- Telemetría Específica por OS -->
-        <div class="telemetry-grid">
-            <div class="telemetry-card">
-                <div class="telemetry-header">
-                    <span id="lbl-ram-title">MEMORIA SYSTEM</span>
-                    <span id="lbl-ram-pct">42%</span>
-                </div>
-                <div class="telemetry-value" id="val-ram">3.4 / 8 GB</div>
-                <div class="telemetry-sub" id="sub-ram">ZRAM SWAP: ACTIVE</div>
-            </div>
-
-            <div class="telemetry-card">
-                <div class="telemetry-header">
-                    <span id="lbl-temp-title">SOC THERMAL</span>
-                    <span id="lbl-temp-st" style="color:var(--success)">COOL</span>
-                </div>
-                <div class="telemetry-value" id="val-temp">34.2 °C</div>
-                <div class="telemetry-sub" id="sub-temp">GOVERNOR: PERFORMANCE</div>
+            <div class="os-switch-hardware">
+                <button class="os-tab active" id="tab-android" onclick="selectOS('android')">ANDROID</button>
+                <button class="os-tab" id="tab-ios" onclick="selectOS('ios')">iPHONE</button>
             </div>
         </div>
 
-        <!-- Gráfico Kernel / Telemetría Táctil -->
-        <div class="chart-box">
-            <div class="chart-header">
-                <span id="lbl-chart-title">DISPATCHER RATE</span>
-                <span id="lbl-hz" style="color:var(--primary);">240 Hz SYNC</span>
-            </div>
-            <canvas id="wave-canvas"></canvas>
-        </div>
-
-        <!-- Módulos Ajustados -->
-        <div class="modules-grid">
-            <div class="mod-card" id="card-1">
-                <div>
-                    <div class="mod-title">120 FPS Max Frame-Rate</div>
-                    <div class="mod-status" id="st-1">○ DESACTIVADO</div>
+        <!-- Métricas de Hardware Dinámicas -->
+        <div class="telemetry-row">
+            <div class="gauge-card">
+                <div class="gauge-label">
+                    <span id="txt-ram-title">RAM DEDICADA</span>
+                    <span id="txt-ram-pct">45%</span>
                 </div>
-                <label class="tech-switch">
-                    <input type="checkbox" id="chk-1" onchange="toggleCard('chk-1', 'card-1', 'st-1')">
-                    <span class="tech-slider"></span>
-                </label>
+                <div class="gauge-value" id="val-ram">3.6 / 8 GB</div>
+                <div class="gauge-bar-track">
+                    <div class="gauge-bar-fill" id="bar-ram" style="width: 45%;"></div>
+                </div>
             </div>
 
-            <div class="mod-card" id="card-2">
-                <div>
-                    <div class="mod-title">Estabilizador Recoil</div>
-                    <div class="mod-status" id="st-2">○ DESACTIVADO</div>
+            <div class="gauge-card">
+                <div class="gauge-label">
+                    <span id="txt-temp-title">SOC TEMP</span>
+                    <span id="txt-temp-status" style="color:var(--led-color)">ÓPTIMO</span>
                 </div>
-                <label class="tech-switch">
-                    <input type="checkbox" id="chk-2" onchange="toggleCard('chk-2', 'card-2', 'st-2')">
-                    <span class="tech-slider"></span>
-                </label>
-            </div>
-
-            <div class="mod-card" id="card-3">
-                <div>
-                    <div class="mod-title">Aimbot Assist</div>
-                    <div class="mod-status" id="st-3">○ DESACTIVADO</div>
+                <div class="gauge-value" id="val-temp">33.8 °C</div>
+                <div class="gauge-bar-track">
+                    <div class="gauge-bar-fill" id="bar-temp" style="width: 35%;"></div>
                 </div>
-                <label class="tech-switch">
-                    <input type="checkbox" id="chk-3" onchange="toggleCard('chk-3', 'card-3', 'st-3')">
-                    <span class="tech-slider"></span>
-                </label>
-            </div>
-
-            <div class="mod-card" id="card-4">
-                <div>
-                    <div class="mod-title">Seguimiento a la Cabeza (57%)</div>
-                    <div class="mod-status" id="st-4">○ DESACTIVADO</div>
-                </div>
-                <label class="tech-switch">
-                    <input type="checkbox" id="chk-4" onchange="toggleCard('chk-4', 'card-4', 'st-4')">
-                    <span class="tech-slider"></span>
-                </label>
             </div>
         </div>
 
-        <!-- Botones de Control -->
-        <div class="actions-block">
-            <button class="btn-tech" onclick="executeInjection()">INYECTAR REGEDIT VIP 3.0</button>
-            <button class="btn-tech btn-launch" onclick="launchGame()">EJECUTAR FREE FIRE</button>
+        <!-- Monitor Osciloscopio Dinámico -->
+        <div class="monitor-box">
+            <div class="monitor-header">
+                <span id="txt-bus-title">BUS TÁCTIL Y FRECUENCIA</span>
+                <span id="txt-hz" style="color:var(--primary)">240 Hz SYNC</span>
+            </div>
+            <canvas id="oscilloscope"></canvas>
+        </div>
+
+        <!-- Módulos de Ajuste -->
+        <div class="modules-list">
+            <div class="module-item" id="mod-1">
+                <div class="module-text">
+                    <span class="module-name">120 FPS Frame-Rate Lock</span>
+                    <span class="module-state" id="st-1">STANDBY</span>
+                </div>
+                <label class="toggle-tactical">
+                    <input type="checkbox" id="chk-1" onchange="toggleModule('chk-1', 'mod-1', 'st-1')">
+                    <span class="slider-tactical"></span>
+                </label>
+            </div>
+
+            <div class="module-item" id="mod-2">
+                <div class="module-text">
+                    <span class="module-name">Estabilizador de Recoil</span>
+                    <span class="module-state" id="st-2">STANDBY</span>
+                </div>
+                <label class="toggle-tactical">
+                    <input type="checkbox" id="chk-2" onchange="toggleModule('chk-2', 'mod-2', 'st-2')">
+                    <span class="slider-tactical"></span>
+                </label>
+            </div>
+
+            <div class="module-item" id="mod-3">
+                <div class="module-text">
+                    <span class="module-name">Aimbot Assist</span>
+                    <span class="module-state" id="st-3">STANDBY</span>
+                </div>
+                <label class="toggle-tactical">
+                    <input type="checkbox" id="chk-3" onchange="toggleModule('chk-3', 'mod-3', 'st-3')">
+                    <span class="slider-tactical"></span>
+                </label>
+            </div>
+
+            <div class="module-item" id="mod-4">
+                <div class="module-text">
+                    <span class="module-name">Seguimiento a Cabeza (57%)</span>
+                    <span class="module-state" id="st-4">STANDBY</span>
+                </div>
+                <label class="toggle-tactical">
+                    <input type="checkbox" id="chk-4" onchange="toggleModule('chk-4', 'mod-4', 'st-4')">
+                    <span class="slider-tactical"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="action-container">
+            <button class="btn-realist" onclick="startInjection()">INYECTAR REGEDIT VIP 3.0</button>
+            <button class="btn-realist btn-fire" onclick="launchGame()">EJECUTAR FREE FIRE</button>
         </div>
     </div>
 
-    <!-- Terminal Overlay -->
-    <div class="terminal-overlay" id="terminal-modal">
-        <div class="terminal-box">
-            <div class="terminal-title" id="term-title">> INYECTANDO PARCHES...</div>
-            <div class="progress-track">
-                <div class="progress-fill" id="progress-bar"></div>
+    <!-- Terminal Overlay Táctico -->
+    <div class="terminal-modal" id="terminal-modal">
+        <div class="terminal-chassis">
+            <div class="terminal-header" id="term-header">> EJECUTANDO PARCHES DE NÚCLEO...</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progress-bar"></div>
             </div>
-            <div class="logs-stream" id="logs-stream"></div>
+            <div class="console-logs" id="console-logs"></div>
         </div>
     </div>
 
     <script>
         let currentOS = 'android';
 
-        // Cambio de Modo (Android vs iPhone) con Telemetría Diferenciada
-        function setOS(os) {
-            currentOS = os;
-            document.body.setAttribute('data-os', os);
+        // Validación estricta para restringir el acceso a iPhone
+        function selectOS(targetOS) {
+            if (targetOS === 'ios') {
+                // Validación mediante User Agent y firmas de hardware táctil de Apple
+                const isIPhone = /iPhone/i.test(navigator.userAgent) || 
+                                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-            document.getElementById('btn-android').classList.toggle('active', os === 'android');
-            document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
+                if (!isIPhone) {
+                    alert("⚠️ ACCESO DENEGADO: El módulo iOS Metal Engine requiere un dispositivo iPhone autenticado.");
+                    return; // Detiene la ejecución y no permite seleccionar iPhone
+                }
+            }
 
-            if (os === 'android') {
-                document.getElementById('sub-engine-title').innerText = "ANDROID VULKAN CORE v3.0";
-                document.getElementById('lbl-ram-title').innerText = "RAM (LPDDR5)";
-                document.getElementById('sub-ram').innerText = "ZRAM SWAP: ACTIVE";
-                document.getElementById('lbl-temp-title').innerText = "SOC THERMAL";
-                document.getElementById('sub-temp').innerText = "GOVERNOR: PERFORMANCE";
-                document.getElementById('lbl-hz').innerText = "240 Hz SYNC";
+            currentOS = targetOS;
+            document.body.setAttribute('data-os', targetOS);
+
+            document.getElementById('tab-android').classList.toggle('active', targetOS === 'android');
+            document.getElementById('tab-ios').classList.toggle('active', targetOS === 'ios');
+
+            if (targetOS === 'android') {
+                document.getElementById('lbl-architecture').innerText = "SYSTEM: VULKAN KERNEL 3.0";
+                document.getElementById('txt-ram-title').innerText = "RAM DEDICADA";
+                document.getElementById('txt-bus-title').innerText = "BUS TÁCTIL Y FRECUENCIA";
+                document.getElementById('txt-hz').innerText = "240 Hz SYNC";
             } else {
-                document.getElementById('sub-engine-title').innerText = "iOS METAL ENGINE v3.0";
-                document.getElementById('lbl-ram-title').innerText = "UNIFIED MEMORY";
-                document.getElementById('sub-ram').innerText = "NEURAL BUFFER: OPTIMIZED";
-                document.getElementById('lbl-temp-title').innerText = "BIONIC TEMP";
-                document.getElementById('sub-temp').innerText = "THERMAL THROTTLE: OFF";
-                document.getElementById('lbl-hz').innerText = "120 Hz PROMOTION";
+                document.getElementById('lbl-architecture').innerText = "SYSTEM: iOS METAL BIONIC v3.0";
+                document.getElementById('txt-ram-title').innerText = "UNIFIED MEMORY";
+                document.getElementById('txt-bus-title').innerText = "PROMOTION ENGINE";
+                document.getElementById('txt-hz').innerText = "120 Hz PROMOTION";
             }
         }
 
-        // Bucle de Telemetría Dinámica Específica
+        // Simulación de Telemetría Dinámica Específica
         setInterval(() => {
             if (currentOS === 'android') {
-                // Métricas Android (LPDDR5 RAM y Temperatura SoC)
-                const ram = (3.2 + Math.random() * 0.9).toFixed(1);
+                const ram = (3.4 + Math.random() * 0.8).toFixed(1);
                 const ramPct = Math.round((ram / 8) * 100);
-                const temp = (34.0 + Math.random() * 2.5).toFixed(1);
+                const temp = (33.0 + Math.random() * 2.2).toFixed(1);
 
                 document.getElementById('val-ram').innerText = `${ram} / 8 GB`;
-                document.getElementById('lbl-ram-pct').innerText = `${ramPct}%`;
+                document.getElementById('txt-ram-pct').innerText = `${ramPct}%`;
+                document.getElementById('bar-ram').style.width = `${ramPct}%`;
+
                 document.getElementById('val-temp').innerText = `${temp} °C`;
+                document.getElementById('bar-temp').style.width = `${Math.round((temp/50)*100)}%`;
             } else {
-                // Métricas iPhone (Unified Memory RAM y Sensor Biónico)
-                const ram = (2.1 + Math.random() * 0.4).toFixed(1);
+                const ram = (2.2 + Math.random() * 0.4).toFixed(1);
                 const ramPct = Math.round((ram / 6) * 100);
-                const temp = (31.5 + Math.random() * 1.8).toFixed(1);
+                const temp = (31.0 + Math.random() * 1.5).toFixed(1);
 
                 document.getElementById('val-ram').innerText = `${ram} / 6 GB`;
-                document.getElementById('lbl-ram-pct').innerText = `${ramPct}%`;
-                document.getElementById('val-temp').innerText = `${temp} °C`;
-            }
-        }, 1800);
+                document.getElementById('txt-ram-pct').innerText = `${ramPct}%`;
+                document.getElementById('bar-ram').style.width = `${ramPct}%`;
 
-        // Gráfico Animado de Kernel
-        const canvas = document.getElementById('wave-canvas');
+                document.getElementById('val-temp').innerText = `${temp} °C`;
+                document.getElementById('bar-temp').style.width = `${Math.round((temp/50)*100)}%`;
+            }
+        }, 1600);
+
+        // Osciloscopio en Tiempo Real
+        const canvas = document.getElementById('oscilloscope');
         const ctx = canvas.getContext('2d');
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
         let step = 0;
-        function drawWave() {
+        function drawOscilloscope() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--primary').trim();
 
-            const frequency = currentOS === 'android' ? 0.06 : 0.03;
-            const amplitude = currentOS === 'android' ? 12 : 8;
+            const freq = currentOS === 'android' ? 0.08 : 0.04;
+            const amp = currentOS === 'android' ? 14 : 9;
 
             for (let x = 0; x < canvas.width; x++) {
-                const y = Math.sin((x + step) * frequency) * amplitude + canvas.height / 2;
+                const y = Math.sin((x + step) * freq) * amp + canvas.height / 2;
                 if (x === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
             ctx.stroke();
             step += 2;
-            requestAnimationFrame(drawWave);
+            requestAnimationFrame(drawOscilloscope);
         }
-        drawWave();
+        drawOscilloscope();
 
-        function toggleCard(chkId, cardId, statusId) {
+        function toggleModule(chkId, modId, statusId) {
             const chk = document.getElementById(chkId);
-            const card = document.getElementById(cardId);
-            const status = document.getElementById(statusId);
+            const mod = document.getElementById(modId);
+            const st = document.getElementById(statusId);
 
             if (chk.checked) {
-                card.classList.add('active');
-                status.innerText = "● OPTIMIZADO";
+                mod.classList.add('active');
+                st.innerText = "ACTIVO / OPTIMIZADO";
             } else {
-                card.classList.remove('active');
-                status.innerText = "○ DESACTIVADO";
+                mod.classList.remove('active');
+                st.innerText = "STANDBY";
             }
         }
 
-        function executeInjection() {
+        function startInjection() {
             const modal = document.getElementById('terminal-modal');
             const bar = document.getElementById('progress-bar');
-            const logs = document.getElementById('logs-stream');
+            const logs = document.getElementById('console-logs');
 
             modal.classList.add('active');
             bar.style.width = '0%';
             logs.innerHTML = '';
 
             const isAndroid = currentOS === 'android';
-            const steps = [
-                `> Verificando entorno ${isAndroid ? 'Vulkan Driver' : 'Metal API'}...`,
-                `> Inyectando parche 120 FPS en kernel...`,
-                `> Estabilizando tablas de Recoil...`,
-                `> Calibrando Aimbot Assist & Head-Tracking (57%)...`,
-                `> ¡VIP 3.0 activado en ${isAndroid ? 'Android Core' : 'iOS Bionic'}!`
+            const sequence = [
+                `> Conectando con API ${isAndroid ? 'Vulkan' : 'Metal Bionic'}...`,
+                `> Inyectando subrutina de 120 FPS...`,
+                `> Ajustando estabilización de Recoil...`,
+                `> Sincronizando Aimbot Assist & Head-Tracking (57%)...`,
+                `> ¡Inyección completada exitosamente!`
             ];
 
             let progress = 0;
-            let index = 0;
+            let i = 0;
 
             const timer = setInterval(() => {
                 progress += 20;
                 bar.style.width = progress + '%';
 
-                if (steps[index]) {
-                    const p = document.createElement('div');
-                    p.className = index === steps.length - 1 ? 'log-line ok' : 'log-line';
-                    p.innerText = steps[index];
-                    logs.appendChild(p);
+                if (sequence[i]) {
+                    const line = document.createElement('div');
+                    line.className = i === sequence.length - 1 ? 'log-entry success' : 'log-entry';
+                    line.innerText = sequence[i];
+                    logs.appendChild(line);
                     logs.scrollTop = logs.scrollHeight;
-                    index++;
+                    i++;
                 }
 
                 if (progress >= 100) {
                     clearInterval(timer);
-                    setTimeout(() => modal.classList.remove('active'), 1000);
+                    setTimeout(() => modal.classList.remove('active'), 1200);
                 }
-            }, 400);
+            }, 450);
         }
 
         function launchGame() {
