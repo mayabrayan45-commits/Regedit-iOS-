@@ -3,301 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Panel Regedit Multi-OS</title>
+    <title>Optimizer Core</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --accent-color: #00e5ff; /* Color por defecto (Android) */
-            --text-color: #ffffff;
-            --text-dim: #8b949e;
-            --border-color: #30363d;
+            --bg: #0e1117;
+            --surface: #161b22;
+            --surface-hover: #1c212a;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.25);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border: rgba(255, 255, 255, 0.06);
+            --radius-lg: 20px;
+            --radius-md: 12px;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+        [data-os="ios"] {
+            --primary: #10b981;
+            --primary-glow: rgba(16, 185, 129, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        header h1 {
-            font-size: 22px;
-            color: var(--accent-color);
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: color 0.3s;
-        }
-
-        header p {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 5px;
-        }
-
-        /* Selector de Sistema Operativo */
-        .os-selector {
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
         }
 
-        .os-btn {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            color: var(--text-dim);
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
+        .app-shell {
+            width: 100%;
+            max-width: 410px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
-        .os-btn.active[data-os="android"] {
-            background: #00e5ff;
-            color: #000;
-            border-color: #00e5ff;
-            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
-        }
-
-        .os-btn.active[data-os="ios"] {
-            background: #00ff88;
-            color: #000;
-            border-color: #00ff88;
-            box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
-        }
-
-        /* Tarjeta de Contenido */
-        .card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        /* Filas de Interruptores (Switches) */
-        .switch-group {
+        /* Top Bar */
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
         }
 
-        .switch-group:last-child {
-            border-bottom: none;
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        .switch-label {
+        .os-segmented-control {
+            display: flex;
+            background: #090d12;
+            padding: 3px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .os-option {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .os-option.active {
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Performance Gauge */
+        .metrics-card {
+            background: #090d12;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .metric-info {
             display: flex;
             flex-direction: column;
+            gap: 4px;
         }
 
-        .switch-title {
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .live-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        /* Control Group */
+        .controls-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface-hover);
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            transition: transform 0.1s ease;
+        }
+
+        .control-row:active {
+            transform: scale(0.99);
+        }
+
+        .control-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .control-title {
             font-size: 14px;
             font-weight: 600;
         }
 
-        .status-badge {
-            font-size: 11px;
-            font-weight: bold;
-            margin-top: 2px;
-            color: #ff4d4d; /* Inactivo por defecto */
-            transition: color 0.3s;
+        .control-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
         }
 
-        .status-badge.active {
-            color: var(--accent-color); /* Activo */
-        }
-
-        /* Toggle Switch UI */
-        .switch {
+        /* Smooth Switch */
+        .toggle-switch {
             position: relative;
+            width: 44px;
+            height: 24px;
             display: inline-block;
-            width: 50px;
-            height: 28px;
         }
 
-        .switch input {
+        .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
+        .toggle-slider {
             position: absolute;
             cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #30363d;
-            transition: .3s;
-            border-radius: 34px;
+            inset: 0;
+            background-color: #2d3748;
+            transition: .25s ease;
+            border-radius: 24px;
         }
 
-        .slider:before {
+        .toggle-slider:before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
+            height: 18px;
+            width: 18px;
             left: 3px;
             bottom: 3px;
             background-color: white;
-            transition: .3s;
+            transition: .25s ease;
             border-radius: 50%;
         }
 
-        input:checked + .slider {
-            background-color: var(--accent-color);
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
         }
 
-        input:checked + .slider:before {
-            transform: translateX(22px);
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
         }
 
-        /* Deslizador de Porcentaje */
-        .control-group {
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
+        /* Sensitivity Slider Control */
+        .slider-card {
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 24px;
         }
 
-        .control-group label {
+        .slider-header {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .control-group span.value {
-            color: var(--accent-color);
-            font-weight: bold;
+        .slider-value-badge {
+            color: var(--primary);
+            background: var(--primary-glow);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
         }
 
         input[type="range"] {
             width: 100%;
-            accent-color: var(--accent-color);
+            height: 6px;
+            border-radius: 3px;
+            background: #2d3748;
+            outline: none;
+            accent-color: var(--primary);
+            cursor: pointer;
         }
 
-        /* Botones Acción */
+        /* Primary Buttons */
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         .btn-main {
             width: 100%;
             padding: 14px;
-            margin-top: 18px;
+            border-radius: var(--radius-md);
             border: none;
-            background: var(--accent-color);
-            color: #000;
-            font-weight: bold;
-            border-radius: 10px;
-            font-size: 15px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
+            box-shadow: 0 4px 16px var(--primary-glow);
+            transition: all 0.2s ease;
         }
 
-        .btn-game {
+        .btn-main:active {
+            opacity: 0.9;
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
             width: 100%;
             padding: 14px;
-            margin-top: 10px;
-            border: none;
-            background: #ff5500;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 10px;
-            font-size: 15px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255, 85, 0, 0.3);
+            transition: background 0.2s ease;
         }
 
-        .btn-main:active, .btn-game:active {
-            transform: scale(0.98);
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+        }
+
+        /* Toast Popup */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: #ffffff;
+            color: #0e1117;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .toast-notification.active {
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
-<body>
+<body data-os="android">
 
-    <div class="container">
-        <header>
-            <h1 id="panel-title">REGEDIT VIP ANDROID</h1>
-            <p>Optimizador de Sensibilidad & Respuesta Táctil</p>
-        </header>
-
-        <!-- Selector de Sistema Operativo -->
-        <div class="os-selector">
-            <button class="os-btn active" data-os="android" onclick="selectOS('android')">🤖 Android</button>
-            <button class="os-btn" data-os="ios" onclick="selectOS('ios')">🍎 iOS</button>
-        </div>
-
-        <div class="card">
-            <!-- Option 1: 120 FPS -->
-            <div class="switch-group">
-                <div class="switch-label">
-                    <span class="switch-title">Modo 120 FPS Max</span>
-                    <span id="st-fps" class="status-badge">○ DESACTIVADO</span>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="chk-fps" onchange="toggleStatus('chk-fps', 'st-fps')">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Option 2: No Recoil -->
-            <div class="switch-group">
-                <div class="switch-label">
-                    <span class="switch-title">Sistema No Recoil</span>
-                    <span id="st-recoil" class="status-badge">○ DESACTIVADO</span>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="chk-recoil" onchange="toggleStatus('chk-recoil', 'st-recoil')">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Option 3: Seguimiento a la Cabeza -->
-            <div class="switch-group">
-                <div class="switch-label">
-                    <span class="switch-title">Seguimiento a la Cabeza (89%)</span>
-                    <span id="st-head" class="status-badge">○ DESACTIVADO</span>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="chk-head" onchange="toggleStatus('chk-head', 'st-head')">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Option 4: Touch Delay -->
-            <div class="switch-group">
-                <div class="switch-label">
-                    <span class="switch-title">Optimizar Respuesta Táctil</span>
-                    <span id="st-touch" class="status-badge">○ DESACTIVADO</span>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="chk-touch" onchange="toggleStatus('chk-touch', 'st-touch')">
-                    <span class="slider"></span>
-                </label>
+    <div class="app-shell">
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div class="brand-title">Control Core</div>
+            <div class="os-segmented-control">
+                <button class="os-option active" id="btn-android" onclick="selectOS('android')">Android</button>
+                <button class="os-option" id="btn-ios" onclick="selectOS('ios')">iOS</button>
             </div>
         </div>
 
-        <button class="btn-main" id="btn-apply" onclick="guardarConfig()">Aplicar Ajustes</button>
-        <button class="btn-game" onclick="abrirFreeFire()">🎮 Abrir Free Fire</button>
+        <!-- Dashboard Metrics Card -->
+        <div class="metrics-card">
+            <div class="metric-info">
+                <span class="metric-label">Estado del Sistema</span>
+                <span class="metric-value" id="system-status">Listo</span>
+            </div>
+            <div class="live-tag">
+                <div class="dot"></div>
+                <span>Óptimo</span>
+            </div>
+        </div>
+
+        <!-- Sensitivity Slider -->
+        <div class="slider-card">
+            <div class="slider-header">
+                <span>Multiplicador de Sensibilidad</span>
+                <span class="slider-value-badge" id="range-val">x1.4</span>
+            </div>
+            <input type="range" id="range-sens" min="1.0" max="2.0" step="0.1" value="1.4" oninput="updateRangeVal(this.value)">
+        </div>
+
+        <!-- Toggles Section -->
+        <div class="controls-list">
+            <div class="control-row">
+                <div class="control-details">
+                    <span class="control-title">Modo 120 FPS</span>
+                    <span class="control-sub">Fluidez máxima de pantalla</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-fps">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="control-row">
+                <div class="control-details">
+                    <span class="control-title">Estabilizador Recoil</span>
+                    <span class="control-sub">Optimización de mira centrada</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-recoil">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="control-row">
+                <div class="control-details">
+                    <span class="control-title">Asistente de Enfoque</span>
+                    <span class="control-sub">Suavizado de seguimiento a zona superior</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-head">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="control-row">
+                <div class="control-details">
+                    <span class="control-title">Reducción Touch Delay</span>
+                    <span class="control-sub">Respuesta inmediata al toque</span>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-touch">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-stack">
+            <button class="btn-main" onclick="applySettings()">Aplicar Cambios</button>
+            <button class="btn-secondary" onclick="openGame()">Iniciar Free Fire</button>
+        </div>
+    </div>
+
+    <!-- Minimalist Toast -->
+    <div class="toast-notification" id="toast">
+        Ajustes sincronizados correctamente
     </div>
 
     <script>
@@ -305,51 +425,43 @@
 
         function selectOS(os) {
             currentOS = os;
-            const buttons = document.querySelectorAll('.os-btn');
-            const title = document.getElementById('panel-title');
-            const root = document.documentElement;
+            document.body.setAttribute('data-os', os);
+            
+            document.getElementById('btn-android').classList.toggle('active', os === 'android');
+            document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
 
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            if (os === 'android') {
-                document.querySelector('[data-os="android"]').classList.add('active');
-                title.innerText = "REGEDIT VIP ANDROID";
-                root.style.setProperty('--accent-color', '#00e5ff');
-            } else {
-                document.querySelector('[data-os="ios"]').classList.add('active');
-                title.innerText = "REGEDIT VIP IOS";
-                root.style.setProperty('--accent-color', '#00ff88');
-            }
+            showToast(`Perfil cambiado a ${os === 'android' ? 'Android' : 'iOS'}`);
         }
 
-        function toggleStatus(chkId, statusId) {
-            const chk = document.getElementById(chkId);
-            const status = document.getElementById(statusId);
-
-            if (chk.checked) {
-                status.innerText = "● ACTIVADO";
-                status.classList.add('active');
-            } else {
-                status.innerText = "○ DESACTIVADO";
-                status.classList.remove('active');
-            }
+        function updateRangeVal(val) {
+            document.getElementById('range-val').innerText = `x${val}`;
         }
 
-        function guardarConfig() {
-            const fpsActive = document.getElementById('chk-fps').checked ? "Activado" : "Desactivado";
-            const recoilActive = document.getElementById('chk-recoil').checked ? "Activado" : "Desactivado";
-            const headActive = document.getElementById('chk-head').checked ? "Activado (89%)" : "Desactivado";
-            const touchActive = document.getElementById('chk-touch').checked ? "Activado" : "Desactivado";
+        function applySettings() {
+            const statusElement = document.getElementById('system-status');
+            statusElement.innerText = "Sincronizando...";
 
-            alert(`Configuración cargada en [${currentOS.toUpperCase()}]:\n\n` +
-                  `• 120 FPS: ${fpsActive}\n` +
-                  `• No Recoil: ${recoilActive}\n` +
-                  `• Seguimiento Cabeza: ${headActive}\n` +
-                  `• Respuesta Táctil: ${touchActive}`);
+            setTimeout(() => {
+                statusElement.innerText = "Activo";
+                showToast("Ajustes aplicados al sistema");
+            }, 600);
         }
 
-        function abrirFreeFire() {
-            window.location.href = "freefire://";
+        function openGame() {
+            showToast("Ejecutando Free Fire...");
+            setTimeout(() => {
+                window.location.href = "freefire://";
+            }, 600);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('active');
+
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 2500);
         }
     </script>
 </body>
