@@ -171,11 +171,11 @@
             transform: translateX(20px);
         }
 
-        /* Botón Guardar */
+        /* Botones Principales */
         .btn-main {
             width: 100%;
             padding: 14px;
-            margin-top: 20px;
+            margin-top: 15px;
             border: none;
             background: var(--accent-color);
             color: #000;
@@ -187,7 +187,22 @@
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
         }
 
-        .btn-main:active {
+        .btn-game {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            background: #ff5500;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 85, 0, 0.3);
+        }
+
+        .btn-main:active, .btn-game:active {
             transform: scale(0.98);
         }
     </style>
@@ -233,6 +248,19 @@
         <!-- Seccion 2: Ajustes VIP -->
         <div id="vip" class="tab-content">
             <div class="switch-group">
+                <span>Desbloquear 120 FPS</span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="control-group" style="margin-top: 15px;">
+                <label>Estabilizador de Puntería <span><span id="stab-val">98</span>%</span></label>
+                <input type="range" min="0" max="100" value="98" oninput="document.getElementById('stab-val').innerText = this.value">
+            </div>
+
+            <div class="switch-group">
                 <span>Optimizar Respuesta Táctil</span>
                 <label class="switch">
                     <input type="checkbox" checked>
@@ -247,36 +275,21 @@
                     <span class="slider"></span>
                 </label>
             </div>
-
-            <div class="switch-group">
-                <span>Estabilizador de Puntería</span>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="switch-group">
-                <span>Suavizar Levantamiento</span>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
         </div>
 
         <!-- Seccion 3: Información -->
         <div id="info" class="tab-content">
             <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-                Este panel actúa como una interfaz de calibración para mejorar la precisión y respuesta táctil en pantallas iOS.
+                Panel optimizado con 120 FPS y Estabilizador al 98% para máxima fluidez en dispositivos iOS.
             </p>
             <p style="font-size: 13px; color: var(--text-dim);">
-                <strong>Estado:</strong> <span style="color: var(--accent-color);">Activo</span><br>
-                <strong>Versión:</strong> 2.0 VIP
+                <strong>Estado:</strong> <span style="color: var(--accent-color);">Activo (120 FPS)</span><br>
+                <strong>Versión:</strong> 3.0 VIP
             </p>
         </div>
 
         <button class="btn-main" onclick="guardarConfig()">Aplicar Configuración</button>
+        <button class="btn-game" onclick="abrirFreeFire()">🎮 Abrir Free Fire</button>
     </div>
 
     <script>
@@ -292,9 +305,21 @@
         }
 
         function guardarConfig() {
-            alert("¡Configuración aplicada correctamente!");
+            alert("¡Configuración de 120 FPS y Estabilizador al 98% aplicados con éxito!");
+        }
+
+        function abrirFreeFire() {
+            // Intenta abrir la app de Free Fire directamente en iOS
+            window.location.href = "freefire://";
+            setTimeout(() => {
+                // Mensaje por si no detecta la app instalada de forma local exacta
+                console.log("Intentando abrir Free Fire...");
+            }, 500);
         }
     </script>
 </body>
 </html>
 
+        
+
+    
