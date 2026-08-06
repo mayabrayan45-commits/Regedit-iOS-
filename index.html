@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ULTRA REGEDIT KERNEL v9.0</title>
+    <title>REGEDIT VIP 3.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
     <style>
         :root {
             --bg-deep: #020408;
-            --panel-bg: rgba(8, 14, 26, 0.85);
+            --panel-bg: rgba(8, 14, 26, 0.88);
             --cyan-glow: #00f0ff;
             --cyan-dim: rgba(0, 240, 255, 0.15);
             --text-main: #ffffff;
@@ -19,6 +19,7 @@
             --border-tech: rgba(0, 240, 255, 0.25);
             --danger: #ff0055;
             --success: #00ff66;
+            --warning: #ffaa00;
         }
 
         [data-os="ios"] {
@@ -64,7 +65,6 @@
             position: relative;
         }
 
-        /* Tech Header Lines */
         .hud-wrapper::before {
             content: "";
             position: absolute;
@@ -87,7 +87,7 @@
         }
 
         .title-block h1 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -114,6 +114,53 @@
             cursor: pointer;
         }
 
+        /* Hardware Telemetry (RAM + TEMP) */
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .telemetry-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-tech);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .telemetry-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+        }
+
+        .telemetry-value {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan-glow);
+        }
+
+        .progress-track-sm {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill-sm {
+            height: 100%;
+            background: var(--cyan-glow);
+            width: 50%;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
         /* Live Waveform Canvas */
         .chart-box {
             background: rgba(0, 0, 0, 0.6);
@@ -136,71 +183,8 @@
 
         canvas#wave-canvas {
             width: 100%;
-            height: 50px;
+            height: 40px;
             display: block;
-        }
-
-        /* Interactive Radar Touch Zone */
-        .touch-radar-zone {
-            background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, rgba(0,0,0,0.8) 100%);
-            border: 1px solid var(--border-tech);
-            border-radius: 12px;
-            height: 90px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: crosshair;
-            overflow: hidden;
-        }
-
-        .touch-radar-zone::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.1) 50%, transparent 100%);
-            animation: scan 2s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        .radar-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--cyan-glow);
-            letter-spacing: 1px;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .radar-sub {
-            font-size: 9px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-muted);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .touch-point {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border: 2px solid var(--cyan-glow);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            animation: ping 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes ping {
-            0% { width: 4px; height: 4px; opacity: 1; }
-            100% { width: 30px; height: 30px; opacity: 0; }
         }
 
         /* Modules */
@@ -414,12 +398,37 @@
         <!-- Engine Header -->
         <div class="engine-header">
             <div class="title-block">
-                <h1>⚡ REGEDIT PRO</h1>
+                <h1>⚡ REGEDIT VIP 3.0</h1>
                 <p>KERNEL RESPONSE OPTIMIZER</p>
             </div>
             <button class="os-badge" id="os-toggle" onclick="toggleOS()">
                 OS: ANDROID
             </button>
+        </div>
+
+        <!-- Hardware Telemetry Bar (RAM + TEMP) -->
+        <div class="telemetry-grid">
+            <div class="telemetry-card">
+                <div class="telemetry-header">
+                    <span>USO DE RAM</span>
+                    <span id="ram-pct">42%</span>
+                </div>
+                <div class="telemetry-value" id="ram-val">3.4 / 8 GB</div>
+                <div class="progress-track-sm">
+                    <div class="progress-fill-sm" id="ram-fill" style="width: 42%;"></div>
+                </div>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="telemetry-header">
+                    <span>TEMPERATURA</span>
+                    <span id="temp-status">NORMAL</span>
+                </div>
+                <div class="telemetry-value" id="temp-val">34.2 °C</div>
+                <div class="progress-track-sm">
+                    <div class="progress-fill-sm" id="temp-fill" style="width: 38%; background: var(--success);"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Live Waveform Chart -->
@@ -431,17 +440,11 @@
             <canvas id="wave-canvas"></canvas>
         </div>
 
-        <!-- Radar Touch Tester Zone -->
-        <div class="touch-radar-zone" id="radar-zone" onmousedown="triggerRadar(event)" ontouchstart="triggerRadar(event)">
-            <span class="radar-label">ZONA DE PRUEBA TÁCTIL BIOMÉTRICA</span>
-            <span class="radar-sub">[ TOCA O ARRASTRA PARA CALIBRAR CERO DELAY ]</span>
-        </div>
-
         <!-- Control Modules -->
         <div class="modules-grid">
             <div class="mod-card" id="card-1">
                 <div class="mod-info">
-                    <span class="mod-title">Frame Sync 120 FPS</span>
+                    <span class="mod-title">120 FPS Max Frame-Rate</span>
                     <span class="mod-status" id="st-1">○ DESACTIVADO</span>
                 </div>
                 <label class="tech-switch">
@@ -452,7 +455,7 @@
 
             <div class="mod-card" id="card-2">
                 <div class="mod-info">
-                    <span class="mod-title">Estabilizador Recoil</span>
+                    <span class="mod-title">Estabilizador de Recoil</span>
                     <span class="mod-status" id="st-2">○ DESACTIVADO</span>
                 </div>
                 <label class="tech-switch">
@@ -463,7 +466,7 @@
 
             <div class="mod-card" id="card-3">
                 <div class="mod-info">
-                    <span class="mod-title">Seguimiento a la Cabeza (89%)</span>
+                    <span class="mod-title">Aimbot Assist (Búfer Dinámico)</span>
                     <span class="mod-status" id="st-3">○ DESACTIVADO</span>
                 </div>
                 <label class="tech-switch">
@@ -474,7 +477,7 @@
 
             <div class="mod-card" id="card-4">
                 <div class="mod-info">
-                    <span class="mod-title">Búfer Touch Ultra-Low Delay</span>
+                    <span class="mod-title">Seguimiento a la Cabeza (57%)</span>
                     <span class="mod-status" id="st-4">○ DESACTIVADO</span>
                 </div>
                 <label class="tech-switch">
@@ -486,7 +489,7 @@
 
         <!-- Action Buttons -->
         <div class="actions-block">
-            <button class="btn-tech" onclick="executeInjection()">INYECTAR PARCHES TÁCTILES</button>
+            <button class="btn-tech" onclick="executeInjection()">INYECTAR REGEDIT VIP 3.0</button>
             <button class="btn-tech btn-launch" onclick="launchGame()">EJECUTAR FREE FIRE</button>
         </div>
     </div>
@@ -494,7 +497,7 @@
     <!-- Injection Console Overlay -->
     <div class="terminal-overlay" id="terminal-modal">
         <div class="terminal-box">
-            <div class="terminal-title">> COMPILANDO E INYECTANDO...</div>
+            <div class="terminal-title">> COMPILANDO E INYECTANDO VIP 3.0...</div>
             <div class="progress-track">
                 <div class="progress-fill" id="progress-bar"></div>
             </div>
@@ -504,6 +507,33 @@
 
     <script>
         let currentOS = 'android';
+
+        // Telemetry Monitor (RAM & Temp)
+        setInterval(() => {
+            // RAM Simulation
+            const ramUsed = (3.1 + Math.random() * 0.8).toFixed(1);
+            const ramPct = Math.round((ramUsed / 8) * 100);
+            document.getElementById('ram-val').innerText = `${ramUsed} / 8 GB`;
+            document.getElementById('ram-pct').innerText = `${ramPct}%`;
+            document.getElementById('ram-fill').style.width = `${ramPct}%`;
+
+            // Temp Simulation
+            const temp = (33.5 + Math.random() * 3.0).toFixed(1);
+            document.getElementById('temp-val').innerText = `${temp} °C`;
+            const tempFill = document.getElementById('temp-fill');
+            const tempStatus = document.getElementById('temp-status');
+
+            if (temp > 36) {
+                tempFill.style.background = 'var(--warning)';
+                tempStatus.innerText = 'TIBIO';
+                tempStatus.style.color = 'var(--warning)';
+            } else {
+                tempFill.style.background = 'var(--success)';
+                tempStatus.innerText = 'NORMAL';
+                tempStatus.style.color = 'var(--success)';
+            }
+            tempFill.style.width = `${(temp / 50) * 100}%`;
+        }, 2000);
 
         // Animated Waveform Canvas
         const canvas = document.getElementById('wave-canvas');
@@ -519,7 +549,7 @@
             ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--cyan-glow').trim();
 
             for (let x = 0; x < canvas.width; x++) {
-                const y = Math.sin((x + step) * 0.05) * 12 + canvas.height / 2;
+                const y = Math.sin((x + step) * 0.05) * 10 + canvas.height / 2;
                 if (x === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
@@ -528,29 +558,6 @@
             requestAnimationFrame(drawWave);
         }
         drawWave();
-
-        // Interactive Radar Ping
-        function triggerRadar(e) {
-            const radar = document.getElementById('radar-zone');
-            const rect = radar.getBoundingClientRect();
-            
-            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
-            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-            if (!clientX) return;
-
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-
-            const point = document.createElement('div');
-            point.className = 'touch-point';
-            point.style.left = `${x}px`;
-            point.style.top = `${y}px`;
-
-            radar.appendChild(point);
-
-            setTimeout(() => point.remove(), 600);
-        }
 
         function toggleOS() {
             currentOS = currentOS === 'android' ? 'ios' : 'android';
@@ -583,17 +590,18 @@
             logs.innerHTML = '';
 
             const steps = [
-                "> Estableciendo túnel de prioridad táctil...",
-                "> Anulando latencia de eventos TouchEvent...",
-                "> Ajustando matriz de aceleración en memoria...",
-                "> ¡Inyección completada con éxito!"
+                "> Inicializando Kernel Regedit VIP 3.0...",
+                "> Fijando limite de refresco a 120 FPS...",
+                "> Calibrando curva de Aimbot & Recoil...",
+                "> Inyectando Head-Tracking fijado en 57%...",
+                "> ¡Regedit VIP 3.0 activado con éxito!"
             ];
 
             let progress = 0;
             let index = 0;
 
             const timer = setInterval(() => {
-                progress += 25;
+                progress += 20;
                 bar.style.width = progress + '%';
 
                 if (steps[index]) {
@@ -609,7 +617,7 @@
                     clearInterval(timer);
                     setTimeout(() => modal.classList.remove('active'), 1000);
                 }
-            }, 450);
+            }, 400);
         }
 
         function launchGame() {
