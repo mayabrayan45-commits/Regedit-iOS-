@@ -1,61 +1,55 @@
 import pyautogui
 import time
 import keyboard
-from colorama import init, Fore, Style
+from colorama import init, Fore, Style, Back
 
-init() # Para colores en consola
+init(autoreset=True)
 
-print(Fore.CYAN + """
-╔═══════════════════════╗
-║ FF PRO TOOLKIT v1.0 ║
-║ Solo para salas/educativo ║
-╚═══════════════╝
-""" + Style.RESET_ALL)
+def banner():
+    print(Fore.CYAN + Style.BRIGHT)
+    print("╔═══════════════════════════════════╗")
+    print("║ FF PRO TOOLKIT v2.0 PRO ║")
+    print("║ Solo uso educativo / Salas ║")
+    print("╚═══════════════════════════════════╝")
+    print(Style.RESET_ALL)
 
-print(Fore.YELLOW + "[F1] " + Fore.WHITE + "Control de Retroceso ON/OFF")
-print(Fore.YELLOW + "[F2] " + Fore.WHITE + "Macro Disparo Rápido ON/OFF")
-print(Fore.YELLOW + "[F3] " + Fore.WHITE + "Sensibilidad Pro ON/OFF")
-print(Fore.YELLOW + "[F9] " + Fore.WHITE + "Salir del programa" + Style.RESET_ALL)
+def menu():
+    print(Fore.YELLOW + "[F1]" + Fore.WHITE + " = Control de Retroceso [ON/OFF]")
+    print(Fore.YELLOW + "[F2]" + Fore.WHITE + " = Macro Disparo Rápido [ON/OFF]")
+    print(Fore.YELLOW + "[F3]" + Fore.WHITE + " = Sensibilidad Pro [ON/OFF]")
+    print(Fore.YELLOW + "[F9]" + Fore.WHITE + " = Salir del programa")
+    print(Fore.CYAN + "\n[*] Esperando comando..." + Style.RESET_ALL)
 
-recoil_active = False
-rapid_active = False
-sens_active = False
+recoil = False
+rapid = False
+sens = False
 
 def toggle_recoil():
-    global recoil_active
-    recoil_active = not recoil_active
-    status = "ACTIVADO" if recoil_active else "DESACTIVADO"
-    print(Fore.GREEN + f"[+] Control Retroceso: {status}" + Style.RESET_ALL)
+    global recoil
+    recoil = not recoil
+    print(Fore.GREEN + f"[+] Retroceso: {'ACTIVADO' if recoil else 'DESACTIVADO'}")
 
 def toggle_rapid():
-    global rapid_active
-    rapid_active = not rapid_active
-    status = "ACTIVADO" if rapid_active else "DESACTIVADO"
-    print(Fore.GREEN + f"[+] Disparo Rápido: {status}" + Style.RESET_ALL)
+    global rapid
+    rapid = not rapid
+    print(Fore.GREEN + f"[+] Disparo Rápido: {'ACTIVADO' if rapid else 'DESACTIVADO'}")
 
 def toggle_sens():
-    global sens_active
-    sens_active = not sens_active
-    status = "ACTIVADO" if sens_active else "DESACTIVADO"
-    print(Fore.GREEN + f"[+] Sensibilidad Pro: {status}" + Style.RESET_ALL)
+    global sens
+    sens = not sens
+    print(Fore.GREEN + f"[+] Sens Pro: {'ACTIVADO' if sens else 'DESACTIVADO'}")
+
+banner()
+menu()
 
 keyboard.add_hotkey('f1', toggle_recoil)
 keyboard.add_hotkey('f2', toggle_rapid)
 keyboard.add_hotkey('f3', toggle_sens)
 
-print(Fore.CYAN + "\nEsperando teclas..." + Style.RESET_ALL)
-
 while True:
-    if recoil_active and keyboard.is_pressed('left mouse'):
-        pyautogui.moveRel(0, 2) # Baja la mira
-        time.sleep(0.008)
-
-    if rapid_active and keyboard.is_pressed('left mouse'):
-        pyautogui.click()
-        time.sleep(0.03)
-
-    if keyboard.is_pressed('f9'):
-        print(Fore.RED + "Saliendo del programa..." + Style.RESET_ALL)
-        break
-
-    time.sleep(0.001)
+    try:
+        if recoil and keyboard.is_pressed('left mouse'):
+            pyautogui.moveRel(0, 2)
+            time.sleep(0.007)
+        
+        if rapid and keyboard.is_pressed('left mouse'):
