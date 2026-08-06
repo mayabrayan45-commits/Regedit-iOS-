@@ -121,7 +121,7 @@
             font-size: 11px;
             font-weight: bold;
             margin-top: 2px;
-            color: #ff4d4d; /* Inactivo */
+            color: #ff4d4d; /* Inactivo por defecto */
             transition: color 0.3s;
         }
 
@@ -251,10 +251,10 @@
             <div class="switch-group">
                 <div class="switch-label">
                     <span class="switch-title">Modo 120 FPS Max</span>
-                    <span id="st-fps" class="status-badge active">● ACTIVADO</span>
+                    <span id="st-fps" class="status-badge">○ DESACTIVADO</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="chk-fps" checked onchange="toggleStatus('chk-fps', 'st-fps')">
+                    <input type="checkbox" id="chk-fps" onchange="toggleStatus('chk-fps', 'st-fps')">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -263,31 +263,34 @@
             <div class="switch-group">
                 <div class="switch-label">
                     <span class="switch-title">Sistema No Recoil</span>
-                    <span id="st-recoil" class="status-badge active">● ACTIVADO</span>
+                    <span id="st-recoil" class="status-badge">○ DESACTIVADO</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="chk-recoil" checked onchange="toggleStatus('chk-recoil', 'st-recoil')">
+                    <input type="checkbox" id="chk-recoil" onchange="toggleStatus('chk-recoil', 'st-recoil')">
                     <span class="slider"></span>
                 </label>
             </div>
 
             <!-- Option 3: Seguimiento a la Cabeza -->
-            <div class="control-group">
-                <label>
-                    Seguimiento a la Cabeza 
-                    <span class="value"><span id="head-val">89</span>%</span>
+            <div class="switch-group">
+                <div class="switch-label">
+                    <span class="switch-title">Seguimiento a la Cabeza (89%)</span>
+                    <span id="st-head" class="status-badge">○ DESACTIVADO</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="chk-head" onchange="toggleStatus('chk-head', 'st-head')">
+                    <span class="slider"></span>
                 </label>
-                <input type="range" min="0" max="100" value="89" oninput="document.getElementById('head-val').innerText = this.value">
             </div>
 
             <!-- Option 4: Touch Delay -->
             <div class="switch-group">
                 <div class="switch-label">
                     <span class="switch-title">Optimizar Respuesta Táctil</span>
-                    <span id="st-touch" class="status-badge active">● ACTIVADO</span>
+                    <span id="st-touch" class="status-badge">○ DESACTIVADO</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="chk-touch" checked onchange="toggleStatus('chk-touch', 'st-touch')">
+                    <input type="checkbox" id="chk-touch" onchange="toggleStatus('chk-touch', 'st-touch')">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -333,14 +336,16 @@
         }
 
         function guardarConfig() {
-            const headVal = document.getElementById('head-val').innerText;
             const fpsActive = document.getElementById('chk-fps').checked ? "Activado" : "Desactivado";
             const recoilActive = document.getElementById('chk-recoil').checked ? "Activado" : "Desactivado";
+            const headActive = document.getElementById('chk-head').checked ? "Activado (89%)" : "Desactivado";
+            const touchActive = document.getElementById('chk-touch').checked ? "Activado" : "Desactivado";
 
             alert(`Configuración cargada en [${currentOS.toUpperCase()}]:\n\n` +
                   `• 120 FPS: ${fpsActive}\n` +
                   `• No Recoil: ${recoilActive}\n` +
-                  `• Seguimiento a la Cabeza: ${headVal}%`);
+                  `• Seguimiento Cabeza: ${headActive}\n` +
+                  `• Respuesta Táctil: ${touchActive}`);
         }
 
         function abrirFreeFire() {
