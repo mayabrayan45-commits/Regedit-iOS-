@@ -345,6 +345,95 @@
             transform: translateY(1px);
         }
 
+        /* ================= BOTÓN ABRIR JUEGO (MIRA TÁCTICA) ================= */
+        .launch-wrapper {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-launch-game {
+            width: 100%;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--primary);
+            border-radius: 18px;
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--glow), inset 0 0 15px var(--glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-launch-game:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 35px var(--primary);
+        }
+
+        .btn-launch-game:hover .crosshair-ring {
+            border-color: #000;
+            border-style: solid;
+        }
+
+        .btn-launch-game:hover .crosshair-dot {
+            background: #000;
+        }
+
+        .btn-launch-game:hover .crosshair-line {
+            background: #000;
+        }
+
+        /* Icono Mira Holográfica Animada */
+        .crosshair-icon {
+            width: 26px;
+            height: 26px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crosshair-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px dashed var(--primary);
+            border-radius: 50%;
+            animation: spinCrosshair 8s linear infinite;
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-line {
+            position: absolute;
+            background: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-line.v { width: 2px; height: 100%; top: 0; left: 50%; transform: translateX(-50%); }
+        .crosshair-line.h { height: 2px; width: 100%; left: 0; top: 50%; transform: translateY(-50%); }
+
+        @keyframes spinCrosshair {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* Modal Terminal Overlay Holográfico */
         .hud-modal {
             position: fixed;
@@ -533,6 +622,19 @@
             <button class="btn-trigger" onclick="triggerInjection('iOS Metal Engine')">EJECUTAR INYECCIÓN iPHONE</button>
         </div>
 
+        <!-- BOTÓN LLAMATIVO MIRA ABRIR JUEGO -->
+        <div class="launch-wrapper">
+            <button class="btn-launch-game" onclick="launchGame()">
+                <div class="crosshair-icon">
+                    <div class="crosshair-ring"></div>
+                    <div class="crosshair-line v"></div>
+                    <div class="crosshair-line h"></div>
+                    <div class="crosshair-dot"></div>
+                </div>
+                <span>ABRIR JUEGO</span>
+            </button>
+        </div>
+
     </div>
 
     <!-- Modal Terminal -->
@@ -606,7 +708,7 @@
             document.getElementById('panel-ios').classList.toggle('active', os === 'ios');
         }
 
-        // Ejecución simulada de inyección con log interactivo
+        // Ejecución simulada de inyección
         function triggerInjection(systemName) {
             const modal = document.getElementById('terminal-modal');
             const logBox = document.getElementById('term-log');
@@ -639,6 +741,43 @@
                     setTimeout(() => modal.classList.remove('active'), 1200);
                 }
             }, 450);
+        }
+
+        // Acción del Botón Abrir Juego
+        function launchGame() {
+            const modal = document.getElementById('terminal-modal');
+            const logBox = document.getElementById('term-log');
+            const title = document.getElementById('term-title');
+
+            title.innerText = "> LANZANDO JUEGO CON REGEDIT VIP...";
+            logBox.innerHTML = '';
+            modal.classList.add('active');
+
+            const steps = [
+                "> Aplicando parches de memoria RAM...",
+                "> Anclando proceso de baja latencia...",
+                "> Ejecutando disparador de overlay táctico...",
+                "> ¡INICIANDO JUEGO EN MODO VIP!"
+            ];
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < steps.length) {
+                    const item = document.createElement('div');
+                    if (index === steps.length - 1) item.className = 'log-success';
+                    item.innerText = steps[index];
+                    logBox.appendChild(item);
+                    logBox.scrollTop = logBox.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                        // Intenta abrir la aplicación (ej: Free Fire) mediante Deeplink si está configurado
+                        window.location.href = "freefire://"; 
+                    }, 1000);
+                }
+            }, 400);
         }
     </script>
 </body>
