@@ -1,62 +1,620 @@
-import pyautogui
-import time
-import keyboard
-from colorama import init, Fore, Style
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ULTRA REGEDIT KERNEL v9.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #020408;
+            --panel-bg: rgba(8, 14, 26, 0.85);
+            --cyan-glow: #00f0ff;
+            --cyan-dim: rgba(0, 240, 255, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #4a5a75;
+            --border-tech: rgba(0, 240, 255, 0.25);
+            --danger: #ff0055;
+            --success: #00ff66;
+        }
 
-init(autoreset=True)
+        [data-os="ios"] {
+            --cyan-glow: #00ff88;
+            --cyan-dim: rgba(0, 255, 136, 0.15);
+            --border-tech: rgba(0, 255, 136, 0.25);
+        }
 
-recoil = False
-rapid = False
-sens = False
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Chakra Petch', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-def banner():
-    print(Fore.CYAN + Style.BRIGHT)
-    print("╔═══════════╗")
-    print("║ FF PRO TOOLKIT v2.0 ║")
-    print("║ Solo uso educativo / Salas ║")
-    print("╚═══════════╝")
-    print(Style.RESET_ALL)
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(2, 4, 8, 0.9) 0%, rgba(2, 4, 8, 0.98) 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.02) 3px, rgba(0, 240, 255, 0.02) 3px);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 10px;
+            overflow-x: hidden;
+        }
 
-def menu():
-    print(Fore.YELLOW + "[F1]" + Fore.WHITE + " = Control de Retroceso [ON/OFF]")
-    print(Fore.YELLOW + "[F2]" + Fore.WHITE + " = Macro Disparo Rápido [ON/OFF]")
-    print(Fore.YELLOW + "[F3]" + Fore.WHITE + " = Sensibilidad Pro [ON/OFF]")
-    print(Fore.YELLOW + "[F9]" + Fore.WHITE + " = Salir del programa")
-    print(Fore.CYAN + "\n[*] Esperando comando..." + Style.RESET_ALL)
+        .hud-wrapper {
+            width: 100%;
+            max-width: 440px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-tech);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px var(--cyan-dim);
+            position: relative;
+        }
 
-def toggle_recoil():
-    global recoil
-    recoil = not recoil
-    print(Fore.GREEN + f"[+] Retroceso: {'ACTIVADO' if recoil else 'DESACTIVADO'}")
+        /* Tech Header Lines */
+        .hud-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: var(--cyan-glow);
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
 
-def toggle_rapid():
-    global rapid
-    rapid = not rapid
-    print(Fore.GREEN + f"[+] Disparo Rápido: {'ACTIVADO' if rapid else 'DESACTIVADO'}")
+        /* Header Engine */
+        .engine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--border-tech);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
 
-def toggle_sens():
-    global sens
-    sens = not sens
-    print(Fore.GREEN + f"[+] Sens Pro: {'ACTIVADO' if sens else 'DESACTIVADO'}")
+        .title-block h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--cyan-glow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-banner()
-menu()
+        .title-block p {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+        }
 
-keyboard.add_hotkey('f1', toggle_recoil)
-keyboard.add_hotkey('f2', toggle_rapid)
-keyboard.add_hotkey('f3', toggle_sens)
+        .os-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 4px 8px;
+            border: 1px solid var(--cyan-glow);
+            background: var(--cyan-dim);
+            color: var(--cyan-glow);
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-while True:
-    if recoil and keyboard.is_pressed('left mouse'):
-        pyautogui.moveRel(0, 2)
-        time.sleep(0.007)
+        /* Live Waveform Canvas */
+        .chart-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-tech);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    if rapid and keyboard.is_pressed('left mouse'):
-        pyautogui.click()
-        time.sleep(0.025)
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
 
-    if keyboard.is_pressed('f9'):
-        print(Fore.RED + "[!] Saliendo...")
-        break
+        canvas#wave-canvas {
+            width: 100%;
+            height: 50px;
+            display: block;
+        }
 
-    time.sleep(0.001)
+        /* Interactive Radar Touch Zone */
+        .touch-radar-zone {
+            background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, rgba(0,0,0,0.8) 100%);
+            border: 1px solid var(--border-tech);
+            border-radius: 12px;
+            height: 90px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: crosshair;
+            overflow: hidden;
+        }
+
+        .touch-radar-zone::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.1) 50%, transparent 100%);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .radar-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--cyan-glow);
+            letter-spacing: 1px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .radar-sub {
+            font-size: 9px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .touch-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--cyan-glow);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: ping 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes ping {
+            0% { width: 4px; height: 4px; opacity: 1; }
+            100% { width: 30px; height: 30px; opacity: 0; }
+        }
+
+        /* Modules */
+        .modules-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .mod-card {
+            background: rgba(4, 9, 18, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 14px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.25s ease;
+        }
+
+        .mod-card.active {
+            border-color: var(--cyan-glow);
+            background: var(--cyan-dim);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+
+        .mod-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .mod-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .mod-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--danger);
+        }
+
+        .mod-card.active .mod-status {
+            color: var(--success);
+        }
+
+        /* Custom Tech Switch */
+        .tech-switch {
+            position: relative;
+            width: 46px;
+            height: 22px;
+        }
+
+        .tech-switch input { opacity: 0; width: 0; height: 0; }
+
+        .tech-slider {
+            position: absolute;
+            inset: 0;
+            background: #0d1522;
+            border: 1px solid var(--text-muted);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tech-slider:before {
+            content: "";
+            position: absolute;
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--text-muted);
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+
+        input:checked + .tech-slider {
+            border-color: var(--cyan-glow);
+            background: rgba(0, 240, 255, 0.2);
+        }
+
+        input:checked + .tech-slider:before {
+            transform: translateX(22px);
+            background: var(--cyan-glow);
+            box-shadow: 0 0 8px var(--cyan-glow);
+        }
+
+        /* Action Buttons */
+        .actions-block {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-tech {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--cyan-glow);
+            color: var(--cyan-glow);
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-tech::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--cyan-glow);
+            opacity: 0.1;
+        }
+
+        .btn-tech:active {
+            transform: scale(0.98);
+        }
+
+        .btn-launch {
+            border-color: #ff3300;
+            color: #ff3300;
+        }
+
+        .btn-launch::before {
+            background: #ff3300;
+        }
+
+        /* Console Overlay */
+        .terminal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 4, 8, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .terminal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .terminal-box {
+            width: 100%;
+            max-width: 380px;
+            background: #000;
+            border: 1px solid var(--cyan-glow);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+        }
+
+        .terminal-title {
+            color: var(--cyan-glow);
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--cyan-glow);
+            box-shadow: 0 0 10px var(--cyan-glow);
+            transition: width 0.1s linear;
+        }
+
+        .logs-stream {
+            font-size: 10px;
+            color: var(--text-muted);
+            height: 90px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .log-line { color: #8a99ad; }
+        .log-line.ok { color: var(--success); }
+    </style>
+</head>
+<body data-os="android">
+
+    <div class="hud-wrapper">
+        <!-- Engine Header -->
+        <div class="engine-header">
+            <div class="title-block">
+                <h1>⚡ REGEDIT PRO</h1>
+                <p>KERNEL RESPONSE OPTIMIZER</p>
+            </div>
+            <button class="os-badge" id="os-toggle" onclick="toggleOS()">
+                OS: ANDROID
+            </button>
+        </div>
+
+        <!-- Live Waveform Chart -->
+        <div class="chart-box">
+            <div class="chart-header">
+                <span>TELEMETRÍA TÁCTIL (MS)</span>
+                <span id="hz-display" style="color:var(--cyan-glow);">240 Hz ACTIVE</span>
+            </div>
+            <canvas id="wave-canvas"></canvas>
+        </div>
+
+        <!-- Radar Touch Tester Zone -->
+        <div class="touch-radar-zone" id="radar-zone" onmousedown="triggerRadar(event)" ontouchstart="triggerRadar(event)">
+            <span class="radar-label">ZONA DE PRUEBA TÁCTIL BIOMÉTRICA</span>
+            <span class="radar-sub">[ TOCA O ARRASTRA PARA CALIBRAR CERO DELAY ]</span>
+        </div>
+
+        <!-- Control Modules -->
+        <div class="modules-grid">
+            <div class="mod-card" id="card-1">
+                <div class="mod-info">
+                    <span class="mod-title">Frame Sync 120 FPS</span>
+                    <span class="mod-status" id="st-1">○ DESACTIVADO</span>
+                </div>
+                <label class="tech-switch">
+                    <input type="checkbox" id="chk-1" onchange="toggleCard('chk-1', 'card-1', 'st-1')">
+                    <span class="tech-slider"></span>
+                </label>
+            </div>
+
+            <div class="mod-card" id="card-2">
+                <div class="mod-info">
+                    <span class="mod-title">Estabilizador Recoil</span>
+                    <span class="mod-status" id="st-2">○ DESACTIVADO</span>
+                </div>
+                <label class="tech-switch">
+                    <input type="checkbox" id="chk-2" onchange="toggleCard('chk-2', 'card-2', 'st-2')">
+                    <span class="tech-slider"></span>
+                </label>
+            </div>
+
+            <div class="mod-card" id="card-3">
+                <div class="mod-info">
+                    <span class="mod-title">Seguimiento a la Cabeza (89%)</span>
+                    <span class="mod-status" id="st-3">○ DESACTIVADO</span>
+                </div>
+                <label class="tech-switch">
+                    <input type="checkbox" id="chk-3" onchange="toggleCard('chk-3', 'card-3', 'st-3')">
+                    <span class="tech-slider"></span>
+                </label>
+            </div>
+
+            <div class="mod-card" id="card-4">
+                <div class="mod-info">
+                    <span class="mod-title">Búfer Touch Ultra-Low Delay</span>
+                    <span class="mod-status" id="st-4">○ DESACTIVADO</span>
+                </div>
+                <label class="tech-switch">
+                    <input type="checkbox" id="chk-4" onchange="toggleCard('chk-4', 'card-4', 'st-4')">
+                    <span class="tech-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-block">
+            <button class="btn-tech" onclick="executeInjection()">INYECTAR PARCHES TÁCTILES</button>
+            <button class="btn-tech btn-launch" onclick="launchGame()">EJECUTAR FREE FIRE</button>
+        </div>
+    </div>
+
+    <!-- Injection Console Overlay -->
+    <div class="terminal-overlay" id="terminal-modal">
+        <div class="terminal-box">
+            <div class="terminal-title">> COMPILANDO E INYECTANDO...</div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <div class="logs-stream" id="logs-stream"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentOS = 'android';
+
+        // Animated Waveform Canvas
+        const canvas = document.getElementById('wave-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        let step = 0;
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--cyan-glow').trim();
+
+            for (let x = 0; x < canvas.width; x++) {
+                const y = Math.sin((x + step) * 0.05) * 12 + canvas.height / 2;
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            step += 2;
+            requestAnimationFrame(drawWave);
+        }
+        drawWave();
+
+        // Interactive Radar Ping
+        function triggerRadar(e) {
+            const radar = document.getElementById('radar-zone');
+            const rect = radar.getBoundingClientRect();
+            
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (!clientX) return;
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            const point = document.createElement('div');
+            point.className = 'touch-point';
+            point.style.left = `${x}px`;
+            point.style.top = `${y}px`;
+
+            radar.appendChild(point);
+
+            setTimeout(() => point.remove(), 600);
+        }
+
+        function toggleOS() {
+            currentOS = currentOS === 'android' ? 'ios' : 'android';
+            document.body.setAttribute('data-os', currentOS);
+            document.getElementById('os-toggle').innerText = `OS: ${currentOS.toUpperCase()}`;
+            document.getElementById('hz-display').innerText = currentOS === 'android' ? '240 Hz ACTIVE' : '120 Hz METAL';
+        }
+
+        function toggleCard(chkId, cardId, statusId) {
+            const chk = document.getElementById(chkId);
+            const card = document.getElementById(cardId);
+            const status = document.getElementById(statusId);
+
+            if (chk.checked) {
+                card.classList.add('active');
+                status.innerText = "● OPTIMIZADO";
+            } else {
+                card.classList.remove('active');
+                status.innerText = "○ DESACTIVADO";
+            }
+        }
+
+        function executeInjection() {
+            const modal = document.getElementById('terminal-modal');
+            const bar = document.getElementById('progress-bar');
+            const logs = document.getElementById('logs-stream');
+
+            modal.classList.add('active');
+            bar.style.width = '0%';
+            logs.innerHTML = '';
+
+            const steps = [
+                "> Estableciendo túnel de prioridad táctil...",
+                "> Anulando latencia de eventos TouchEvent...",
+                "> Ajustando matriz de aceleración en memoria...",
+                "> ¡Inyección completada con éxito!"
+            ];
+
+            let progress = 0;
+            let index = 0;
+
+            const timer = setInterval(() => {
+                progress += 25;
+                bar.style.width = progress + '%';
+
+                if (steps[index]) {
+                    const p = document.createElement('div');
+                    p.className = index === steps.length - 1 ? 'log-line ok' : 'log-line';
+                    p.innerText = steps[index];
+                    logs.appendChild(p);
+                    logs.scrollTop = logs.scrollHeight;
+                    index++;
+                }
+
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    setTimeout(() => modal.classList.remove('active'), 1000);
+                }
+            }, 450);
+        }
+
+        function launchGame() {
+            window.location.href = "freefire://";
+        }
+    </script>
+</body>
+</html>
