@@ -3,465 +3,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Optimizer Core</title>
+    <title>VIP REGEDIT ENGINE - ENTERPRISE CORE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg: #0e1117;
-            --surface: #161b22;
-            --surface-hover: #1c212a;
-            --primary: #3b82f6;
-            --primary-glow: rgba(59, 130, 246, 0.25);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --border: rgba(255, 255, 255, 0.06);
-            --radius-lg: 20px;
-            --radius-md: 12px;
+            --bg-dark: #030712;
+            --surface-card: rgba(15, 23, 42, 0.75);
+            --border-glow: rgba(56, 189, 248, 0.2);
+            --accent: #38bdf8;
+            --accent-rgb: 56, 189, 248;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
+            --success: #4ade80;
         }
 
         [data-os="ios"] {
-            --primary: #10b981;
-            --primary-glow: rgba(16, 185, 129, 0.25);
+            --accent: #34d399;
+            --accent-rgb: 52, 211, 153;
+            --accent-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
+            --border-glow: rgba(52, 211, 153, 0.2);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 16px;
+            padding: 20px 12px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .app-shell {
+        /* Matrix Background Effect */
+        canvas#bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 410px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+        .dashboard-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 22px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(var(--accent-rgb), 0.1);
         }
 
-        .brand-title {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .os-segmented-control {
-            display: flex;
-            background: #090d12;
-            padding: 3px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-        }
-
-        .os-option {
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .os-option.active {
-            background: var(--surface);
-            color: var(--text-primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Performance Gauge */
-        .metrics-card {
-            background: #090d12;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Live Telemetry Panel */
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 16px;
             margin-bottom: 20px;
         }
 
-        .metric-info {
+        .telemetry-item {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .telemetry-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .telemetry-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 2px;
+        }
+
+        /* Selector OS */
+        .os-selector {
+            display: flex;
+            background: rgba(2, 6, 23, 0.8);
+            padding: 4px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
             gap: 4px;
         }
 
-        .metric-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .metric-value {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .live-tag {
-            display: inline-flex;
+        .os-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .os-btn.active {
+            background: var(--surface-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Preset Chips */
+        .section-title {
             font-size: 11px;
-            color: var(--primary);
-            font-weight: 600;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
         }
 
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--primary);
-            box-shadow: 0 0 8px var(--primary);
+        .presets-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
-        /* Control Group */
-        .controls-list {
+        .preset-chip {
+            flex: 1;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .preset-chip.active {
+            background: rgba(var(--accent-rgb), 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Control Cards */
+        .controls-stack {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .control-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--surface-hover);
+        .control-card {
+            background: rgba(2, 6, 23, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 14px 16px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            transition: transform 0.1s ease;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
         }
 
-        .control-row:active {
-            transform: scale(0.99);
+        .control-card.active {
+            border-color: var(--border-glow);
+            background: rgba(var(--accent-rgb), 0.05);
         }
 
-        .control-details {
+        .control-info {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
         .control-title {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        .control-sub {
-            font-size: 12px;
-            color: var(--text-secondary);
+        .control-desc {
+            font-size: 11px;
+            color: var(--text-muted);
         }
 
-        /* Smooth Switch */
-        .toggle-switch {
+        /* Advanced Toggle */
+        .switch {
             position: relative;
             width: 44px;
             height: 24px;
-            display: inline-block;
         }
 
-        .toggle-switch input {
+        .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .toggle-slider {
+        .slider {
             position: absolute;
             cursor: pointer;
             inset: 0;
-            background-color: #2d3748;
-            transition: .25s ease;
-            border-radius: 24px;
+            background-color: #1e293b;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .toggle-slider:before {
+        .slider:before {
             position: absolute;
             content: "";
-            height: 18px;
-            width: 18px;
+            height: 16px;
+            width: 16px;
             left: 3px;
             bottom: 3px;
-            background-color: white;
-            transition: .25s ease;
+            background-color: #94a3b8;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 50%;
         }
 
-        input:checked + .toggle-slider {
-            background-color: var(--primary);
-            box-shadow: 0 0 12px var(--primary-glow);
+        input:checked + .slider {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.4);
         }
 
-        input:checked + .toggle-slider:before {
+        input:checked + .slider:before {
             transform: translateX(20px);
+            background-color: #020617;
         }
 
-        /* Sensitivity Slider Control */
-        .slider-card {
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin-bottom: 24px;
+        /* Polling Rate Selector */
+        .polling-block {
+            background: rgba(2, 6, 23, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 20px;
         }
 
-        .slider-header {
+        .polling-header {
             display: flex;
             justify-content: space-between;
             font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        .slider-value-badge {
-            color: var(--primary);
-            background: var(--primary-glow);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 12px;
+        .polling-value {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
         }
 
-        input[type="range"] {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #2d3748;
-            outline: none;
-            accent-color: var(--primary);
+        .polling-options {
+            display: flex;
+            gap: 6px;
+        }
+
+        .rate-btn {
+            flex: 1;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* Primary Buttons */
-        .btn-stack {
+        .rate-btn.active {
+            background: var(--accent);
+            color: #020617;
+            font-weight: 800;
+        }
+
+        /* Action Buttons */
+        .btn-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .btn-main {
+        .btn {
             width: 100%;
             padding: 14px;
-            border-radius: var(--radius-md);
             border: none;
-            background: var(--primary);
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 700;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            box-shadow: 0 4px 16px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             transition: all 0.2s ease;
         }
 
-        .btn-main:active {
-            opacity: 0.9;
-            transform: translateY(1px);
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #020617;
+            box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3);
         }
 
-        .btn-secondary {
-            width: 100%;
-            padding: 14px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
-        .btn-secondary:hover {
-            background: var(--surface-hover);
+        .btn-game {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
         }
 
-        /* Toast Popup */
-        .toast-notification {
+        .btn-game:active {
+            transform: scale(0.98);
+        }
+
+        /* Advanced Log Terminal Overlay */
+        .terminal-modal {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-80px);
-            background: #ffffff;
-            color: #0e1117;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             z-index: 100;
+            opacity: 0;
             pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .toast-notification.active {
-            transform: translateX(-50%) translateY(0);
+        .terminal-modal.active {
+            opacity: 1;
+            pointer-events: auto;
         }
+
+        .terminal-window {
+            width: 100%;
+            max-width: 400px;
+            background: #020617;
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.2);
+        }
+
+        .terminal-header {
+            background: #0f172a;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            height: 160px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-entry { color: #94a3b8; }
+        .log-entry.success { color: var(--success); }
+        .log-entry.highlight { color: var(--accent); }
     </style>
 </head>
 <body data-os="android">
 
-    <div class="app-shell">
-        <!-- Top Navigation Bar -->
-        <div class="top-bar">
-            <div class="brand-title">Control Core</div>
-            <div class="os-segmented-control">
-                <button class="os-option active" id="btn-android" onclick="selectOS('android')">Android</button>
-                <button class="os-option" id="btn-ios" onclick="selectOS('ios')">iOS</button>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="dashboard-container">
+        
+        <!-- Live Telemetry Bar -->
+        <div class="telemetry-grid">
+            <div class="telemetry-item">
+                <span class="telemetry-label">RAM LIBRE</span>
+                <span class="telemetry-value" id="val-ram">3.4 GB</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="telemetry-label">RESPUESTA</span>
+                <span class="telemetry-value" id="val-delay">1.2 ms</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="telemetry-label">FPS TARGET</span>
+                <span class="telemetry-value">120 MAX</span>
             </div>
         </div>
 
-        <!-- Dashboard Metrics Card -->
-        <div class="metrics-card">
-            <div class="metric-info">
-                <span class="metric-label">Estado del Sistema</span>
-                <span class="metric-value" id="system-status">Listo</span>
-            </div>
-            <div class="live-tag">
-                <div class="dot"></div>
-                <span>Óptimo</span>
-            </div>
+        <!-- OS Selector -->
+        <div class="os-selector">
+            <button class="os-btn active" id="btn-android" onclick="selectOS('android')">
+                🤖 Android Core
+            </button>
+            <button class="os-btn" id="btn-ios" onclick="selectOS('ios')">
+                🍎 iOS Metal
+            </button>
         </div>
 
-        <!-- Sensitivity Slider -->
-        <div class="slider-card">
-            <div class="slider-header">
-                <span>Multiplicador de Sensibilidad</span>
-                <span class="slider-value-badge" id="range-val">x1.4</span>
-            </div>
-            <input type="range" id="range-sens" min="1.0" max="2.0" step="0.1" value="1.4" oninput="updateRangeVal(this.value)">
+        <!-- Presets -->
+        <div class="section-title">Perfil de Rendimiento</div>
+        <div class="presets-wrapper">
+            <div class="preset-chip active" onclick="applyPreset('balance', this)">Balanced</div>
+            <div class="preset-chip" onclick="applyPreset('pro', this)">Pro Aim</div>
+            <div class="preset-chip" onclick="applyPreset('extreme', this)">Extreme VIP</div>
         </div>
 
-        <!-- Toggles Section -->
-        <div class="controls-list">
-            <div class="control-row">
-                <div class="control-details">
-                    <span class="control-title">Modo 120 FPS</span>
-                    <span class="control-sub">Fluidez máxima de pantalla</span>
+        <!-- Toggles Stack -->
+        <div class="controls-stack">
+            <div class="control-card" id="card-fps">
+                <div class="control-info">
+                    <span class="control-title">Modo Frame-Rate (120 FPS)</span>
+                    <span class="control-desc">Sincronización vertical sin latencia</span>
                 </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-fps">
-                    <span class="toggle-slider"></span>
+                <label class="switch">
+                    <input type="checkbox" id="chk-fps" onchange="syncCard('chk-fps', 'card-fps')">
+                    <span class="slider"></span>
                 </label>
             </div>
 
-            <div class="control-row">
-                <div class="control-details">
-                    <span class="control-title">Estabilizador Recoil</span>
-                    <span class="control-sub">Optimización de mira centrada</span>
+            <div class="control-card" id="card-recoil">
+                <div class="control-info">
+                    <span class="control-title">Estabilizador de Dispersión</span>
+                    <span class="control-desc">Supresión de retroceso dinamizado</span>
                 </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-recoil">
-                    <span class="toggle-slider"></span>
+                <label class="switch">
+                    <input type="checkbox" id="chk-recoil" onchange="syncCard('chk-recoil', 'card-recoil')">
+                    <span class="slider"></span>
                 </label>
             </div>
 
-            <div class="control-row">
-                <div class="control-details">
-                    <span class="control-title">Asistente de Enfoque</span>
-                    <span class="control-sub">Suavizado de seguimiento a zona superior</span>
+            <div class="control-card" id="card-head">
+                <div class="control-info">
+                    <span class="control-title">Asistencia de Apuntado (Head-Track)</span>
+                    <span class="control-desc">Corrección curva de respuesta táctil (89%)</span>
                 </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-head">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="control-row">
-                <div class="control-details">
-                    <span class="control-title">Reducción Touch Delay</span>
-                    <span class="control-sub">Respuesta inmediata al toque</span>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-touch">
-                    <span class="toggle-slider"></span>
+                <label class="switch">
+                    <input type="checkbox" id="chk-head" onchange="syncCard('chk-head', 'card-head')">
+                    <span class="slider"></span>
                 </label>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="btn-stack">
-            <button class="btn-main" onclick="applySettings()">Aplicar Cambios</button>
-            <button class="btn-secondary" onclick="openGame()">Iniciar Free Fire</button>
+        <!-- Polling Rate -->
+        <div class="polling-block">
+            <div class="polling-header">
+                <span>Tasa de Muestreo Táctil</span>
+                <span class="polling-value" id="polling-val">480 Hz</span>
+            </div>
+            <div class="polling-options">
+                <button class="rate-btn" onclick="setPolling(240, this)">240Hz</button>
+                <button class="rate-btn active" onclick="setPolling(480, this)">480Hz</button>
+                <button class="rate-btn" onclick="setPolling(720, this)">720Hz</button>
+                <button class="rate-btn" onclick="setPolling(960, this)">960Hz</button>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="injectEngine()">INJECT CONFIGURATION</button>
+            <button class="btn btn-game" onclick="launchGame()">🎮 LAUNCH FREE FIRE</button>
         </div>
     </div>
 
-    <!-- Minimalist Toast -->
-    <div class="toast-notification" id="toast">
-        Ajustes sincronizados correctamente
+    <!-- Log Terminal Modal -->
+    <div class="terminal-modal" id="terminal-modal">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <span>SYSTEM_SHELL_v5.0</span>
+                <span>STATUS: RUNNING</span>
+            </div>
+            <div class="terminal-body" id="terminal-body"></div>
+        </div>
     </div>
 
     <script>
         let currentOS = 'android';
 
+        // Background Matrix Effect
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01101001010101';
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(3, 7, 18, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = currentOS === 'android' ? '#38bdf8' : '#34d399';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // Telemetry Simulation
+        setInterval(() => {
+            const ram = (2.8 + Math.random() * 0.9).toFixed(1);
+            const delay = (0.8 + Math.random() * 0.5).toFixed(1);
+            document.getElementById('val-ram').innerText = `${ram} GB`;
+            document.getElementById('val-delay').innerText = `${delay} ms`;
+        }, 2000);
+
         function selectOS(os) {
             currentOS = os;
             document.body.setAttribute('data-os', os);
-            
             document.getElementById('btn-android').classList.toggle('active', os === 'android');
             document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
-
-            showToast(`Perfil cambiado a ${os === 'android' ? 'Android' : 'iOS'}`);
         }
 
-        function updateRangeVal(val) {
-            document.getElementById('range-val').innerText = `x${val}`;
+        function syncCard(chkId, cardId) {
+            const chk = document.getElementById(chkId);
+            const card = document.getElementById(cardId);
+            card.classList.toggle('active', chk.checked);
         }
 
-        function applySettings() {
-            const statusElement = document.getElementById('system-status');
-            statusElement.innerText = "Sincronizando...";
-
-            setTimeout(() => {
-                statusElement.innerText = "Activo";
-                showToast("Ajustes aplicados al sistema");
-            }, 600);
+        function setPolling(val, btn) {
+            document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('polling-val').innerText = `${val} Hz`;
         }
 
-        function openGame() {
-            showToast("Ejecutando Free Fire...");
-            setTimeout(() => {
-                window.location.href = "freefire://";
-            }, 600);
+        function applyPreset(preset, btn) {
+            document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+
+            const chkFps = document.getElementById('chk-fps');
+            const chkRecoil = document.getElementById('chk-recoil');
+            const chkHead = document.getElementById('chk-head');
+
+            if (preset === 'balance') {
+                chkFps.checked = true; chkRecoil.checked = false; chkHead.checked = false;
+            } else if (preset === 'pro') {
+                chkFps.checked = true; chkRecoil.checked = true; chkHead.checked = false;
+            } else if (preset === 'extreme') {
+                chkFps.checked = true; chkRecoil.checked = true; chkHead.checked = true;
+            }
+
+            syncCard('chk-fps', 'card-fps');
+            syncCard('chk-recoil', 'card-recoil');
+            syncCard('chk-head', 'card-head');
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerText = message;
-            toast.classList.add('active');
+        function injectEngine() {
+            const modal = document.getElementById('terminal-modal');
+            const body = document.getElementById('terminal-body');
+            modal.classList.add('active');
+            body.innerHTML = '';
 
-            setTimeout(() => {
-                toast.classList.remove('active');
-            }, 2500);
+            const logs = [
+                { text: `[INIT] Target Environment: ${currentOS.toUpperCase()}`, type: 'highlight' },
+                { text: '[KERNEL] Mounting memory overlay...', type: 'entry' },
+                { text: `[TOUCH] Adjusting Polling Rate to ${document.getElementById('polling-val').innerText}...`, type: 'entry' },
+                { text: '[REGISTRY] Applying zero-delay touch parameters...', type: 'entry' },
+                { text: '[SUCCESS] Core configuration successfully loaded!', type: 'success' }
+            ];
+
+            logs.forEach((log, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = `log-entry ${log.type}`;
+                    div.innerText = `> ${log.text}`;
+                    body.appendChild(div);
+                    body.scrollTop = body.scrollHeight;
+
+                    if (index === logs.length - 1) {
+                        setTimeout(() => modal.classList.remove('active'), 1200);
+                    }
+                }, index * 400);
+            });
+        }
+
+        function launchGame() {
+            window.location.href = "freefire://";
         }
     </script>
 </body>
