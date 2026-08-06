@@ -1,16 +1,20 @@
 import pyautogui
 import time
 import keyboard
-from colorama import init, Fore, Style, Back
+from colorama import init, Fore, Style
 
 init(autoreset=True)
 
+recoil = False
+rapid = False
+sens = False
+
 def banner():
     print(Fore.CYAN + Style.BRIGHT)
-    print("╔═══════════════════════════════════╗")
-    print("║ FF PRO TOOLKIT v2.0 PRO ║")
+    print("╔═══════════╗")
+    print("║ FF PRO TOOLKIT v2.0 ║")
     print("║ Solo uso educativo / Salas ║")
-    print("╚═══════════════════════════════════╝")
+    print("╚═══════════╝")
     print(Style.RESET_ALL)
 
 def menu():
@@ -19,10 +23,6 @@ def menu():
     print(Fore.YELLOW + "[F3]" + Fore.WHITE + " = Sensibilidad Pro [ON/OFF]")
     print(Fore.YELLOW + "[F9]" + Fore.WHITE + " = Salir del programa")
     print(Fore.CYAN + "\n[*] Esperando comando..." + Style.RESET_ALL)
-
-recoil = False
-rapid = False
-sens = False
 
 def toggle_recoil():
     global recoil
@@ -47,9 +47,16 @@ keyboard.add_hotkey('f2', toggle_rapid)
 keyboard.add_hotkey('f3', toggle_sens)
 
 while True:
-    try:
-        if recoil and keyboard.is_pressed('left mouse'):
-            pyautogui.moveRel(0, 2)
-            time.sleep(0.007)
-        
-        if rapid and keyboard.is_pressed('left mouse'):
+    if recoil and keyboard.is_pressed('left mouse'):
+        pyautogui.moveRel(0, 2)
+        time.sleep(0.007)
+
+    if rapid and keyboard.is_pressed('left mouse'):
+        pyautogui.click()
+        time.sleep(0.025)
+
+    if keyboard.is_pressed('f9'):
+        print(Fore.RED + "[!] Saliendo...")
+        break
+
+    time.sleep(0.001)
