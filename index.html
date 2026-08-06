@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>REGEDIT VIP 3.0 - ULTRA REALISTIC TACTICAL HUD</title>
+    <title>REGEDIT VIP 3.0 - DUAL OS ENGINE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,700&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Tema Android: Electric Cobalt & Military Glass */
+            /* TEMA ANDROID */
             --primary: #00d9ff;
-            --primary-glow: rgba(0, 217, 255, 0.6);
+            --primary-glow: rgba(0, 217, 255, 0.5);
             --accent: #0055ff;
-            --bg-metallic: #090d16;
-            --panel-border: #1a2a40;
-            --led-color: #00ffaa;
-            --glass-reflect: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
-            --shadow-realistic: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 217, 255, 0.15);
+            --bg-base: #060911;
+            --card-bg: linear-gradient(135deg, #0d1527 0%, #080d18 100%);
+            --border-color: #1a2a40;
+            --status-ok: #00ffaa;
         }
 
         [data-os="ios"] {
-            /* Tema iOS: Bionic Plasma & Dark Crystal */
+            /* TEMA iPHONE iOS */
             --primary: #e024ed;
-            --primary-glow: rgba(224, 36, 237, 0.6);
-            --accent: #7e22ce;
-            --panel-border: #3b154c;
-            --led-color: #ff007f;
-            --shadow-realistic: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(224, 36, 237, 0.15);
+            --primary-glow: rgba(224, 36, 237, 0.5);
+            --accent: #8b5cf6;
+            --bg-base: #0b0612;
+            --card-bg: linear-gradient(135deg, #1c0b2b 0%, #10051a 100%);
+            --border-color: #3b154c;
+            --status-ok: #ff007f;
         }
 
         * {
@@ -41,658 +41,380 @@
         }
 
         body {
-            background-color: var(--bg-metallic);
-            /* Textura Carbon Fiber + Gradiente Radia Táctico */
-            background-image: 
-                radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.8) 0%, #030508 100%),
-                radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
-            background-size: 100% 100%, 8px 8px;
-            color: #e2e8f0;
+            background-color: var(--bg-base);
+            background-image: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.03) 0%, transparent 80%);
+            color: #f1f5f9;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px 10px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.4s ease;
         }
 
-        /* Chasis Principal de Aleación Mil-Spec */
-        .tactical-frame {
+        .chassis {
             width: 100%;
             max-width: 440px;
-            background: linear-gradient(180deg, #121824 0%, #0a0e17 100%);
-            border: 2px solid var(--panel-border);
-            border-radius: 24px;
-            padding: 24px 20px;
-            position: relative;
-            box-shadow: var(--shadow-realistic), inset 0 1px 1px rgba(255,255,255,0.2);
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Capa de Cristal Biselado Reflectante */
-        .tactical-frame::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: var(--glass-reflect);
-            pointer-events: none;
-            border-radius: 22px;
-        }
-
-        /* Remaches metálicos hiperrealistas */
-        .screw {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #64748b 0%, #1e293b 100%);
-            border-radius: 50%;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.2);
-        }
-        .screw.tl { top: 10px; left: 10px; }
-        .screw.tr { top: 10px; right: 10px; }
-        .screw.bl { bottom: 10px; left: 10px; }
-        .screw.br { bottom: 10px; right: 10px; }
-
-        /* Header de Consola */
-        .header-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 14px;
-            margin-bottom: 16px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-
-        .header-title h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 0 0 12px var(--primary-glow);
-        }
-
-        .header-title p {
-            font-size: 10px;
-            font-family: 'JetBrains Mono', monospace;
-            color: #64748b;
-            letter-spacing: 1px;
-        }
-
-        /* Selector OS con Aspecto Físico */
-        .os-switch-hardware {
-            display: flex;
             background: #05080e;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        /* Selector de Sistema Operativo */
+        .os-switch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #000;
             padding: 4px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-            gap: 4px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
         }
 
-        .os-tab {
-            padding: 6px 12px;
+        .os-btn {
+            padding: 10px;
             border: none;
             background: transparent;
             color: #64748b;
-            font-size: 11px;
             font-weight: 700;
+            font-size: 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .os-tab.active {
-            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
-            color: #000;
-            font-weight: 800;
-            box-shadow: 0 2px 10px var(--primary-glow);
-        }
-
-        /* Sección Telemetría: Instrumentos 3D */
-        .telemetry-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .gauge-card {
-            background: #070a11;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
-            position: relative;
-        }
-
-        .gauge-label {
-            font-size: 9px;
-            font-family: 'JetBrains Mono', monospace;
-            color: #64748b;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .gauge-value {
-            font-size: 17px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .gauge-bar-track {
-            height: 6px;
-            background: #121824;
-            border-radius: 3px;
-            margin-top: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .gauge-bar-fill {
-            height: 100%;
-            width: 40%;
+        .os-btn.active {
             background: var(--primary);
-            box-shadow: 0 0 8px var(--primary);
-            transition: width 0.5s ease;
+            color: #000;
+            box-shadow: 0 0 12px var(--primary-glow);
         }
 
-        /* Monitor Osciloscopio */
-        .monitor-box {
-            background: #04060a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 12px;
+        /* Paneles de Contenido Diferenciados */
+        .os-panel {
+            display: none;
+        }
+
+        .os-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Encabezado */
+        .panel-header {
             margin-bottom: 16px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 10px;
         }
 
-        .monitor-header {
-            display: flex;
-            justify-content: space-between;
+        .panel-header h2 {
+            font-size: 18px;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .panel-header p {
             font-size: 10px;
             font-family: 'JetBrains Mono', monospace;
             color: #64748b;
-            margin-bottom: 8px;
         }
 
-        canvas#oscilloscope {
-            width: 100%;
-            height: 44px;
-            display: block;
-        }
-
-        /* Módulos de Control Militar */
-        .modules-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .module-item {
-            background: linear-gradient(90deg, #090e17 0%, #0d1320 100%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-left: 4px solid #334155;
-            border-radius: 10px;
+        /* Módulos Comunes */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
             padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Sliders / Controles Personalizados */
+        .range-slider {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .range-val {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+        }
+
+        /* Toggles */
+        .row-toggle {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
-        .module-item.active {
-            border-left-color: var(--primary);
-            background: linear-gradient(90deg, rgba(var(--primary), 0.05) 0%, #0d1320 100%);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        .row-toggle:last-child { border-bottom: none; }
+
+        .row-label {
+            font-size: 12px;
         }
 
-        .module-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .module-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .module-state {
-            font-size: 9px;
-            font-family: 'JetBrains Mono', monospace;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
-        .module-item.active .module-state {
-            color: var(--led-color);
-        }
-
-        /* Switch Táctico Industrial */
-        .toggle-tactical {
+        .switch-input {
+            width: 40px;
+            height: 20px;
+            appearance: none;
+            background: #1e293b;
+            border-radius: 10px;
             position: relative;
-            width: 46px;
-            height: 22px;
-        }
-
-        .toggle-tactical input { opacity: 0; width: 0; height: 0; }
-
-        .slider-tactical {
-            position: absolute;
-            inset: 0;
-            background: #05080e;
-            border: 1px solid #334155;
-            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+            transition: 0.3s;
         }
 
-        .slider-tactical::before {
+        .switch-input:checked {
+            background: var(--primary);
+        }
+
+        .switch-input::before {
             content: "";
             position: absolute;
-            height: 14px;
             width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background: #475569;
+            height: 14px;
             border-radius: 50%;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
         }
 
-        input:checked + .slider-tactical {
-            border-color: var(--primary);
-            background: rgba(0, 0, 0, 0.6);
+        .switch-input:checked::before {
+            transform: translateX(20px);
+            background: #000;
         }
 
-        input:checked + .slider-tactical::before {
-            transform: translateX(24px);
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        /* Botones Realistas con Profundidad 3D */
-        .action-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn-realist {
+        /* Botón Inyectar */
+        .btn-action {
             width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
             background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border: none;
+            border-radius: 10px;
             color: #000;
-            font-size: 13px;
             font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 6px 20px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.4);
-            transition: all 0.15s ease;
-            position: relative;
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn-realist:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 10px var(--primary-glow);
-        }
+        .btn-action:active { transform: scale(0.98); }
 
-        .btn-fire {
-            background: linear-gradient(180deg, #ff3300 0%, #990000 100%);
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(255, 51, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.4);
-        }
-
-        .btn-fire:active {
-            box-shadow: 0 2px 10px rgba(255, 51, 0, 0.4);
-        }
-
-        /* Overlay Terminal Táctica */
-        .terminal-modal {
+        /* Modal Terminal */
+        .terminal {
             position: fixed;
             inset: 0;
-            background: rgba(3, 5, 8, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(0,0,0,0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: 0.3s;
+            z-index: 99;
         }
 
-        .terminal-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .terminal.active { opacity: 1; pointer-events: auto; }
 
-        .terminal-chassis {
-            width: 100%;
-            max-width: 380px;
+        .terminal-box {
+            width: 90%;
+            max-width: 360px;
             background: #05080e;
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 0 40px var(--primary-glow);
-        }
-
-        .terminal-header {
-            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 16px;
+            border-radius: 12px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            margin-bottom: 12px;
-            text-align: center;
         }
 
-        .progress-bar-container {
-            height: 6px;
-            background: #0f172a;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 14px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-            transition: width 0.1s linear;
-        }
-
-        .console-logs {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            height: 100px;
+        .log-list {
+            height: 90px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            margin-top: 10px;
+            color: #64748b;
         }
 
-        .log-entry { color: #64748b; }
-        .log-entry.success { color: var(--led-color); }
+        .log-item.success { color: var(--status-ok); }
     </style>
 </head>
 <body data-os="android">
 
-    <div class="tactical-frame">
-        <!-- Remaches Métalicos -->
-        <div class="screw tl"></div>
-        <div class="screw tr"></div>
-        <div class="screw bl"></div>
-        <div class="screw br"></div>
-
-        <!-- Encabezado Consola -->
-        <div class="header-panel">
-            <div class="header-title">
-                <h1>REGEDIT VIP 3.0</h1>
-                <p id="lbl-architecture">SYSTEM: VULKAN KERNEL 3.0</p>
-            </div>
-            <div class="os-switch-hardware">
-                <button class="os-tab active" id="tab-android" onclick="selectOS('android')">ANDROID</button>
-                <button class="os-tab" id="tab-ios" onclick="selectOS('ios')">iPHONE</button>
-            </div>
+    <div class="chassis">
+        <!-- Selector de OS -->
+        <div class="os-switch">
+            <button class="os-btn active" id="btn-android" onclick="switchOS('android')">ANDROID CORE</button>
+            <button class="os-btn" id="btn-ios" onclick="switchOS('ios')">iPHONE BIONIC</button>
         </div>
 
-        <!-- Métricas de Hardware Dinámicas -->
-        <div class="telemetry-row">
-            <div class="gauge-card">
-                <div class="gauge-label">
-                    <span id="txt-ram-title">RAM DEDICADA</span>
-                    <span id="txt-ram-pct">45%</span>
+        <!-- ================= ESTRUCTURA MENÚ ANDROID ================= -->
+        <div class="os-panel active" id="panel-android">
+            <div class="panel-header">
+                <h2>ANDROID VULKAN TUNER</h2>
+                <p>KERNEL ARCHITECTURE: ARM64-V8A / MAGISK MODULE</p>
+            </div>
+
+            <!-- Modulo 1: Ajuste de DPI y Sensibilidad -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Ajuste DPI Pantalla</span>
+                    <span class="range-val" id="val-dpi">600 DPI</span>
                 </div>
-                <div class="gauge-value" id="val-ram">3.6 / 8 GB</div>
-                <div class="gauge-bar-track">
-                    <div class="gauge-bar-fill" id="bar-ram" style="width: 45%;"></div>
+                <input type="range" class="range-slider" min="360" max="960" step="10" value="600" oninput="document.getElementById('val-dpi').innerText = this.value + ' DPI'">
+            </div>
+
+            <!-- Modulo 2: Vulkan Buffer -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Buffer de Renderizado Vulkan</span>
+                    <span class="range-val" id="val-vulkan">4x Max</span>
+                </div>
+                <input type="range" class="range-slider" min="1" max="4" step="1" value="4" oninput="updateVulkan(this.value)">
+            </div>
+
+            <!-- Modulo 3: Exclusivos Android -->
+            <div class="card">
+                <div class="row-toggle">
+                    <span class="row-label">Bypass Anti-Cheat (Magisk Root)</span>
+                    <input type="checkbox" class="switch-input" checked>
+                </div>
+                <div class="row-toggle">
+                    <span class="row-label">Aimbot Táctil (Sensi Android)</span>
+                    <input type="checkbox" class="switch-input" checked>
+                </div>
+                <div class="row-toggle">
+                    <span class="row-label">Auto-Head Tracker (57%)</span>
+                    <input type="checkbox" class="switch-input">
                 </div>
             </div>
 
-            <div class="gauge-card">
-                <div class="gauge-label">
-                    <span id="txt-temp-title">SOC TEMP</span>
-                    <span id="txt-temp-status" style="color:var(--led-color)">ÓPTIMO</span>
-                </div>
-                <div class="gauge-value" id="val-temp">33.8 °C</div>
-                <div class="gauge-bar-track">
-                    <div class="gauge-bar-fill" id="bar-temp" style="width: 35%;"></div>
-                </div>
-            </div>
+            <button class="btn-action" onclick="runInjection('Android Vulkan Core')">INYECTAR PARCHE ANDROID</button>
         </div>
 
-        <!-- Monitor Osciloscopio Dinámico -->
-        <div class="monitor-box">
-            <div class="monitor-header">
-                <span id="txt-bus-title">BUS TÁCTIL Y FRECUENCIA</span>
-                <span id="txt-hz" style="color:var(--primary)">240 Hz SYNC</span>
+        <!-- ================= ESTRUCTURA MENÚ iPHONE / iOS ================= -->
+        <div class="os-panel" id="panel-ios">
+            <div class="panel-header">
+                <h2>iOS METAL BIONIC ENGINE</h2>
+                <p>KERNEL ARCHITECTURE: APPLE BIONIC .IPA ENGINE</p>
             </div>
-            <canvas id="oscilloscope"></canvas>
-        </div>
 
-        <!-- Módulos de Ajuste -->
-        <div class="modules-list">
-            <div class="module-item" id="mod-1">
-                <div class="module-text">
-                    <span class="module-name">120 FPS Frame-Rate Lock</span>
-                    <span class="module-state" id="st-1">STANDBY</span>
+            <!-- Modulo 1: Delay Táctil Haptic -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Respuesta Táctil Haptic</span>
+                    <span class="range-val" id="val-haptic">0.02 ms</span>
                 </div>
-                <label class="toggle-tactical">
-                    <input type="checkbox" id="chk-1" onchange="toggleModule('chk-1', 'mod-1', 'st-1')">
-                    <span class="slider-tactical"></span>
-                </label>
+                <input type="range" class="range-slider" min="1" max="10" step="1" value="2" oninput="document.getElementById('val-haptic').innerText = (this.value / 100) + ' ms'">
             </div>
 
-            <div class="module-item" id="mod-2">
-                <div class="module-text">
-                    <span class="module-name">Estabilizador de Recoil</span>
-                    <span class="module-state" id="st-2">STANDBY</span>
+            <!-- Modulo 2: Exclusivos iPhone -->
+            <div class="card">
+                <div class="row-toggle">
+                    <span class="row-label">Calibrador 3D Touch / Sensi</span>
+                    <input type="checkbox" class="switch-input" checked>
                 </div>
-                <label class="toggle-tactical">
-                    <input type="checkbox" id="chk-2" onchange="toggleModule('chk-2', 'mod-2', 'st-2')">
-                    <span class="slider-tactical"></span>
-                </label>
-            </div>
-
-            <div class="module-item" id="mod-3">
-                <div class="module-text">
-                    <span class="module-name">Aimbot Assist</span>
-                    <span class="module-state" id="st-3">STANDBY</span>
+                <div class="row-toggle">
+                    <span class="row-label">Parche Sensi .IPA Cabeza (57%)</span>
+                    <input type="checkbox" class="switch-input" checked>
                 </div>
-                <label class="toggle-tactical">
-                    <input type="checkbox" id="chk-3" onchange="toggleModule('chk-3', 'mod-3', 'st-3')">
-                    <span class="slider-tactical"></span>
-                </label>
-            </div>
-
-            <div class="module-item" id="mod-4">
-                <div class="module-text">
-                    <span class="module-name">Seguimiento a Cabeza (57%)</span>
-                    <span class="module-state" id="st-4">STANDBY</span>
+                <div class="row-toggle">
+                    <span class="row-label">Forzar ProMotion 120Hz Ultra</span>
+                    <input type="checkbox" class="switch-input" checked>
                 </div>
-                <label class="toggle-tactical">
-                    <input type="checkbox" id="chk-4" onchange="toggleModule('chk-4', 'mod-4', 'st-4')">
-                    <span class="slider-tactical"></span>
-                </label>
+                <div class="row-toggle">
+                    <span class="row-label">Anti-Thermal Throttling (Brillo/FPS)</span>
+                    <input type="checkbox" class="switch-input">
+                </div>
             </div>
-        </div>
 
-        <!-- Botones de Acción -->
-        <div class="action-container">
-            <button class="btn-realist" onclick="startInjection()">INYECTAR REGEDIT VIP 3.0</button>
-            <button class="btn-realist btn-fire" onclick="launchGame()">EJECUTAR FREE FIRE</button>
+            <button class="btn-action" onclick="runInjection('iOS Metal Bionic')">INYECTAR PARCHE iPHONE</button>
         </div>
     </div>
 
-    <!-- Terminal Overlay Táctico -->
-    <div class="terminal-modal" id="terminal-modal">
-        <div class="terminal-chassis">
-            <div class="terminal-header" id="term-header">> EJECUTANDO PARCHES DE NÚCLEO...</div>
-            <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="progress-bar"></div>
-            </div>
-            <div class="console-logs" id="console-logs"></div>
+    <!-- Terminal Overlay -->
+    <div class="terminal" id="terminal">
+        <div class="terminal-box">
+            <div style="color:var(--primary); font-weight:700;" id="term-title">> INICIANDO...</div>
+            <div class="log-list" id="log-list"></div>
         </div>
     </div>
 
     <script>
-        let currentOS = 'android';
-
-        // Validación estricta para restringir el acceso a iPhone
-        function selectOS(targetOS) {
-            if (targetOS === 'ios') {
-                // Validación mediante User Agent y firmas de hardware táctil de Apple
+        function switchOS(os) {
+            // Validación estricta para bloquear iOS si no es un iPhone
+            if (os === 'ios') {
                 const isIPhone = /iPhone/i.test(navigator.userAgent) || 
                                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
                 if (!isIPhone) {
-                    alert("⚠️ ACCESO DENEGADO: El módulo iOS Metal Engine requiere un dispositivo iPhone autenticado.");
-                    return; // Detiene la ejecución y no permite seleccionar iPhone
+                    alert("⚠️ ACCESO RESTRINGIDO: El apartado de iOS solo se puede abrir desde un dispositivo iPhone.");
+                    return; // Bloquea la apertura del menú de iOS
                 }
             }
 
-            currentOS = targetOS;
-            document.body.setAttribute('data-os', targetOS);
+            document.body.setAttribute('data-os', os);
 
-            document.getElementById('tab-android').classList.toggle('active', targetOS === 'android');
-            document.getElementById('tab-ios').classList.toggle('active', targetOS === 'ios');
+            document.getElementById('btn-android').classList.toggle('active', os === 'android');
+            document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
 
-            if (targetOS === 'android') {
-                document.getElementById('lbl-architecture').innerText = "SYSTEM: VULKAN KERNEL 3.0";
-                document.getElementById('txt-ram-title').innerText = "RAM DEDICADA";
-                document.getElementById('txt-bus-title').innerText = "BUS TÁCTIL Y FRECUENCIA";
-                document.getElementById('txt-hz').innerText = "240 Hz SYNC";
-            } else {
-                document.getElementById('lbl-architecture').innerText = "SYSTEM: iOS METAL BIONIC v3.0";
-                document.getElementById('txt-ram-title').innerText = "UNIFIED MEMORY";
-                document.getElementById('txt-bus-title').innerText = "PROMOTION ENGINE";
-                document.getElementById('txt-hz').innerText = "120 Hz PROMOTION";
-            }
+            document.getElementById('panel-android').classList.toggle('active', os === 'android');
+            document.getElementById('panel-ios').classList.toggle('active', os === 'ios');
         }
 
-        // Simulación de Telemetría Dinámica Específica
-        setInterval(() => {
-            if (currentOS === 'android') {
-                const ram = (3.4 + Math.random() * 0.8).toFixed(1);
-                const ramPct = Math.round((ram / 8) * 100);
-                const temp = (33.0 + Math.random() * 2.2).toFixed(1);
-
-                document.getElementById('val-ram').innerText = `${ram} / 8 GB`;
-                document.getElementById('txt-ram-pct').innerText = `${ramPct}%`;
-                document.getElementById('bar-ram').style.width = `${ramPct}%`;
-
-                document.getElementById('val-temp').innerText = `${temp} °C`;
-                document.getElementById('bar-temp').style.width = `${Math.round((temp/50)*100)}%`;
-            } else {
-                const ram = (2.2 + Math.random() * 0.4).toFixed(1);
-                const ramPct = Math.round((ram / 6) * 100);
-                const temp = (31.0 + Math.random() * 1.5).toFixed(1);
-
-                document.getElementById('val-ram').innerText = `${ram} / 6 GB`;
-                document.getElementById('txt-ram-pct').innerText = `${ramPct}%`;
-                document.getElementById('bar-ram').style.width = `${ramPct}%`;
-
-                document.getElementById('val-temp').innerText = `${temp} °C`;
-                document.getElementById('bar-temp').style.width = `${Math.round((temp/50)*100)}%`;
-            }
-        }, 1600);
-
-        // Osciloscopio en Tiempo Real
-        const canvas = document.getElementById('oscilloscope');
-        const ctx = canvas.getContext('2d');
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-
-        let step = 0;
-        function drawOscilloscope() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--primary').trim();
-
-            const freq = currentOS === 'android' ? 0.08 : 0.04;
-            const amp = currentOS === 'android' ? 14 : 9;
-
-            for (let x = 0; x < canvas.width; x++) {
-                const y = Math.sin((x + step) * freq) * amp + canvas.height / 2;
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            step += 2;
-            requestAnimationFrame(drawOscilloscope);
-        }
-        drawOscilloscope();
-
-        function toggleModule(chkId, modId, statusId) {
-            const chk = document.getElementById(chkId);
-            const mod = document.getElementById(modId);
-            const st = document.getElementById(statusId);
-
-            if (chk.checked) {
-                mod.classList.add('active');
-                st.innerText = "ACTIVO / OPTIMIZADO";
-            } else {
-                mod.classList.remove('active');
-                st.innerText = "STANDBY";
-            }
+        function updateVulkan(val) {
+            const labels = ["1x Normal", "2x Boost", "3x High", "4x Max"];
+            document.getElementById('val-vulkan').innerText = labels[val - 1];
         }
 
-        function startInjection() {
-            const modal = document.getElementById('terminal-modal');
-            const bar = document.getElementById('progress-bar');
-            const logs = document.getElementById('console-logs');
+        function runInjection(systemName) {
+            const term = document.getElementById('terminal');
+            const list = document.getElementById('log-list');
+            const title = document.getElementById('term-title');
 
-            modal.classList.add('active');
-            bar.style.width = '0%';
-            logs.innerHTML = '';
+            title.innerText = `> INYECTANDO EN ${systemName.toUpperCase()}...`;
+            list.innerHTML = '';
+            term.classList.add('active');
 
-            const isAndroid = currentOS === 'android';
-            const sequence = [
-                `> Conectando con API ${isAndroid ? 'Vulkan' : 'Metal Bionic'}...`,
-                `> Inyectando subrutina de 120 FPS...`,
-                `> Ajustando estabilización de Recoil...`,
-                `> Sincronizando Aimbot Assist & Head-Tracking (57%)...`,
-                `> ¡Inyección completada exitosamente!`
+            const steps = [
+                "> Verificando permisos del Kernel...",
+                "> Modificando parámetros de respuesta...",
+                "> Aplicando parche de sensibilidad...",
+                "> Optimización completada con éxito."
             ];
 
-            let progress = 0;
             let i = 0;
-
             const timer = setInterval(() => {
-                progress += 20;
-                bar.style.width = progress + '%';
-
-                if (sequence[i]) {
-                    const line = document.createElement('div');
-                    line.className = i === sequence.length - 1 ? 'log-entry success' : 'log-entry';
-                    line.innerText = sequence[i];
-                    logs.appendChild(line);
-                    logs.scrollTop = logs.scrollHeight;
+                if (steps[i]) {
+                    const item = document.createElement('div');
+                    item.className = i === steps.length - 1 ? 'log-item success' : 'log-item';
+                    item.innerText = steps[i];
+                    list.appendChild(item);
                     i++;
-                }
-
-                if (progress >= 100) {
+                } else {
                     clearInterval(timer);
-                    setTimeout(() => modal.classList.remove('active'), 1200);
+                    setTimeout(() => term.classList.remove('active'), 1000);
                 }
-            }, 450);
-        }
-
-        function launchGame() {
-            window.location.href = "freefire://";
+            }, 500);
         }
     </script>
 </body>
