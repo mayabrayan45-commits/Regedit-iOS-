@@ -2,200 +2,873 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REGEDIT VIP 3.0 - Edition Limited</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NEURAL-SYNC VIP // QUANTUM HUD RED</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --accent-red: #ff003c;
-            --accent-gold: #ffd700;
-            --text-color: #c5c6c7;
-            --bright-text: #ffffff;
+            /* TEMA ANDROID: ROJO NEÓN COMBINADO */
+            --primary: #ff003c;
+            --secondary: #990022;
+            --glow: rgba(255, 0, 60, 0.45);
+            --bg-grid: rgba(255, 0, 60, 0.05);
+            --card-bg: rgba(30, 8, 14, 0.75);
+            --border-glow: rgba(255, 0, 60, 0.35);
+            --text-accent: #ff3366;
+        }
+
+        [data-os="ios"] {
+            /* TEMA iPHONE: MAGENTA QUANTUM & VIOLETA */
+            --primary: #e024ed;
+            --secondary: #6b21a8;
+            --glow: rgba(224, 36, 237, 0.45);
+            --bg-grid: rgba(224, 36, 237, 0.05);
+            --card-bg: rgba(25, 10, 25, 0.75);
+            --border-glow: rgba(224, 36, 237, 0.35);
+            --text-accent: #e024ed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #060204;
+            color: #f1f5f9;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .panel-container {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            border-radius: 16px;
+        /* Canvas Holográfico de Fondo */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Contenedor Principal Cyber-Chassis */
+        .cyber-chassis {
+            position: relative;
+            z-index: 10;
             width: 100%;
-            max-width: 480px;
-            padding: 24px;
-            box-shadow: 0 0 25px rgba(255, 0, 60, 0.15);
+            max-width: 440px;
+            background: rgba(12, 5, 8, 0.85);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 28px;
+            padding: 24px 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,0,60,0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 16px;
+        /* Borde con luz reflectiva giratoria */
+        .cyber-chassis::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 30px;
+            padding: 2px;
+            background: conic-gradient(from var(--angle, 0deg), transparent 70%, var(--primary), var(--secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 6s linear infinite;
+            pointer-events: none;
         }
 
-        .header h1 {
-            color: var(--bright-text);
-            font-size: 1.8rem;
-            margin: 0;
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes rotateBorder {
+            to { --angle: 360deg; }
+        }
+
+        /* Header de la Interfaz */
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .hud-title {
+            font-size: 14px;
+            font-weight: 900;
             letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--glow);
         }
 
-        .header .subtitle {
-            color: var(--accent-gold);
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            text-transform: lowercase;
-            margin-top: 4px;
-            opacity: 0.9;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .metric-card {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .metric-label {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-        }
-
-        .metric-value {
-            font-size: 1.1rem;
-            color: var(--bright-text);
-            font-weight: bold;
-            margin-top: 4px;
-        }
-
-        .section-title {
-            color: var(--accent-red);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 14px;
+        .hud-status {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: #00ffaa;
             display: flex;
             align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ffaa;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ffaa;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+
+        /* Selector Futurista de OS */
+        .os-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 22px;
+        }
+
+        .os-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            padding: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
         }
 
-        .control-group {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .os-btn.active {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+            color: var(--primary);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px var(--glow);
+            text-shadow: 0 0 8px var(--glow);
         }
 
-        .slider-container {
+        /* Paneles de Configuración */
+        .os-panel {
+            display: none;
+        }
+
+        .os-panel.active {
+            display: block;
+            animation: hudSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes hudSlide {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Tarjetas Holográficas */
+        .hud-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 14px 16px;
             margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        .slider-header {
+        .hud-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .hud-card:hover::after {
+            left: 100%;
+        }
+
+        .card-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
+            align-items: center;
         }
 
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent-red);
+        .card-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: #e2e8f0;
         }
 
-        .btn-apply {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #ff003c, #990024);
-            border: none;
+        .card-subtext {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: #8899a6;
+            margin-top: 2px;
+        }
+
+        /* Valor numérico en pantalla */
+        .stat-badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--text-accent);
+            background: rgba(0,0,0,0.5);
+            padding: 4px 10px;
             border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
-            transition: transform 0.2s;
+            border: 1px solid var(--border-glow);
+            text-shadow: 0 0 6px var(--glow);
         }
 
-        .btn-apply:active {
-            transform: scale(0.98);
+        /* Interruptores Estilo Quantum Toggle */
+        .quantum-switch {
+            position: relative;
+            width: 46px;
+            height: 24px;
         }
+
+        .quantum-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .switch-slider::before {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 8px rgba(255,255,255,0.8);
+        }
+
+        input:checked + .switch-slider {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--glow);
+        }
+
+        input:checked + .switch-slider::before {
+            transform: translateX(22px);
+            background: #000;
+            box-shadow: none;
+        }
+
+        /* Sliders de Desplazamiento */
+        .hud-slider-container {
+            margin-top: 10px;
+        }
+
+        .hud-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Botón Inyectar Estilo Reactor Nucleus */
+        .btn-trigger {
+            width: 100%;
+            padding: 16px;
+            margin-top: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--glow);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-trigger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px var(--glow);
+        }
+
+        .btn-trigger:active {
+            transform: translateY(1px);
+        }
+
+        /* Botón Abrir Juego (Mira Táctica) */
+        .launch-wrapper {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-launch-game {
+            width: 100%;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--primary);
+            border-radius: 18px;
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--glow), inset 0 0 15px var(--glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-launch-game:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 35px var(--primary);
+        }
+
+        .btn-launch-game:hover .crosshair-ring {
+            border-color: #fff;
+            border-style: solid;
+        }
+
+        .btn-launch-game:hover .crosshair-dot {
+            background: #fff;
+        }
+
+        .btn-launch-game:hover .crosshair-line {
+            background: #fff;
+        }
+
+        /* Icono Mira Holográfica Animada */
+        .crosshair-icon {
+            width: 26px;
+            height: 26px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crosshair-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px dashed var(--primary);
+            border-radius: 50%;
+            animation: spinCrosshair 8s linear infinite;
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-line {
+            position: absolute;
+            background: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .crosshair-line.v { width: 2px; height: 100%; top: 0; left: 50%; transform: translateX(-50%); }
+        .crosshair-line.h { height: 2px; width: 100%; left: 0; top: 50%; transform: translateY(-50%); }
+
+        @keyframes spinCrosshair {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal Terminal Overlay Holográfico */
+        .hud-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 4, 8, 0.92);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 999;
+        }
+
+        .hud-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .terminal-hud {
+            width: 88%;
+            max-width: 380px;
+            background: rgba(15, 5, 10, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 30px var(--glow);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .term-header {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 6px;
+        }
+
+        .term-log {
+            height: 120px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-success { color: #00ffaa; }
     </style>
 </head>
-<body>
+<body data-os="android">
 
-<div class="panel-container">
-    <div class="header">
-        <h1>REGEDIT VIP 3.0</h1>
-        <div class="subtitle">edition limited</div>
-    </div>
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Status Métricas -->
-    <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-label">Estado RAM</div>
-            <div class="metric-value" id="ram-usage">1.8 GB Libres</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">Temperatura</div>
-            <div class="metric-value" id="temp-val">34.2 °C</div>
-        </div>
-    </div>
-
-    <!-- Ajustes Android -->
-    <div class="section-title">
-        <span>🤖</span> Configuración Android
-    </div>
-
-    <div class="control-group">
-        <div class="slider-container">
-            <div class="slider-header">
-                <span>Sensibilidad General</span>
-                <span id="sens-val">100%</span>
+    <div class="cyber-chassis">
+        <!-- Header -->
+        <div class="hud-header">
+            <div class="hud-title">REGEDIT VIP // RED EDITION</div>
+            <div class="hud-status">
+                <div class="status-dot"></div>
+                SYSTEM SYNC
             </div>
-            <input type="range" id="sens-slider" min="0" max="200" value="100" oninput="document.getElementById('sens-val').innerText = this.value + '%'">
         </div>
 
-        <div class="slider-container">
-            <div class="slider-header">
-                <span>Estabilización de Puntería</span>
-                <span>99%</span>
-            </div>
-            <input type="range" min="0" max="100" value="99" disabled>
+        <!-- Selector de OS -->
+        <div class="os-selector">
+            <button class="os-btn active" id="btn-android" onclick="selectOS('android')">
+                <span>ANDROID</span>
+            </button>
+            <button class="os-btn" id="btn-ios" onclick="selectOS('ios')">
+                <span>iPHONE iOS</span>
+            </button>
         </div>
 
-        <div class="slider-container">
-            <div class="slider-header">
-                <span>Seguimiento a la Cabeza</span>
-                <span>58%</span>
+        <!-- ================= PANEL ANDROID (OPCIONES DESACTIVADAS POR DEFECTO Y GUARDADO) ================= -->
+        <div class="os-panel active" id="panel-android">
+            
+            <!-- Option 1: 120 FPS -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">120 FPS ULTRA</div>
+                        <div class="card-subtext">VULKAN FRAME RATE BOOST</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-fps">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
             </div>
-            <input type="range" min="0" max="100" value="58" disabled>
+
+            <!-- Option 2: Seguimiento a la cabeza 57% -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">SEGUIMIENTO A LA CABEZA</div>
+                        <div class="card-subtext">AIM LOCK TRACKING</div>
+                    </div>
+                    <div class="stat-badge" id="val-head-and">57%</div>
+                </div>
+                <div class="hud-slider-container">
+                    <input type="range" class="hud-slider" id="and-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-and', this.value, '%', 'and-head-slider')">
+                </div>
+            </div>
+
+            <!-- Option 3: Aimbot -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">AIMBOT PRO</div>
+                        <div class="card-subtext">AUTO TARGETING VECTOR</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-aimbot">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Option 4: Acelerador DPI Táctil -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">ACELERADOR DPI TÁCTIL</div>
+                        <div class="card-subtext">RESPUESTA DE PANTALLA ULTRA 360°</div>
+                    </div>
+                    <div class="stat-badge" id="val-dpi">800 DPI</div>
+                </div>
+                <div class="hud-slider-container">
+                    <input type="range" class="hud-slider" id="and-dpi-slider" min="360" max="1200" step="20" value="800" oninput="updateSlider('val-dpi', this.value, ' DPI', 'and-dpi-slider')">
+                </div>
+            </div>
+
+            <!-- Option 5: Auto Limpiador de RAM -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">AUTO-RAM CLEANER</div>
+                        <div class="card-subtext">LIBERA PROCESOS PARA EVITAR TIRONES</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-ram">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Option 6: Estabilizador de Ping -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">ESTABILIZADOR DE PING (ANTI-LAG)</div>
+                        <div class="card-subtext">DNS VIP DE BAJA LATENCIA</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-ping">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-trigger" onclick="triggerInjection('Android Vulkan Engine')">EJECUTAR INYECCIÓN ANDROID</button>
+        </div>
+
+        <!-- ================= PANEL iPHONE ================= -->
+        <div class="os-panel" id="panel-ios">
+
+            <!-- Option 1: 120 FPS -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">120 FPS PROMOTION</div>
+                        <div class="card-subtext">METAL GRAPHICS UNLOCK</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="ios-fps">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Option 2: Seguimiento a la cabeza 57% -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">SEGUIMIENTO A LA CABEZA</div>
+                        <div class="card-subtext">BIONIC HEADSHOT PRECISION</div>
+                    </div>
+                    <div class="stat-badge" id="val-head-ios">57%</div>
+                </div>
+                <div class="hud-slider-container">
+                    <input type="range" class="hud-slider" id="ios-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-ios', this.value, '%', 'ios-head-slider')">
+                </div>
+            </div>
+
+            <!-- Option 3: Aimbot -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">AIMBOT HARMONY</div>
+                        <div class="card-subtext">TOUCH ENGINE ASSIST</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="ios-aimbot">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Option 4: Recoil -->
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">RECOIL CONTROL</div>
+                        <div class="card-subtext">ZERO BULLET SPREAD</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="ios-recoil">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-trigger" onclick="triggerInjection('iOS Metal Engine')">EJECUTAR INYECCIÓN iPHONE</button>
+        </div>
+
+        <!-- BOTÓN LLAMATIVO MIRA ABRIR JUEGO -->
+        <div class="launch-wrapper">
+            <button class="btn-launch-game" onclick="launchGame()">
+                <div class="crosshair-icon">
+                    <div class="crosshair-ring"></div>
+                    <div class="crosshair-line v"></div>
+                    <div class="crosshair-line h"></div>
+                    <div class="crosshair-dot"></div>
+                </div>
+                <span>ABRIR JUEGO</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Modal Terminal -->
+    <div class="hud-modal" id="terminal-modal">
+        <div class="terminal-hud">
+            <div class="term-header" id="term-title">> INICIANDO INYECCIÓN QUANTUM...</div>
+            <div class="term-log" id="term-log"></div>
         </div>
     </div>
 
-    <button class="btn-apply" onclick="alert('Configuración REGEDIT VIP 3.0 aplicada correctamente.')">Aplicar Cambios</button>
-</div>
+    <script>
+        // Fondo dinámico Holográfico (Canvas Malla Lasser)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
 
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let gridOffset = 0;
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const isIOS = document.body.getAttribute('data-os') === 'ios';
+            ctx.strokeStyle = isIOS ? 'rgba(224, 36, 237, 0.08)' : 'rgba(255, 0, 60, 0.08)';
+            ctx.lineWidth = 1;
+
+            const gridSize = 40;
+            gridOffset = (gridOffset + 0.3) % gridSize;
+
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+
+            for (let y = gridOffset; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(drawGrid);
+        }
+        drawGrid();
+
+        // Selector de Sistema Operativo
+        function selectOS(os) {
+            if (os === 'ios') {
+                const isIPhone = /iPhone/i.test(navigator.userAgent) || 
+                                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+                if (!isIPhone) {
+                    alert("⚠️ ACCESO DENEGADO: El apartado de iOS solo está disponible si accedes desde un dispositivo iPhone.");
+                    return;
+                }
+            }
+
+            document.body.setAttribute('data-os', os);
+
+            document.getElementById('btn-android').classList.toggle('active', os === 'android');
+            document.getElementById('btn-ios').classList.toggle('active', os === 'ios');
+
+            document.getElementById('panel-android').classList.toggle('active', os === 'android');
+            document.getElementById('panel-ios').classList.toggle('active', os === 'ios');
+        }
+
+        // Funciones de actualización y persistencia (LocalStorage)
+        function updateSlider(badgeId, val, unit, storageKey) {
+            document.getElementById(badgeId).innerText = val + unit;
+            localStorage.setItem(storageKey, val);
+        }
+
+        // Cargar y guardar estados en el almacenamiento local
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        // Guardar checkbox al cambiar
+        checkboxes.forEach(chk => {
+            chk.addEventListener('change', () => {
+                localStorage.setItem(chk.id, chk.checked);
+            });
+        });
+
+        // Cargar estado guardado al iniciar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            // Cargar Checkboxes
+            checkboxes.forEach(chk => {
+                const savedState = localStorage.getItem(chk.id);
+                if (savedState !== null) {
+                    chk.checked = savedState === 'true';
+                } else {
+                    chk.checked = false; // Por defecto desactivado
+                }
+            });
+
+            // Cargar Sliders
+            const sliders = [
+                { id: 'and-head-slider', badge: 'val-head-and', unit: '%' },
+                { id: 'and-dpi-slider', badge: 'val-dpi', unit: ' DPI' },
+                { id: 'ios-head-slider', badge: 'val-head-ios', unit: '%' }
+            ];
+
+            sliders.forEach(s => {
+                const savedVal = localStorage.getItem(s.id);
+                if (savedVal !== null) {
+                    const el = document.getElementById(s.id);
+                    if (el) {
+                        el.value = savedVal;
+                        document.getElementById(s.badge).innerText = savedVal + s.unit;
+                    }
+                }
+            });
+        });
+
+        // Ejecución simulada de inyección
+        function triggerInjection(systemName) {
+            const modal = document.getElementById('terminal-modal');
+            const logBox = document.getElementById('term-log');
+            const title = document.getElementById('term-title');
+
+            title.innerText = `> INYECTANDO EN ${systemName.toUpperCase()}...`;
+            logBox.innerHTML = '';
+            modal.classList.add('active');
+
+            const isAndroid = systemName.includes('Android');
+
+            const logs = [
+                "> Conectando con el Kernel del dispositivo...",
+                "> Asignando parámetros de FPS...",
+                "> Sincronizando Seguimiento a la Cabeza...",
+                "> Verificando estado de módulos de puntería...",
+                isAndroid ? "> Optimizando DPI Táctil y Memoria RAM..." : "> Calibrando estabilización Recoil Zero...",
+                isAndroid ? "> Configurando servidor DNS de baja latencia..." : "> Touch Engine Assist vinculado.",
+                "> ¡INYECCIÓN COMPLETADA CON ÉXITO!"
+            ];
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < logs.length) {
+                    const item = document.createElement('div');
+                    if (index === logs.length - 1) item.className = 'log-success';
+                    item.innerText = logs[index];
+                    logBox.appendChild(item);
+                    logBox.scrollTop = logBox.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => modal.classList.remove('active'), 1200);
+                }
+            }, 400);
+        }
+
+        // Acción del Botón Abrir Juego
+        function launchGame() {
+            const modal = document.getElementById('terminal-modal');
+            const logBox = document.getElementById('term-log');
+            const title = document.getElementById('term-title');
+
+            title.innerText = "> LANZANDO JUEGO CON REGEDIT VIP...";
+            logBox.innerHTML = '';
+            modal.classList.add('active');
+
+            const steps = [
+                "> Aplicando parches de memoria RAM...",
+                "> Anclando proceso de baja latencia...",
+                "> Ejecutando disparador de overlay táctico...",
+                "> ¡INICIANDO JUEGO EN MODO VIP!"
+            ];
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < steps.length) {
+                    const item = document.createElement('div');
+                    if (index === steps.length - 1) item.className = 'log-success';
+                    item.innerText = steps[index];
+                    logBox.appendChild(item);
+                    logBox.scrollTop = logBox.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                        window.location.href = "freefire://"; 
+                    }, 1000);
+                }
+            }, 400);
+        }
+    </script>
 </body>
 </html>
