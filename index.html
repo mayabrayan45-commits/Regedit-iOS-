@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>REGEDIT VIP 3.0 - Stealth Edition</title>
+    <title>REGEDIT VIP 3.0 - STEALTH MENU</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* TEMA ANDROID: STEALTH CYAN & COBALTO */
-            --primary: #00f3ff;
-            --secondary: #0051ff;
-            --glow: rgba(0, 243, 255, 0.4);
-            --bg-glass: rgba(6, 15, 25, 0.82);
-            --card-bg: rgba(10, 24, 38, 0.65);
-            --border-glow: rgba(0, 243, 255, 0.3);
-            --text-accent: #00f3ff;
-            --bg-grid: rgba(0, 243, 255, 0.05);
+            --primary: #00ff66;
+            --secondary: #008833;
+            --glow: rgba(0, 255, 102, 0.45);
+            --bg-glass: rgba(5, 18, 10, 0.88);
+            --card-bg: rgba(8, 28, 16, 0.7);
+            --border-glow: rgba(0, 255, 102, 0.35);
+            --text-accent: #00ff66;
         }
 
         [data-os="ios"] {
-            /* TEMA iPHONE: AMBAR STEALTH & WARNER ORANGE */
-            --primary: #ffaa00;
-            --secondary: #ff3300;
-            --glow: rgba(255, 170, 0, 0.4);
-            --bg-glass: rgba(25, 16, 6, 0.82);
-            --card-bg: rgba(38, 24, 10, 0.65);
-            --border-glow: rgba(255, 170, 0, 0.3);
-            --text-accent: #ffaa00;
-            --bg-grid: rgba(255, 170, 0, 0.05);
+            --primary: #ff0055;
+            --secondary: #990033;
+            --glow: rgba(255, 0, 85, 0.45);
+            --bg-glass: rgba(20, 5, 10, 0.88);
+            --card-bg: rgba(30, 8, 15, 0.7);
+            --border-glow: rgba(255, 0, 85, 0.35);
+            --text-accent: #ff0055;
         }
 
         * {
@@ -43,7 +39,7 @@
         }
 
         body {
-            background: #030712;
+            background: #020604;
             color: #e2e8f0;
             min-height: 100vh;
             display: flex;
@@ -54,7 +50,7 @@
             position: relative;
         }
 
-        /* Canvas Holográfico de Radar */
+        /* Canvas Holográfico con Radar y ESP Box */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -62,45 +58,43 @@
             pointer-events: none;
         }
 
-        /* Chassis Principal Biselado */
+        /* Chassis Principal Biselado estilo Cheat Menu */
         .cyber-chassis {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 430px;
+            max-width: 440px;
             background: var(--bg-glass);
-            backdrop-filter: blur(20px) saturate(200%);
-            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
             border: 1px solid var(--border-glow);
             clip-path: polygon(
-                0 18px, 18px 0, 
-                calc(100% - 18px) 0, 100% 18px, 
-                100% calc(100% - 18px), calc(100% - 18px) 100%, 
-                18px 100%, 0 calc(100% - 18px)
+                0 16px, 16px 0, 
+                calc(100% - 16px) 0, 100% 16px, 
+                100% calc(100% - 16px), calc(100% - 16px) 100%, 
+                16px 100%, 0 calc(100% - 16px)
             );
-            padding: 22px 18px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 15px var(--glow);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px 16px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.95), inset 0 0 20px var(--glow);
         }
 
-        /* Esquinas Decó Tácticas */
         .cyber-chassis::before, .cyber-chassis::after {
             content: '';
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border: 2px solid var(--primary);
             pointer-events: none;
         }
-        .cyber-chassis::before { top: 6px; left: 6px; border-right: none; border-bottom: none; }
-        .cyber-chassis::after { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+        .cyber-chassis::before { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+        .cyber-chassis::after { bottom: 4px; right: 4px; border-left: none; border-top: none; }
 
         /* Header Táctico */
         .hud-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 18px;
+            align-items: center;
+            margin-bottom: 16px;
             padding-bottom: 10px;
             border-bottom: 1px dashed var(--border-glow);
         }
@@ -111,62 +105,72 @@
         }
 
         .hud-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
             letter-spacing: 2px;
             color: #fff;
-            text-shadow: 0 0 8px var(--glow);
+            text-shadow: 0 0 10px var(--glow);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .hud-title span {
-            color: var(--primary);
-        }
+        .hud-title span { color: var(--primary); }
 
         .hud-subtitle {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
+            font-size: 8px;
             letter-spacing: 3px;
-            color: #94a3b8;
+            color: #88a090;
             text-transform: uppercase;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        .hud-telemetry {
+        .status-badge {
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
-            text-align: right;
-            color: var(--primary);
-            background: rgba(0,0,0,0.4);
             padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-glow);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Selector OS con Formas en Angulo */
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
+
+        /* Selector OS */
         .os-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .os-btn {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #64748b;
             padding: 10px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 1.5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
         }
 
         .os-btn.active {
@@ -178,17 +182,11 @@
         }
 
         /* Paneles */
-        .os-panel {
-            display: none;
-        }
-
-        .os-panel.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
+        .os-panel { display: none; }
+        .os-panel.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
+            from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -196,15 +194,9 @@
         .hud-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
-            padding: 12px 14px;
-            margin-bottom: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
             position: relative;
-            transition: all 0.2s ease;
-        }
-
-        .hud-card:hover {
-            border-color: var(--primary);
-            background: rgba(0, 0, 0, 0.4);
         }
 
         .card-row {
@@ -224,33 +216,27 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 8px;
             color: #64748b;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
-        /* Valor Badge */
         .stat-badge {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 700;
             color: var(--primary);
             background: #000;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border: 1px solid var(--border-glow);
-            box-shadow: 0 0 8px var(--glow);
         }
 
-        /* Toggles de Interruptor Cyber */
+        /* Switch de Selección */
         .quantum-switch {
             position: relative;
-            width: 50px;
-            height: 22px;
+            width: 48px;
+            height: 20px;
         }
 
-        .quantum-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .quantum-switch input { opacity: 0; width: 0; height: 0; }
 
         .switch-slider {
             position: absolute;
@@ -272,11 +258,11 @@
         .switch-slider::before {
             content: "";
             position: absolute;
-            height: 14px;
-            width: 14px;
+            height: 12px;
+            width: 12px;
             left: 3px;
             background: #64748b;
-            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: 0.3s ease;
         }
 
         input:checked + .switch-slider {
@@ -292,10 +278,8 @@
             box-shadow: 0 0 8px var(--primary);
         }
 
-        /* Sliders Tácticos */
-        .hud-slider-container {
-            margin-top: 10px;
-        }
+        /* Sliders */
+        .hud-slider-container { margin-top: 8px; }
 
         .hud-slider {
             width: 100%;
@@ -304,14 +288,13 @@
             outline: none;
             accent-color: var(--primary);
             cursor: pointer;
-            border-radius: 0;
         }
 
-        /* Botón de Inyección Militar */
+        /* Botón de Inyección */
         .btn-trigger {
             width: 100%;
-            padding: 14px;
-            margin-top: 10px;
+            padding: 12px;
+            margin-top: 8px;
             background: linear-gradient(90deg, transparent, var(--card-bg), transparent);
             border: 1px solid var(--primary);
             color: var(--primary);
@@ -319,9 +302,8 @@
             font-size: 11px;
             letter-spacing: 2px;
             cursor: pointer;
-            position: relative;
             transition: all 0.3s ease;
-            clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
         }
 
         .btn-trigger:hover {
@@ -331,16 +313,16 @@
             font-weight: 800;
         }
 
-        /* Seccion Lanzador */
+        /* Lanzador */
         .launch-wrapper {
-            margin-top: 16px;
-            padding-top: 14px;
+            margin-top: 14px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .btn-launch-game {
             width: 100%;
-            height: 52px;
+            height: 48px;
             background: #000;
             border: 1px solid var(--primary);
             color: #fff;
@@ -351,8 +333,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            position: relative;
+            gap: 10px;
             box-shadow: 0 0 15px var(--glow);
             transition: all 0.3s ease;
         }
@@ -365,8 +346,8 @@
 
         /* Crosshair Icon */
         .crosshair-icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             position: relative;
             display: flex;
             align-items: center;
@@ -380,9 +361,7 @@
             border-radius: 50%;
         }
 
-        .btn-launch-game:hover .crosshair-ring {
-            border-color: #000;
-        }
+        .btn-launch-game:hover .crosshair-ring { border-color: #000; }
 
         .crosshair-dot {
             width: 4px;
@@ -390,15 +369,13 @@
             background: var(--primary);
         }
 
-        .btn-launch-game:hover .crosshair-dot {
-            background: #000;
-        }
+        .btn-launch-game:hover .crosshair-dot { background: #000; }
 
-        /* Modal Overlay */
+        /* Modal Overlay Terminal */
         .hud-modal {
             position: fixed;
             inset: 0;
-            background: rgba(3, 7, 18, 0.95);
+            background: rgba(2, 6, 4, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
@@ -409,17 +386,14 @@
             z-index: 999;
         }
 
-        .hud-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .hud-modal.active { opacity: 1; pointer-events: auto; }
 
         .terminal-hud {
             width: 90%;
             max-width: 360px;
             background: #000;
             border: 1px solid var(--primary);
-            padding: 18px;
+            padding: 16px;
             box-shadow: 0 0 35px var(--glow);
             font-family: 'JetBrains Mono', monospace;
         }
@@ -434,16 +408,17 @@
         }
 
         .term-log {
-            height: 120px;
+            height: 130px;
             overflow-y: auto;
-            font-size: 10px;
+            font-size: 9px;
             color: #64748b;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
         }
 
-        .log-success { color: #00ffaa; font-weight: 700; }
+        .log-success { color: var(--primary); font-weight: 700; }
+        .log-hex { color: #888; }
     </style>
 </head>
 <body data-os="android">
@@ -455,21 +430,21 @@
         <div class="hud-header">
             <div class="hud-title-container">
                 <div class="hud-title">REGEDIT <span>VIP 3.0</span></div>
-                <div class="hud-subtitle">edition limited</div>
+                <div class="hud-subtitle">edition limited • stealth menu</div>
             </div>
-            <div class="hud-telemetry">
-                SYS: ONLINE<br>
-                FPS: 120
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                BYPASS: SAFE
             </div>
         </div>
 
         <!-- Selector OS -->
         <div class="os-selector">
             <button class="os-btn active" id="btn-android" onclick="selectOS('android')">
-                ANDROID
+                ANDROID (VULKAN)
             </button>
             <button class="os-btn" id="btn-ios" onclick="selectOS('ios')">
-                iPHONE iOS
+                iPHONE (METAL)
             </button>
         </div>
 
@@ -480,7 +455,7 @@
                 <div class="card-row">
                     <div>
                         <div class="card-label">120 FPS ULTRA</div>
-                        <div class="card-subtext">VULKAN FRAME RATE BOOST</div>
+                        <div class="card-subtext">FRAME RATE UNLOCKER</div>
                     </div>
                     <label class="quantum-switch">
                         <input type="checkbox" id="and-fps">
@@ -493,7 +468,7 @@
                 <div class="card-row">
                     <div>
                         <div class="card-label">SEGUIMIENTO A LA CABEZA</div>
-                        <div class="card-subtext">AIM LOCK TRACKING VECTOR</div>
+                        <div class="card-subtext">AIM LOCK VECTOR</div>
                     </div>
                     <div class="stat-badge" id="val-head-and">57%</div>
                 </div>
@@ -502,11 +477,25 @@
                 </div>
             </div>
 
+            <!-- Nuevo: FOV Circle Slider -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">AIMBOT PRO</div>
-                        <div class="card-subtext">AUTO TARGETING SUBSYSTEM</div>
+                        <div class="card-label">AIMBOT FOV CIRCLE</div>
+                        <div class="card-subtext">ÁREA DE DETECCIÓN TÁCTICA</div>
+                    </div>
+                    <div class="stat-badge" id="val-fov">120px</div>
+                </div>
+                <div class="hud-slider-container">
+                    <input type="range" class="hud-slider" id="and-fov-slider" min="50" max="250" value="120" oninput="updateFOV(this.value)">
+                </div>
+            </div>
+
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">AIMBOT PRO (MAGNÉTICO)</div>
+                        <div class="card-subtext">AUTO TARGET SUBSYSTEM</div>
                     </div>
                     <label class="quantum-switch">
                         <input type="checkbox" id="and-aimbot">
@@ -515,11 +504,25 @@
                 </div>
             </div>
 
+            <!-- Nuevo: ESP Lines -->
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">SENSIBILIDAD</div>
-                        <div class="card-subtext">RESPUESTA Y PRECISIÓN TÁCTIL 360°</div>
+                        <div class="card-label">ESP BOX & LINES</div>
+                        <div class="card-subtext">OVERLAY DE ENEMIGOS TRACERS</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-esp">
+                        <span class="switch-slider"><span>OFF</span><span>ON</span></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="hud-card">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">SENSIBILIDAD 360°</div>
+                        <div class="card-subtext">TOUCH RESPONSE OVERRIDE</div>
                     </div>
                     <div class="stat-badge" id="val-sens">100%</div>
                 </div>
@@ -531,30 +534,17 @@
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">AUTO-RAM CLEANER</div>
-                        <div class="card-subtext">OPTIMIZADOR DE PROCESOS EN SEGUNDO PLANO</div>
+                        <div class="card-label">ANTI-BAN / HWID MASK</div>
+                        <div class="card-subtext">OCULTAR ID DE DISPOSITIVO</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="and-ram">
+                        <input type="checkbox" id="and-hwid">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
             </div>
 
-            <div class="hud-card">
-                <div class="card-row">
-                    <div>
-                        <div class="card-label">ESTABILIZADOR DE PING (ANTI-LAG)</div>
-                        <div class="card-subtext">ENRUTADOR DNS VIP DE BAJA LATENCIA</div>
-                    </div>
-                    <label class="quantum-switch">
-                        <input type="checkbox" id="and-ping">
-                        <span class="switch-slider"><span>OFF</span><span>ON</span></span>
-                    </label>
-                </div>
-            </div>
-
-            <button class="btn-trigger" onclick="triggerInjection('Android Vulkan Engine')">[ EJECUTAR INYECCIÓN ANDROID ]</button>
+            <button class="btn-trigger" onclick="triggerInjection('Android Kernel Injection')">[ INYECTAR MEMORIA RAM ]</button>
         </div>
 
         <!-- ================= PANEL iPHONE ================= -->
@@ -602,8 +592,8 @@
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">RECOIL CONTROL</div>
-                        <div class="card-subtext">ZERO BULLET SPREAD MOD</div>
+                        <div class="card-label">RECOIL CONTROL 100%</div>
+                        <div class="card-subtext">ZERO BULLET SPREAD</div>
                     </div>
                     <label class="quantum-switch">
                         <input type="checkbox" id="ios-recoil">
@@ -612,7 +602,7 @@
                 </div>
             </div>
 
-            <button class="btn-trigger" onclick="triggerInjection('iOS Metal Engine')">[ EJECUTAR INYECCIÓN iPHONE ]</button>
+            <button class="btn-trigger" onclick="triggerInjection('iOS Metal Kernel')">[ INYECTAR MEMORIA METAL ]</button>
         </div>
 
         <!-- BOTÓN ABRIR JUEGO -->
@@ -637,9 +627,10 @@
     </div>
 
     <script>
-        // Radar Canvas Animation
+        // Radar Canvas con ESP Box y FOV dinámico
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
+        let fovRadius = 120;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -648,35 +639,55 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        let angle = 0;
-        function drawRadar() {
+        function updateFOV(val) {
+            fovRadius = parseInt(val);
+            document.getElementById('val-fov').innerText = val + 'px';
+            localStorage.setItem('and-fov-slider', val);
+        }
+
+        let enemyY = 0;
+        function drawOverlay() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const isIOS = document.body.getAttribute('data-os') === 'ios';
-            const color = isIOS ? '255, 170, 0' : '0, 243, 255';
+            const strokeColor = isIOS ? '#ff0055' : '#00ff66';
 
-            // Dibujar Círculos Radar
-            ctx.strokeStyle = `rgba(${color}, 0.08)`;
+            // Círculo FOV dinámico
+            ctx.strokeStyle = strokeColor;
             ctx.lineWidth = 1;
-            [100, 200, 300, 400].forEach(r => {
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.stroke();
-            });
-
-            // Barrido de Radar
+            ctx.setLineDash([6, 6]);
             ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.arc(cx, cy, 400, angle, angle + 0.2);
-            ctx.lineTo(cx, cy);
-            ctx.fillStyle = `rgba(${color}, 0.05)`;
-            ctx.fill();
+            ctx.arc(cx, cy, fovRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
 
-            angle += 0.015;
-            requestAnimationFrame(drawRadar);
+            // ESP Target Box animado (Esquina Superior Derecha)
+            const targetX = canvas.width - 90;
+            enemyY = (enemyY + 0.5) % 80;
+            const targetY = 80 + enemyY;
+
+            ctx.strokeStyle = strokeColor;
+            ctx.strokeRect(targetX, targetY, 40, 60);
+
+            // Healthbar simulada
+            ctx.fillStyle = strokeColor;
+            ctx.fillRect(targetX - 6, targetY, 3, 60);
+
+            // Texto de distancia
+            ctx.font = '8px "JetBrains Mono"';
+            ctx.fillText('32m ENEMY', targetX - 5, targetY - 6);
+
+            // Línea de tracer desde el centro al objetivo
+            ctx.beginPath();
+            ctx.moveTo(cx, cy + fovRadius);
+            ctx.lineTo(targetX + 20, targetY + 60);
+            ctx.strokeStyle = isIOS ? 'rgba(255, 0, 85, 0.25)' : 'rgba(0, 255, 102, 0.25)';
+            ctx.stroke();
+
+            requestAnimationFrame(drawOverlay);
         }
-        drawRadar();
+        drawOverlay();
 
         // OS Selector
         function selectOS(os) {
@@ -734,33 +745,41 @@
                     }
                 }
             });
+
+            const savedFOV = localStorage.getItem('and-fov-slider');
+            if (savedFOV) {
+                document.getElementById('and-fov-slider').value = savedFOV;
+                updateFOV(savedFOV);
+            }
         });
 
-        // Simulación Terminal
+        // Simulación Terminal con Direcciones Hexadecimales
         function triggerInjection(systemName) {
             const modal = document.getElementById('terminal-modal');
             const logBox = document.getElementById('term-log');
             const title = document.getElementById('term-title');
 
-            title.innerText = `> INYECTANDO EN ${systemName.toUpperCase()}...`;
+            title.innerText = `> EXECUTING ${systemName.toUpperCase()}...`;
             logBox.innerHTML = '';
             modal.classList.add('active');
 
-            const isAndroid = systemName.includes('Android');
+            const hexOffsets = ['0x7FFF800', '0x7FFF8A4', '0x80011C0', '0x80024A8', '0x9102FF0'];
+
             const logs = [
-                "> Estableciendo túnel de memoria...",
-                "> Cargando parches del kernel...",
-                "> Calibrando sensibilidad táctil...",
-                isAndroid ? "> Optimizando hilos Vulkan..." : "> Vinculando Metal Touch Assist...",
-                "> ¡CONFIGURACIÓN APLICADA CON ÉXITO!"
+                `> Hooking process kernel...`,
+                `<span class="log-hex">[${hexOffsets[0]}] Bypassing memory protection...</span>`,
+                `<span class="log-hex">[${hexOffsets[1]}] Overwriting AimAssistOffsets...</span>`,
+                `<span class="log-hex">[${hexOffsets[2]}] Injecting FOV Vector Matrix...</span>`,
+                `<span class="log-hex">[${hexOffsets[3]}] Masking Hardware ID (HWID)...</span>`,
+                `> Flushing RAM buffer cache...`,
+                `<span class="log-success">> INJECTION SUCCESSFUL [STATUS: CLEAN]</span>`
             ];
 
             let index = 0;
             const interval = setInterval(() => {
                 if (index < logs.length) {
                     const item = document.createElement('div');
-                    if (index === logs.length - 1) item.className = 'log-success';
-                    item.innerText = logs[index];
+                    item.innerHTML = logs[index];
                     logBox.appendChild(item);
                     logBox.scrollTop = logBox.scrollHeight;
                     index++;
@@ -768,7 +787,7 @@
                     clearInterval(interval);
                     setTimeout(() => modal.classList.remove('active'), 1200);
                 }
-            }, 350);
+            }, 300);
         }
 
         function launchGame() {
@@ -776,22 +795,22 @@
             const logBox = document.getElementById('term-log');
             const title = document.getElementById('term-title');
 
-            title.innerText = "> INICIANDO APLICACIÓN...";
+            title.innerText = "> LAUNCHING TARGET APPLICATION...";
             logBox.innerHTML = '';
             modal.classList.add('active');
 
             const steps = [
-                "> Verificando overlays de pantalla...",
-                "> Asegurando procesos en segundo plano...",
-                "> ¡LANZANDO JUEGO!"
+                "> Verifying anti-cheat bypass layer...",
+                "<span class="log-hex">[0x90001A] Locking process memory space...</span>",
+                "> Activating overlay hooks...",
+                "<span class="log-success">> LAUNCHING GAME WITH VIP INJECTION!</span>"
             ];
 
             let index = 0;
             const interval = setInterval(() => {
                 if (index < steps.length) {
                     const item = document.createElement('div');
-                    if (index === steps.length - 1) item.className = 'log-success';
-                    item.innerText = steps[index];
+                    item.innerHTML = steps[index];
                     logBox.appendChild(item);
                     logBox.scrollTop = logBox.scrollHeight;
                     index++;
@@ -802,7 +821,7 @@
                         window.location.href = "freefire://"; 
                     }, 1000);
                 }
-            }, 350);
+            }, 300);
         }
     </script>
 </body>
