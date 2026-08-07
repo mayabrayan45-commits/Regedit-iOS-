@@ -3,30 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>REGEDIT VIP 3.0 - STEALTH MENU</title>
+    <title>REGEDIT VIP 3.0 - Stealth Edition</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #00ff66;
-            --secondary: #008833;
-            --glow: rgba(0, 255, 102, 0.45);
-            --bg-glass: rgba(5, 18, 10, 0.88);
-            --card-bg: rgba(8, 28, 16, 0.7);
-            --border-glow: rgba(0, 255, 102, 0.35);
-            --text-accent: #00ff66;
+            /* TEMA ANDROID: STEALTH CYAN & COBALTO */
+            --primary: #00f3ff;
+            --secondary: #0051ff;
+            --glow: rgba(0, 243, 255, 0.4);
+            --bg-glass: rgba(6, 15, 25, 0.82);
+            --card-bg: rgba(10, 24, 38, 0.65);
+            --border-glow: rgba(0, 243, 255, 0.3);
+            --text-accent: #00f3ff;
+            --bg-grid: rgba(0, 243, 255, 0.05);
         }
 
         [data-os="ios"] {
-            --primary: #ff0055;
-            --secondary: #990033;
-            --glow: rgba(255, 0, 85, 0.45);
-            --bg-glass: rgba(20, 5, 10, 0.88);
-            --card-bg: rgba(30, 8, 15, 0.7);
-            --border-glow: rgba(255, 0, 85, 0.35);
-            --text-accent: #ff0055;
+            /* TEMA iPHONE: AMBAR STEALTH & WARNER ORANGE */
+            --primary: #ffaa00;
+            --secondary: #ff3300;
+            --glow: rgba(255, 170, 0, 0.4);
+            --bg-glass: rgba(25, 16, 6, 0.82);
+            --card-bg: rgba(38, 24, 10, 0.65);
+            --border-glow: rgba(255, 170, 0, 0.3);
+            --text-accent: #ffaa00;
+            --bg-grid: rgba(255, 170, 0, 0.05);
         }
 
         * {
@@ -39,7 +43,7 @@
         }
 
         body {
-            background: #020604;
+            background: #030712;
             color: #e2e8f0;
             min-height: 100vh;
             display: flex;
@@ -50,7 +54,7 @@
             position: relative;
         }
 
-        /* Canvas Holográfico con Radar y ESP Box */
+        /* Canvas Holográfico de Radar */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -58,43 +62,55 @@
             pointer-events: none;
         }
 
-        /* Chassis Principal Biselado estilo Cheat Menu */
+        /* Flash Hacker de Pantalla al Activar */
+        .hack-flash {
+            position: fixed;
+            inset: 0;
+            background: var(--glow);
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.15s ease-out;
+        }
+
+        /* Chassis Principal Biselado */
         .cyber-chassis {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 440px;
+            max-width: 430px;
             background: var(--bg-glass);
-            backdrop-filter: blur(25px) saturate(200%);
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
             border: 1px solid var(--border-glow);
             clip-path: polygon(
-                0 16px, 16px 0, 
-                calc(100% - 16px) 0, 100% 16px, 
-                100% calc(100% - 16px), calc(100% - 16px) 100%, 
-                16px 100%, 0 calc(100% - 16px)
+                0 18px, 18px 0, 
+                calc(100% - 18px) 0, 100% 18px, 
+                100% calc(100% - 18px), calc(100% - 18px) 100%, 
+                18px 100%, 0 calc(100% - 18px)
             );
-            padding: 20px 16px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.95), inset 0 0 20px var(--glow);
+            padding: 22px 18px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 15px var(--glow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cyber-chassis::before, .cyber-chassis::after {
             content: '';
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border: 2px solid var(--primary);
             pointer-events: none;
         }
-        .cyber-chassis::before { top: 4px; left: 4px; border-right: none; border-bottom: none; }
-        .cyber-chassis::after { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+        .cyber-chassis::before { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+        .cyber-chassis::after { bottom: 6px; right: 6px; border-left: none; border-top: none; }
 
         /* Header Táctico */
         .hud-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 1px dashed var(--border-glow);
         }
@@ -105,11 +121,11 @@
         }
 
         .hud-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             letter-spacing: 2px;
             color: #fff;
-            text-shadow: 0 0 10px var(--glow);
+            text-shadow: 0 0 8px var(--glow);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -119,58 +135,46 @@
 
         .hud-subtitle {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 8px;
+            font-size: 9px;
             letter-spacing: 3px;
-            color: #88a090;
+            color: #94a3b8;
             text-transform: uppercase;
-            margin-top: 2px;
+            margin-top: 3px;
         }
 
-        .status-badge {
+        .hud-telemetry {
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
-            padding: 4px 8px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-glow);
+            text-align: right;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 8px;
+            border: 1px solid var(--border-glow);
         }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--primary);
-            animation: blink 1s infinite alternate;
-        }
-
-        @keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
 
         /* Selector OS */
         .os-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .os-btn {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #64748b;
             padding: 10px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 1.5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 6px;
         }
 
         .os-btn.active {
@@ -183,10 +187,14 @@
 
         /* Paneles */
         .os-panel { display: none; }
-        .os-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+        .os-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
+            from { opacity: 0; transform: scale(0.97); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -194,9 +202,16 @@
         .hud-card {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
-            padding: 10px 12px;
-            margin-bottom: 8px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .hud-card.active-card {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 10px var(--glow);
         }
 
         .card-row {
@@ -216,7 +231,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 8px;
             color: #64748b;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
         .stat-badge {
@@ -225,15 +240,16 @@
             font-weight: 700;
             color: var(--primary);
             background: #000;
-            padding: 2px 6px;
+            padding: 3px 8px;
             border: 1px solid var(--border-glow);
+            box-shadow: 0 0 8px var(--glow);
         }
 
-        /* Switch de Selección */
+        /* Switch Cyberpunk Animado */
         .quantum-switch {
             position: relative;
-            width: 48px;
-            height: 20px;
+            width: 50px;
+            height: 22px;
         }
 
         .quantum-switch input { opacity: 0; width: 0; height: 0; }
@@ -258,28 +274,34 @@
         .switch-slider::before {
             content: "";
             position: absolute;
-            height: 12px;
-            width: 12px;
+            height: 14px;
+            width: 14px;
             left: 3px;
             background: #64748b;
-            transition: 0.3s ease;
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         input:checked + .switch-slider {
             background: rgba(0, 0, 0, 0.8);
             border-color: var(--primary);
-            box-shadow: 0 0 10px var(--glow);
+            box-shadow: 0 0 12px var(--glow);
             color: var(--primary);
         }
 
         input:checked + .switch-slider::before {
             transform: translateX(28px);
             background: var(--primary);
-            box-shadow: 0 0 8px var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulseGlow 1.2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 4px var(--primary); }
+            to { box-shadow: 0 0 14px var(--primary); }
         }
 
         /* Sliders */
-        .hud-slider-container { margin-top: 8px; }
+        .hud-slider-container { margin-top: 10px; }
 
         .hud-slider {
             width: 100%;
@@ -290,11 +312,11 @@
             cursor: pointer;
         }
 
-        /* Botón de Inyección */
+        /* Botón Inyección */
         .btn-trigger {
             width: 100%;
-            padding: 12px;
-            margin-top: 8px;
+            padding: 14px;
+            margin-top: 10px;
             background: linear-gradient(90deg, transparent, var(--card-bg), transparent);
             border: 1px solid var(--primary);
             color: var(--primary);
@@ -303,7 +325,7 @@
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.3s ease;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
         }
 
         .btn-trigger:hover {
@@ -313,16 +335,16 @@
             font-weight: 800;
         }
 
-        /* Lanzador */
+        /* Lanzador Juego */
         .launch-wrapper {
-            margin-top: 14px;
-            padding-top: 12px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .btn-launch-game {
             width: 100%;
-            height: 48px;
+            height: 52px;
             background: #000;
             border: 1px solid var(--primary);
             color: #fff;
@@ -333,7 +355,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             box-shadow: 0 0 15px var(--glow);
             transition: all 0.3s ease;
         }
@@ -344,10 +366,9 @@
             box-shadow: 0 0 30px var(--primary);
         }
 
-        /* Crosshair Icon */
         .crosshair-icon {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             position: relative;
             display: flex;
             align-items: center;
@@ -371,11 +392,38 @@
 
         .btn-launch-game:hover .crosshair-dot { background: #000; }
 
-        /* Modal Overlay Terminal */
+        /* Notificación Hacker Flotante */
+        #toast-hud {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: #000;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px var(--glow);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 200;
+            clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+        }
+
+        #toast-hud.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Modal Terminal */
         .hud-modal {
             position: fixed;
             inset: 0;
-            background: rgba(2, 6, 4, 0.95);
+            background: rgba(3, 7, 18, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
@@ -393,7 +441,7 @@
             max-width: 360px;
             background: #000;
             border: 1px solid var(--primary);
-            padding: 16px;
+            padding: 18px;
             box-shadow: 0 0 35px var(--glow);
             font-family: 'JetBrains Mono', monospace;
         }
@@ -414,51 +462,53 @@
             color: #64748b;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
         }
 
-        .log-success { color: var(--primary); font-weight: 700; }
-        .log-hex { color: #888; }
+        .log-success { color: #00ffaa; font-weight: 700; }
+        .log-hex { color: #557799; }
     </style>
 </head>
 <body data-os="android">
 
+    <div class="hack-flash" id="hack-flash"></div>
     <canvas id="bg-canvas"></canvas>
+    <div id="toast-hud">[ SYSTEM PARAMS OVERRIDDEN ]</div>
 
     <div class="cyber-chassis">
         <!-- Header -->
         <div class="hud-header">
             <div class="hud-title-container">
                 <div class="hud-title">REGEDIT <span>VIP 3.0</span></div>
-                <div class="hud-subtitle">edition limited • stealth menu</div>
+                <div class="hud-subtitle">edition limited</div>
             </div>
-            <div class="status-badge">
-                <div class="status-dot"></div>
-                BYPASS: SAFE
+            <div class="hud-telemetry">
+                SYS: ONLINE<br>
+                FPS: 120
             </div>
         </div>
 
         <!-- Selector OS -->
         <div class="os-selector">
             <button class="os-btn active" id="btn-android" onclick="selectOS('android')">
-                ANDROID (VULKAN)
+                ANDROID
             </button>
             <button class="os-btn" id="btn-ios" onclick="selectOS('ios')">
-                iPHONE (METAL)
+                iPHONE iOS
             </button>
         </div>
 
         <!-- ================= PANEL ANDROID ================= -->
         <div class="os-panel active" id="panel-android">
             
-            <div class="hud-card">
+            <div class="hud-card" id="card-and-fps">
                 <div class="card-row">
                     <div>
                         <div class="card-label">120 FPS ULTRA</div>
-                        <div class="card-subtext">FRAME RATE UNLOCKER</div>
+                        <div class="card-subtext">VULKAN FRAME RATE BOOST</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="and-fps">
+                        <input type="checkbox" id="and-fps" onchange="triggerHackAnim(this, 'card-and-fps', '120 FPS UNLOCKED')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
@@ -468,51 +518,23 @@
                 <div class="card-row">
                     <div>
                         <div class="card-label">SEGUIMIENTO A LA CABEZA</div>
-                        <div class="card-subtext">AIM LOCK VECTOR</div>
+                        <div class="card-subtext">AIM LOCK TRACKING VECTOR</div>
                     </div>
                     <div class="stat-badge" id="val-head-and">57%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" id="and-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-and', this.value, '%', 'and-head-slider')">
+                    <input type="range" class="hud-slider" id="and-head-slider" min="1" max="100" value="57" oninput="updateSliderGlitch('val-head-and', this.value, '%', 'and-head-slider')">
                 </div>
             </div>
 
-            <!-- Nuevo: FOV Circle Slider -->
-            <div class="hud-card">
+            <div class="hud-card" id="card-and-aimbot">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">AIMBOT FOV CIRCLE</div>
-                        <div class="card-subtext">ÁREA DE DETECCIÓN TÁCTICA</div>
-                    </div>
-                    <div class="stat-badge" id="val-fov">120px</div>
-                </div>
-                <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" id="and-fov-slider" min="50" max="250" value="120" oninput="updateFOV(this.value)">
-                </div>
-            </div>
-
-            <div class="hud-card">
-                <div class="card-row">
-                    <div>
-                        <div class="card-label">AIMBOT PRO (MAGNÉTICO)</div>
-                        <div class="card-subtext">AUTO TARGET SUBSYSTEM</div>
+                        <div class="card-label">AIMBOT PRO</div>
+                        <div class="card-subtext">AUTO TARGETING SUBSYSTEM</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="and-aimbot">
-                        <span class="switch-slider"><span>OFF</span><span>ON</span></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Nuevo: ESP Lines -->
-            <div class="hud-card">
-                <div class="card-row">
-                    <div>
-                        <div class="card-label">ESP BOX & LINES</div>
-                        <div class="card-subtext">OVERLAY DE ENEMIGOS TRACERS</div>
-                    </div>
-                    <label class="quantum-switch">
-                        <input type="checkbox" id="and-esp">
+                        <input type="checkbox" id="and-aimbot" onchange="triggerHackAnim(this, 'card-and-aimbot', 'AIMBOT HOOKED')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
@@ -521,43 +543,56 @@
             <div class="hud-card">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">SENSIBILIDAD 360°</div>
-                        <div class="card-subtext">TOUCH RESPONSE OVERRIDE</div>
+                        <div class="card-label">SENSIBILIDAD</div>
+                        <div class="card-subtext">RESPUESTA Y PRECISIÓN TÁCTIL 360°</div>
                     </div>
                     <div class="stat-badge" id="val-sens">100%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" id="and-sens-slider" min="1" max="200" value="100" oninput="updateSlider('val-sens', this.value, '%', 'and-sens-slider')">
+                    <input type="range" class="hud-slider" id="and-sens-slider" min="1" max="200" value="100" oninput="updateSliderGlitch('val-sens', this.value, '%', 'and-sens-slider')">
                 </div>
             </div>
 
-            <div class="hud-card">
+            <div class="hud-card" id="card-and-ram">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">ANTI-BAN / HWID MASK</div>
-                        <div class="card-subtext">OCULTAR ID DE DISPOSITIVO</div>
+                        <div class="card-label">AUTO-RAM CLEANER</div>
+                        <div class="card-subtext">OPTIMIZADOR DE PROCESOS EN SEGUNDO PLANO</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="and-hwid">
+                        <input type="checkbox" id="and-ram" onchange="triggerHackAnim(this, 'card-and-ram', 'RAM CACHE FLUSHED')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
             </div>
 
-            <button class="btn-trigger" onclick="triggerInjection('Android Kernel Injection')">[ INYECTAR MEMORIA RAM ]</button>
+            <div class="hud-card" id="card-and-ping">
+                <div class="card-row">
+                    <div>
+                        <div class="card-label">ESTABILIZADOR DE PING (ANTI-LAG)</div>
+                        <div class="card-subtext">ENRUTADOR DNS VIP DE BAJA LATENCIA</div>
+                    </div>
+                    <label class="quantum-switch">
+                        <input type="checkbox" id="and-ping" onchange="triggerHackAnim(this, 'card-and-ping', 'VIP DNS ATTACHED')">
+                        <span class="switch-slider"><span>OFF</span><span>ON</span></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-trigger" onclick="triggerInjection('Android Vulkan Engine')">[ EJECUTAR INYECCIÓN ANDROID ]</button>
         </div>
 
         <!-- ================= PANEL iPHONE ================= -->
         <div class="os-panel" id="panel-ios">
 
-            <div class="hud-card">
+            <div class="hud-card" id="card-ios-fps">
                 <div class="card-row">
                     <div>
                         <div class="card-label">120 FPS PROMOTION</div>
                         <div class="card-subtext">METAL GRAPHICS UNLOCK</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="ios-fps">
+                        <input type="checkbox" id="ios-fps" onchange="triggerHackAnim(this, 'card-ios-fps', 'METAL 120 FPS ACTIVATED')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
@@ -572,37 +607,37 @@
                     <div class="stat-badge" id="val-head-ios">57%</div>
                 </div>
                 <div class="hud-slider-container">
-                    <input type="range" class="hud-slider" id="ios-head-slider" min="1" max="100" value="57" oninput="updateSlider('val-head-ios', this.value, '%', 'ios-head-slider')">
+                    <input type="range" class="hud-slider" id="ios-head-slider" min="1" max="100" value="57" oninput="updateSliderGlitch('val-head-ios', this.value, '%', 'ios-head-slider')">
                 </div>
             </div>
 
-            <div class="hud-card">
+            <div class="hud-card" id="card-ios-aimbot">
                 <div class="card-row">
                     <div>
                         <div class="card-label">AIMBOT HARMONY</div>
                         <div class="card-subtext">TOUCH ENGINE ASSIST</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="ios-aimbot">
+                        <input type="checkbox" id="ios-aimbot" onchange="triggerHackAnim(this, 'card-ios-aimbot', 'BIONIC AIM ENABLED')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
             </div>
 
-            <div class="hud-card">
+            <div class="hud-card" id="card-ios-recoil">
                 <div class="card-row">
                     <div>
-                        <div class="card-label">RECOIL CONTROL 100%</div>
-                        <div class="card-subtext">ZERO BULLET SPREAD</div>
+                        <div class="card-label">RECOIL CONTROL</div>
+                        <div class="card-subtext">ZERO BULLET SPREAD MOD</div>
                     </div>
                     <label class="quantum-switch">
-                        <input type="checkbox" id="ios-recoil">
+                        <input type="checkbox" id="ios-recoil" onchange="triggerHackAnim(this, 'card-ios-recoil', 'NO-RECOIL OVERRIDE')">
                         <span class="switch-slider"><span>OFF</span><span>ON</span></span>
                     </label>
                 </div>
             </div>
 
-            <button class="btn-trigger" onclick="triggerInjection('iOS Metal Kernel')">[ INYECTAR MEMORIA METAL ]</button>
+            <button class="btn-trigger" onclick="triggerInjection('iOS Metal Engine')">[ EJECUTAR INYECCIÓN iPHONE ]</button>
         </div>
 
         <!-- BOTÓN ABRIR JUEGO -->
@@ -627,10 +662,9 @@
     </div>
 
     <script>
-        // Radar Canvas con ESP Box y FOV dinámico
+        // Canvas Radar Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        let fovRadius = 120;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -639,55 +673,70 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        function updateFOV(val) {
-            fovRadius = parseInt(val);
-            document.getElementById('val-fov').innerText = val + 'px';
-            localStorage.setItem('and-fov-slider', val);
-        }
-
-        let enemyY = 0;
-        function drawOverlay() {
+        let angle = 0;
+        function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const isIOS = document.body.getAttribute('data-os') === 'ios';
-            const strokeColor = isIOS ? '#ff0055' : '#00ff66';
+            const color = isIOS ? '255, 170, 0' : '0, 243, 255';
 
-            // Círculo FOV dinámico
-            ctx.strokeStyle = strokeColor;
+            ctx.strokeStyle = `rgba(${color}, 0.08)`;
             ctx.lineWidth = 1;
-            ctx.setLineDash([6, 6]);
+            [100, 200, 300, 400].forEach(r => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.stroke();
+            });
+
             ctx.beginPath();
-            ctx.arc(cx, cy, fovRadius, 0, Math.PI * 2);
-            ctx.stroke();
-            ctx.setLineDash([]);
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, 400, angle, angle + 0.2);
+            ctx.lineTo(cx, cy);
+            ctx.fillStyle = `rgba(${color}, 0.05)`;
+            ctx.fill();
 
-            // ESP Target Box animado (Esquina Superior Derecha)
-            const targetX = canvas.width - 90;
-            enemyY = (enemyY + 0.5) % 80;
-            const targetY = 80 + enemyY;
-
-            ctx.strokeStyle = strokeColor;
-            ctx.strokeRect(targetX, targetY, 40, 60);
-
-            // Healthbar simulada
-            ctx.fillStyle = strokeColor;
-            ctx.fillRect(targetX - 6, targetY, 3, 60);
-
-            // Texto de distancia
-            ctx.font = '8px "JetBrains Mono"';
-            ctx.fillText('32m ENEMY', targetX - 5, targetY - 6);
-
-            // Línea de tracer desde el centro al objetivo
-            ctx.beginPath();
-            ctx.moveTo(cx, cy + fovRadius);
-            ctx.lineTo(targetX + 20, targetY + 60);
-            ctx.strokeStyle = isIOS ? 'rgba(255, 0, 85, 0.25)' : 'rgba(0, 255, 102, 0.25)';
-            ctx.stroke();
-
-            requestAnimationFrame(drawOverlay);
+            angle += 0.015;
+            requestAnimationFrame(drawRadar);
         }
-        drawOverlay();
+        drawRadar();
+
+        // ANIMACIONES HACKER TÁCTILES
+        function triggerHackAnim(checkbox, cardId, text) {
+            const card = document.getElementById(cardId);
+            const flash = document.getElementById('hack-flash');
+            const toast = document.getElementById('toast-hud');
+
+            if (checkbox.checked) {
+                card.classList.add('active-card');
+                
+                // Parpadeo de pantalla táctico
+                flash.style.opacity = '0.35';
+                setTimeout(() => flash.style.opacity = '0', 120);
+
+                // Toast hacker
+                const hex = '0x' + Math.floor(Math.random()*16777215).toString(16).toUpperCase();
+                toast.innerText = `[${hex}] ${text}`;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 1500);
+            } else {
+                card.classList.remove('active-card');
+            }
+        }
+
+        function updateSliderGlitch(badgeId, val, unit, storageKey) {
+            const badge = document.getElementById(badgeId);
+            
+            // Micro-glitch de números al deslizar
+            const randomGlitch = Math.floor(Math.random() * 99);
+            badge.innerText = randomGlitch + unit;
+            
+            setTimeout(() => {
+                badge.innerText = val + unit;
+            }, 40);
+
+            localStorage.setItem(storageKey, val);
+        }
 
         // OS Selector
         function selectOS(os) {
@@ -710,12 +759,7 @@
             document.getElementById('panel-ios').classList.toggle('active', os === 'ios');
         }
 
-        // LocalStorage logic
-        function updateSlider(badgeId, val, unit, storageKey) {
-            document.getElementById(badgeId).innerText = val + unit;
-            localStorage.setItem(storageKey, val);
-        }
-
+        // LocalStorage logic & Estado Inicial
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(chk => {
             chk.addEventListener('change', () => {
@@ -726,7 +770,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             checkboxes.forEach(chk => {
                 const savedState = localStorage.getItem(chk.id);
-                if (savedState !== null) chk.checked = savedState === 'true';
+                if (savedState !== null) {
+                    chk.checked = savedState === 'true';
+                    if (chk.checked) {
+                        const parentCard = chk.closest('.hud-card');
+                        if (parentCard) parentCard.classList.add('active-card');
+                    }
+                }
             });
 
             const sliders = [
@@ -745,34 +795,28 @@
                     }
                 }
             });
-
-            const savedFOV = localStorage.getItem('and-fov-slider');
-            if (savedFOV) {
-                document.getElementById('and-fov-slider').value = savedFOV;
-                updateFOV(savedFOV);
-            }
         });
 
-        // Simulación Terminal con Direcciones Hexadecimales
+        // Terminal Inyección
         function triggerInjection(systemName) {
             const modal = document.getElementById('terminal-modal');
             const logBox = document.getElementById('term-log');
             const title = document.getElementById('term-title');
 
-            title.innerText = `> EXECUTING ${systemName.toUpperCase()}...`;
+            title.innerText = `> INYECTANDO EN ${systemName.toUpperCase()}...`;
             logBox.innerHTML = '';
             modal.classList.add('active');
 
-            const hexOffsets = ['0x7FFF800', '0x7FFF8A4', '0x80011C0', '0x80024A8', '0x9102FF0'];
+            const hex1 = '0x' + Math.floor(Math.random()*16777215).toString(16);
+            const hex2 = '0x' + Math.floor(Math.random()*16777215).toString(16);
 
+            const isAndroid = systemName.includes('Android');
             const logs = [
-                `> Hooking process kernel...`,
-                `<span class="log-hex">[${hexOffsets[0]}] Bypassing memory protection...</span>`,
-                `<span class="log-hex">[${hexOffsets[1]}] Overwriting AimAssistOffsets...</span>`,
-                `<span class="log-hex">[${hexOffsets[2]}] Injecting FOV Vector Matrix...</span>`,
-                `<span class="log-hex">[${hexOffsets[3]}] Masking Hardware ID (HWID)...</span>`,
-                `> Flushing RAM buffer cache...`,
-                `<span class="log-success">> INJECTION SUCCESSFUL [STATUS: CLEAN]</span>`
+                "> Estableciendo túnel de memoria...",
+                `<span class="log-hex">[${hex1}] Cargando parches del kernel...</span>`,
+                "> Calibrando sensibilidad táctil...",
+                `<span class="log-hex">[${hex2}] ${isAndroid ? 'Optimizando hilos Vulkan...' : 'Vinculando Metal Touch Assist...'}</span>`,
+                `<span class="log-success">> ¡CONFIGURACIÓN APLICADA CON ÉXITO!</span>`
             ];
 
             let index = 0;
@@ -795,15 +839,14 @@
             const logBox = document.getElementById('term-log');
             const title = document.getElementById('term-title');
 
-            title.innerText = "> LAUNCHING TARGET APPLICATION...";
+            title.innerText = "> INICIANDO APLICACIÓN...";
             logBox.innerHTML = '';
             modal.classList.add('active');
 
             const steps = [
-                "> Verifying anti-cheat bypass layer...",
-                "<span class="log-hex">[0x90001A] Locking process memory space...</span>",
-                "> Activating overlay hooks...",
-                "<span class="log-success">> LAUNCHING GAME WITH VIP INJECTION!</span>"
+                "> Verificando overlays de pantalla...",
+                `<span class="log-hex">[0x7FFF] Asegurando procesos en segundo plano...</span>`,
+                `<span class="log-success">> ¡LANZANDO JUEGO!</span>`
             ];
 
             let index = 0;
